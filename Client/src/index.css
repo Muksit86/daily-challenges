@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
 
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
@@ -25,6 +25,9 @@ html, body {
     --color-border: #c5d8ff;
 
     --animate-bounce-in: bounce-in 180ms ease-out;
+    --animate-fade-in: fade-in 300ms ease-out;
+    --animate-slide-up: slide-up 400ms ease-out;
+    --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
 }
 
 @keyframes bounce-in {
@@ -37,4 +40,71 @@ html, body {
   100% {
     transform: scale(1);
   }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-500;
+}
+
+/* Prevent white flash on transitions */
+html {
+  color-scheme: light dark;
+  @apply bg-background dark:bg-background-dark;
+}
+
+/* Instant background color change to prevent flash */
+body, #root {
+  @apply bg-background dark:bg-background-dark;
+}
+
+/* Smooth transitions for non-background colors only */
+* {
+  transition: color 150ms ease-out, border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+/* Remove default button focus outline */
+button:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 dark:ring-offset-slate-900;
 }

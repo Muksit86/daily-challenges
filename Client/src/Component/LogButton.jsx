@@ -49,7 +49,7 @@ export default function LogButton({ challengeId }) {
   return (
     <>
       <label
-        className={`flex items-center justify-between px-6 py-4 rounded-2xl max-w-md cursor-pointer select-none gap-3 md:gap-5 transition-all duration-500 ${
+        className={`flex items-center justify-between px-6 py-4 rounded-2xl max-w-md cursor-pointer select-none gap-3 md:gap-5 transition-all duration-500 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 ${
           hasLoggedToday
             ? "opacity-0 scale-90 pointer-events-none"
             : "opacity-100 scale-100"
@@ -74,13 +74,13 @@ export default function LogButton({ challengeId }) {
           className="
           w-14 h-14 md:w-18 md:h-18 rounded-2xl flex items-center justify-center
           transition-all duration-200
-          border-2 border-blue-400
-          peer-checked:bg-blue-500
-          peer-checked:animate-bounce-in"
+          border-2 border-blue-400 dark:border-blue-500 bg-white dark:bg-slate-800 shadow-md
+          peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
+          peer-checked:animate-bounce-in hover:border-blue-500 dark:hover:border-blue-400"
         >
           <LuTreePalm
             className="
-            w-7 h-7 md:w-10 md:h-10 dark:text-white
+            w-7 h-7 md:w-10 md:h-10 dark:text-white text-slate-900 peer-checked:text-white
           "
           />
         </span>

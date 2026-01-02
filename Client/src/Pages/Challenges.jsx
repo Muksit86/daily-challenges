@@ -42,30 +42,33 @@ export default function Challenges() {
 
   return (
     <>
-      <div className="min-h-screen bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-center py-10 px-5">
+      <div className="min-h-screen bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-center py-10 px-5 animate-fade-in">
         <main className="flex-1 flex flex-col mt-20 md:mt-0 gap-5 w-12/12">
-          <header className="w-full flex dark:text-white justify-between px-4 py-2 md:text-2xl text-sm font-bold">
-            <span>
+          <header className="w-full flex dark:text-white justify-between px-4 py-2 md:text-2xl text-sm font-bold animate-slide-up">
+            <span className="text-slate-700 dark:text-slate-300">
               page {page} / {totalPages}
             </span>
           </header>
 
           <section className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 px-4 flex-1">
             {visibleChallenge.map((ch, index) => (
-              <div key={startIndex + index} className="relative group">
+              <div
+                key={startIndex + index}
+                className="relative group animate-slide-up"
+              >
                 <button
                   onClick={() => handleSelectChallenge(ch.id)}
-                  className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold shadow-sm rounded-xl p-4 hover:scale-105 transition-all h-full cursor-pointer ${
+                  className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold shadow-md rounded-xl p-4 transition-all duration-200 h-full cursor-pointer hover:shadow-lg hover:scale-105 active:scale-95 ${
                     selectedChallengeId === ch.id
-                      ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900"
-                      : "border-slate-200 dark:border-slate-700"
+                      ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900 shadow-lg"
+                      : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
                   }`}
                 >
                   <div className="flex-1 flex items-center justify-center text-center flex-col gap-2">
-                    <span className="text-sm md:text-base dark:text-white text-slate-900">
+                    <span className="text-sm md:text-base dark:text-white text-slate-900 font-semibold">
                       {ch.title}
                     </span>
-                    <span className="text-xs text-slate-600 dark:text-slate-400">
+                    <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
                       {ch.days} days
                     </span>
                   </div>
@@ -74,7 +77,7 @@ export default function Challenges() {
                 {/* Delete Button */}
                 <button
                   onClick={(e) => handleDeleteChallenge(ch.id, e)}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                  className="absolute -top-2 -right-2 bg-danger text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-600 hover:scale-110 shadow-md"
                   title="Delete challenge"
                 >
                   <LuX size={16} />
@@ -84,11 +87,11 @@ export default function Challenges() {
           </section>
 
           {/* Pagination controls */}
-          <div className="w-full flex gap-4 justify-center">
+          <div className="w-full flex gap-4 justify-center animate-slide-up">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 rounded-lg border disabled:opacity-40 active:scale-105 bg-primary text-white"
+              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
             >
               <LuArrowBigLeft />
             </button>
@@ -96,7 +99,7 @@ export default function Challenges() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-lg border disabled:opacity-40 active:scale-105 bg-primary text-white"
+              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
             >
               <LuArrowBigRight />
             </button>

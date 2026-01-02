@@ -24,16 +24,16 @@ export default function DailyLogs() {
 
   return (
     <>
-      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col px-5 py-10 gap-5">
+      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col px-5 py-10 gap-5 animate-fade-in">
         {/* Head Text */}
-        <header className="w-full text-sm dark:text-white font-bold flex justify-between items-center px-4 py-2 md:text-2xl gap-4">
-          <span>
+        <header className="w-full text-sm dark:text-white font-bold flex justify-between items-center px-4 py-2 md:text-2xl gap-4 animate-slide-up">
+          <span className="text-slate-700 dark:text-slate-300">
             {logsCount} / {selectedChallenge?.days || 0} days
           </span>
-          <h2 className="text-center flex-1 text-lg md:text-xl">
+          <h2 className="text-center flex-1 text-lg md:text-xl text-slate-900 dark:text-white font-semibold line-clamp-1">
             {selectedChallenge?.title || "No Challenge"}
           </h2>
-          <span>
+          <span className="text-slate-700 dark:text-slate-300">
             {page} / {totalPages} page
           </span>
         </header>
@@ -47,9 +47,12 @@ export default function DailyLogs() {
                 className={`
               md:w-20 md:h-20 w-10 h-10 rounded-xl
               flex items-center justify-center
-              transition-all relative
+              transition-all duration-200 hover:scale-110 active:scale-95
+              shadow-md
               ${
-                log === 1 ? "bg-primary text-white" : "border-2 border-blue-400"
+                log === 1
+                  ? "bg-primary text-white hover:shadow-lg"
+                  : "border-2 border-blue-400 dark:border-blue-500"
               }
             `}
               >
@@ -57,11 +60,11 @@ export default function DailyLogs() {
               </div>
             ))}
           </section>
-          <div className="flex gap-4">
+          <div className="flex gap-4 animate-slide-up">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 rounded-lg border disabled:opacity-40 active:scale-105 bg-primary text-white"
+              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
             >
               <LuArrowBigLeft size={15} />
             </button>
@@ -69,7 +72,7 @@ export default function DailyLogs() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-lg border disabled:opacity-40 active:scale-105 bg-primary text-white"
+              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
             >
               <LuArrowBigRight size={15} />
             </button>

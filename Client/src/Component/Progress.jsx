@@ -11,15 +11,19 @@ export default function Progress({
 
   return (
     <>
-      <div className="relative inline-flex items-center justify-center">
-        <svg width={size} height={size} className="-rotate-90">
+      <div className="relative inline-flex items-center justify-center animate-fade-in">
+        <svg
+          width={size}
+          height={size}
+          className="-rotate-90 filter drop-shadow-lg"
+        >
           {/* Background circle */}
           <circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
             strokeWidth={stroke}
-            className="fill-none stroke-gray-200"
+            className="fill-none stroke-gray-200 dark:stroke-slate-700"
           />
 
           {/* Progress circle */}
@@ -28,7 +32,7 @@ export default function Progress({
             cy={size / 2}
             r={radius}
             strokeWidth={stroke}
-            className="fill-none stroke-primary transition-all duration-500 ease-out"
+            className="fill-none stroke-primary transition-all duration-700 ease-out"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"
@@ -36,7 +40,7 @@ export default function Progress({
         </svg>
 
         {/* Center text */}
-        <span className="absolute text-xl dark:text-white font-semibold">
+        <span className="absolute text-3xl dark:text-white font-bold text-slate-900">
           {value}%
         </span>
       </div>

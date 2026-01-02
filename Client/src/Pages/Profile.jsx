@@ -10,10 +10,21 @@ export default function Profile() {
     // 👉 call API here
   };
 
+  const handleDeleteAllChallenges = () => {
+    if (
+      confirm(
+        "Are you sure you want to delete all challenges? This action cannot be undone."
+      )
+    ) {
+      console.log("Delete all challenges");
+      // 👉 call API here
+    }
+  };
+
   return (
     <>
-      <main className="bg-background dark:bg-background-dark flex-1 flex flex-col justify-center items-center py-10 md:px-5">
-        <section className="flex flex-col justify-center gap-8 bg-white dark:bg-slate-800 shadow-sm border dark:border-slate-700 p-2 md:p-8 rounded-xl md:w-5/12 w-11/12">
+      <main className="bg-background dark:bg-background-dark flex-1 flex flex-col justify-center items-center py-10 md:px-5 animate-fade-in">
+        <section className="flex flex-col justify-center gap-8 bg-white dark:bg-slate-800 shadow-md border dark:border-slate-700 p-2 md:p-8 rounded-xl md:w-5/12 w-11/12 animate-slide-up">
           {/* Email Section */}
           <div className="flex flex-col gap-4">
             <div>
@@ -31,7 +42,7 @@ export default function Profile() {
               bg-white dark:bg-slate-700 dark:text-white
               shadow-sm
               outline-none border border-slate-300 dark:border-slate-600
-              focus:ring-2 focus:ring-blue-500 focus:border-transparent
+              focus:ring-2 focus:ring-primary focus:border-transparent
               transition-all
             "
               />
@@ -39,7 +50,7 @@ export default function Profile() {
 
             <button
               onClick={handleChangeEmail}
-              className="ml-auto md:w-3/12 w-8/12 py-2.5 px-4 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-semibold cursor-pointer active:scale-95 transition-all duration-200"
+              className="ml-auto md:w-3/12 w-8/12 py-2.5 px-4 rounded-lg bg-primary hover:bg-blue-700 text-white font-semibold cursor-pointer active:scale-95 transition-all duration-200 hover:shadow-lg shadow-sm"
             >
               Change Email
             </button>
@@ -50,7 +61,7 @@ export default function Profile() {
 
           {/* Check challenges */}
           <Link
-            className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+            className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
             to="/challenges"
           >
             <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
@@ -68,18 +79,12 @@ export default function Profile() {
           {/* Actions */}
           <div className="flex gap-4 justify-center">
             <Button
-              icon={<LuLogOut size={20} />}
-              showTextOnMobile={false}
-              color={"danger"}
-              textSize="md"
-              text={"Log out"}
-            />
-            <Button
               icon={<LuTrash2 size={20} />}
               showTextOnMobile={false}
               color={"danger"}
               textSize="md"
-              text={"Delete account"}
+              text={"Delete all"}
+              onClick={handleDeleteAllChallenges}
             />
           </div>
         </section>

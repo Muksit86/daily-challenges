@@ -22,9 +22,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-between py-5">
+      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-between py-5 animate-fade-in">
         {/* Head Button */}
-        <header className="w-full flex justify-between items-center px-5">
+        <header className="w-full flex justify-between items-center px-5 animate-slide-up">
           <Link to="/logs">
             <Button
               showTextOnMobile={false}
@@ -44,8 +44,9 @@ export default function Home() {
 
         {/* No Challenges */}
         {allChallenges.length === 0 ? (
-          <section className="flex flex-col items-center justify-center gap-4 flex-1">
-            <p className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white text-center px-4">
+          <section className="flex flex-col items-center justify-center gap-4 flex-1 animate-slide-up">
+            <div className="text-6xl mb-4">🏃</div>
+            <p className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center px-4">
               No challenges yet
             </p>
             <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 text-center px-4">
@@ -63,18 +64,18 @@ export default function Home() {
           <>
             {/* Challenge Name */}
             {selectedChallenge && (
-              <section className="flex flex-col items-center gap-2">
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white text-center px-4">
+              <section className="flex flex-col items-center gap-2 animate-slide-up">
+                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white text-center px-4 line-clamp-2">
                   {selectedChallenge.title}
                 </h2>
-                <p className="text-sm md:text-base text-slate-600 dark:text-slate-400">
+                <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 font-medium">
                   {logsCount} / {selectedChallenge.days} days
                 </p>
               </section>
             )}
 
             {/* Progress Wheel */}
-            <section>
+            <section className="animate-bounce-in">
               <Progress
                 value={Math.floor(Math.min(progressPercentage, 100))}
                 size={200}
@@ -83,7 +84,7 @@ export default function Home() {
             </section>
 
             {/* Today's log */}
-            <section className="">
+            <section>
               <LogButton challengeId={selectedChallenge.id} />
             </section>
           </>

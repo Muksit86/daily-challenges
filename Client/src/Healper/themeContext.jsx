@@ -13,6 +13,16 @@ export const ThemeProvider = ({ children }) => {
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
+  // Apply theme immediately on mount to prevent flash
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, []);
+
   useEffect(() => {
     // Update localStorage and document
     localStorage.setItem("theme", isDark ? "dark" : "light");
