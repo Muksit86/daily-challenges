@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;1,300&display=swap');
 
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 html, body {
   height: 100vh;
@@ -20,6 +21,7 @@ html, body {
     --color-secondary: #7ED1A3;
     --color-danger: #FC5342;
     --color-background: #FFF9ED;
+    --color-background-dark: hsla(0, 0%, 10%, 1);
     --color-border: #c5d8ff;
 
     --animate-bounce-in: bounce-in 180ms ease-out;

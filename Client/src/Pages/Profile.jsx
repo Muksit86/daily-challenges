@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LuChevronRight, LuMail } from "react-icons/lu";
+import { LuChevronRight, LuLogOut, LuMail, LuTrash2 } from "react-icons/lu";
 import { Link } from "react-router";
 import Button from "../Component/Button";
 
@@ -12,50 +12,78 @@ export default function Profile() {
 
   return (
     <>
-      <div className="min-h-screen bg-background flex-1 flex flex-col items-center justify-center py-10 px-5">
-        <main className="flex-1 flex flex-col items-center px-4 py-6 pb-24 md:pb-6 mt-20 gap-5 w-12/12">
-          {/* Email input */}
-          <div className="w-full max-w-md space-y-2">
-            <label className="flex items-center gap-2 font-medium">
-              <LuMail size={16} />
-              Email
-            </label>
+      <main className="bg-background dark:bg-background-dark flex-1 flex flex-col justify-center items-center py-10 md:px-5">
+        <section className="flex flex-col justify-center gap-8 bg-white dark:bg-slate-800 shadow-sm border dark:border-slate-700 p-2 md:p-8 rounded-xl md:w-5/12 w-11/12">
+          {/* Email Section */}
+          <div className="flex flex-col gap-4">
+            <div>
+              <label className="flex items-center font-bold text-slate-900 dark:text-white text-lg gap-2 mb-2">
+                <LuMail size={20} />
+                Email
+              </label>
 
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="
-              w-full rounded-xl px-4 py-3
-              bg-white shadow-sm
-              outline-none border
-              focus:ring-2 focus:ring-primary
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="
+              w-full rounded-lg px-4 py-3
+              bg-white dark:bg-slate-700 dark:text-white
+              shadow-sm
+              outline-none border border-slate-300 dark:border-slate-600
+              focus:ring-2 focus:ring-blue-500 focus:border-transparent
+              transition-all
             "
-            />
+              />
+            </div>
 
             <button
               onClick={handleChangeEmail}
-              className="w-full mt-2 py-2 rounded-xl bg-primary text-white font-medium cursor-pointer active:scale-102 text-xl"
+              className="ml-auto md:w-3/12 w-8/12 py-2.5 px-4 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-semibold cursor-pointer active:scale-95 transition-all duration-200"
             >
-              Change email
+              Change Email
             </button>
           </div>
 
+          {/* Divider */}
+          <div className="h-px bg-slate-200 dark:bg-slate-700"></div>
+
           {/* Check challenges */}
-          <button className="w-full max-w-md mt-6 flex items-center justify-between bg-white rounded-xl px-4 py-4 shadow-sm">
-            <Link className="flex justify-between w-full" to="/challenges">
-              <span className="text-2xl">Check your challenges</span>
-              <LuChevronRight size={30} />
-            </Link>
-          </button>
+          <Link
+            className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+            to="/challenges"
+          >
+            <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
+              Challenges
+            </span>
+            <LuChevronRight
+              size={24}
+              className="text-slate-600 dark:text-slate-400"
+            />
+          </Link>
+
+          {/* Divider */}
+          <div className="h-px bg-slate-200 dark:bg-slate-700"></div>
 
           {/* Actions */}
-          <div className="w-full max-w-md mt-8 flex md:flex-col gap-4 justify-between">
-            <Button color={"danger"} textSize="sm" text={"Log out"} />
-            <Button color={"danger"} textSize="sm" text={"Delete account"} />
+          <div className="flex gap-4 justify-center">
+            <Button
+              icon={<LuLogOut size={20} />}
+              showTextOnMobile={false}
+              color={"danger"}
+              textSize="md"
+              text={"Log out"}
+            />
+            <Button
+              icon={<LuTrash2 size={20} />}
+              showTextOnMobile={false}
+              color={"danger"}
+              textSize="md"
+              text={"Delete account"}
+            />
           </div>
-        </main>
-      </div>
+        </section>
+      </main>
     </>
   );
 }

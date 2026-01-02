@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import LogButton from "../Component/LogButton";
+import { useLog } from "../Healper/LogContext";
+import { useChallenges } from "../Healper/ChallengesContext";
 import { LuArrowBigLeft, LuArrowBigRight, LuTreePalm } from "react-icons/lu";
 
-export default function DailyLogs({ logs }) {
+export default function DailyLogs() {
+  const { getLogsForDisplay, getLogsCount } = useLog();
+  const { getSelectedChallenge } = useChallenges();
+
+  const selectedChallenge = getSelectedChallenge();
+  const logs = selectedChallenge
+    ? getLogsForDisplay(selectedChallenge.id, selectedChallenge.createdAt)
+    : [];
+  const logsCount = selectedChallenge ? getLogsCount(selectedChallenge.id) : 0;
   const ITEMS_PER_PAGE = 20;
   const [page, setPage] = useState(1);
 
@@ -11,25 +20,32 @@ export default function DailyLogs({ logs }) {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const visibleLogs = logs.slice(startIndex, endIndex);
 
+  console.log(logs.length);
+
   return (
     <>
-      <div className="bg-background flex-1 flex flex-col px-5 py-10">
+      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col px-5 py-10 gap-5">
         {/* Head Text */}
-        <header className="bg-primary w-full">
-          <span>{logs.filter((l) => l === 1).length + 1} / 100 days</span>
+        <header className="w-full text-sm dark:text-white font-bold flex justify-between items-center px-4 py-2 md:text-2xl gap-4">
           <span>
-            page {page} / {totalPages}
+            {logsCount} / {selectedChallenge?.days || 0} days
+          </span>
+          <h2 className="text-center flex-1 text-lg md:text-xl">
+            {selectedChallenge?.title || "No Challenge"}
+          </h2>
+          <span>
+            {page} / {totalPages} page
           </span>
         </header>
 
         {/* Grid + Pagination controls */}
-        <div className="bg-danger flex-1">
-          <section className="w-full grid grid-cols-4">
+        <div className="flex-1 flex flex-col justify-between items-center gap-5">
+          <section className="w-full grid grid-cols-4 grid-rows-5 md:grid-cols-5 md:grid-rows-4 flex-1">
             {visibleLogs.map((log, index) => (
               <div
                 key={startIndex + index}
                 className={`
-              w-12 h-12 rounded-xl
+              md:w-20 md:h-20 w-10 h-10 rounded-xl
               flex items-center justify-center
               transition-all relative
               ${
@@ -47,7 +63,7 @@ export default function DailyLogs({ logs }) {
               onClick={() => setPage((p) => p - 1)}
               className="px-4 py-2 rounded-lg border disabled:opacity-40 active:scale-105 bg-primary text-white"
             >
-              <LuArrowBigLeft />
+              <LuArrowBigLeft size={15} />
             </button>
 
             <button
@@ -55,7 +71,7 @@ export default function DailyLogs({ logs }) {
               onClick={() => setPage((p) => p + 1)}
               className="px-4 py-2 rounded-lg border disabled:opacity-40 active:scale-105 bg-primary text-white"
             >
-              <LuArrowBigRight />
+              <LuArrowBigRight size={15} />
             </button>
           </div>
         </div>

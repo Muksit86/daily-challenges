@@ -12,9 +12,9 @@ export default function Button({
     <>
       <button
         className={clsx(
-          "shadow-sm text-white text-3xl font-semibold px-4 py-2 rounded-xl flex items-center justify-center md:gap-2 gap-0 cursor-pointer active:scale-102",
+          "shadow-sm text-white text-3xl font-semibold px-4 py-2 rounded-xl flex items-center justify-center md:gap-2 gap-2 cursor-pointer active:animate-bounce-in",
           textSize === "md" && "text-3xl",
-          textSize === "sm" && "text-xl",
+          textSize === "sm" && "text-sm",
           color === "primary" && "bg-primary",
           color === "danger" && "bg-danger"
         )}

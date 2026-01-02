@@ -36,7 +36,9 @@ export default function Progress({
         </svg>
 
         {/* Center text */}
-        <span className="absolute text-xl font-semibold">{value}%</span>
+        <span className="absolute text-xl dark:text-white font-semibold">
+          {value}%
+        </span>
       </div>
     </>
   );
