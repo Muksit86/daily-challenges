@@ -23,7 +23,7 @@ export default function Progress({
             cy={size / 2}
             r={radius}
             strokeWidth={stroke}
-            className="fill-none stroke-gray-200"
+            className="fill-none stroke-gray-400"
           />
 
           {/* Progress circle */}
@@ -32,7 +32,7 @@ export default function Progress({
             cy={size / 2}
             r={radius}
             strokeWidth={stroke}
-            className="fill-none stroke-yellow-300 transition-all duration-700 ease-out"
+            className="fill-none stroke-gray-50 transition-all duration-700 ease-out"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"

@@ -92,7 +92,7 @@ export default function ChallenegCard({ challenge }) {
   return (
     <>
       <div
-        className="relative bg-primary dark:bg-slate-800 p-4 md:p-5 rounded-xl flex flex-col items-center gap-2 md:gap-3 cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 animate-slide-up w-full max-w-sm"
+        className="relative bg-primary dark:bg-slate-800 p-4 md:p-5 rounded-xl flex flex-col items-center gap-2 md:gap-3 cursor-pointer transition-all duration-200 hover:shadow-lg animate-slide-up w-full max-w-sm hover:scale-101 active:scale-100"
         onClick={handleCardClick}
       >
         {/* More Options Button */}

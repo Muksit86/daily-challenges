@@ -49,11 +49,10 @@ export default function LogButton({ challengeId }) {
   return (
     <>
       <label
-        className={`flex items-center justify-between px-6 py-4 rounded-2xl max-w-md cursor-pointer select-none gap-3 md:gap-5 transition-all duration-500 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 ${
-          hasLoggedToday
-            ? "opacity-0 scale-90 pointer-events-none"
-            : "opacity-100 scale-100"
-        }`}
+        className={`flex items-center justify-between px-6 py-4 rounded-2xl max-w-md cursor-pointer select-none gap-3 md:gap-5 transition-all duration-500 shadow-md hover:shadow-lg hover:scale-101 active:scale-100 ${hasLoggedToday
+          ? "opacity-0 scale-90 pointer-events-none"
+          : "opacity-100 scale-100"
+          }`}
       >
         {/* Text */}
         <span className="text-xl md:text-3xl font-semibold text-slate-900 dark:text-white">

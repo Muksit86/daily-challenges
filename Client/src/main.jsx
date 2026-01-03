@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { ThemeProvider } from "./Healper/themeContext.jsx";
 import { LogProvider } from "./Healper/LogContext.jsx";
 import { ChallengesProvider } from "./Healper/ChallengesContext.jsx";
+import { AuthProvider } from "./Healper/AuthContext.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createBrowserRouter } from "react-router";
@@ -20,14 +21,25 @@ import About from "./Pages/About.jsx";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
 import Contact from "./Pages/Contact.jsx";
 
+import './tempData/loadDummyData';
+import ProtectedRoute from './Component/ProtectedRoute.jsx';
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
   },
   {
+    path: "/login",
+    element: <Login />,
+  },
+  {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/dashboard",
@@ -36,10 +48,6 @@ const router = createBrowserRouter([
       {
         path: "/logs",
         element: <DailyLogs />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
       },
       {
         path: "/profile",
@@ -71,26 +79,27 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider>
-      <LogProvider>
-        <ChallengesProvider>
-          <RouterProvider router={router}>
-            <App />
-          </RouterProvider>
-          <ToastContainer
-            position="top-center"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        </ChallengesProvider>
-      </LogProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <LogProvider>
+          <ChallengesProvider>
+            <RouterProvider router={router}>
+              <App />
+            </RouterProvider>
+            <ToastContainer
+              position="top-center"
+              autoClose={1000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              draggable
+              theme="light"
+            />
+          </ChallengesProvider>
+        </LogProvider>
+      </ThemeProvider>
+    </AuthProvider>
   </StrictMode>
 );
+

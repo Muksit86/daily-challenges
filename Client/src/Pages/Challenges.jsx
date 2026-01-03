@@ -58,7 +58,7 @@ export default function Challenges() {
               >
                 <button
                   onClick={() => handleSelectChallenge(ch.id)}
-                  className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold shadow-md rounded-xl p-4 transition-all duration-200 h-full cursor-pointer hover:shadow-lg active:scale-95 ${selectedChallengeId === ch.id
+                  className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold shadow-md rounded-xl p-4 transition-all duration-200 h-full cursor-pointer hover:shadow-lg active:scale-100 ${selectedChallengeId === ch.id
                     ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900 shadow-lg"
                     : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
                     }`}
@@ -90,7 +90,7 @@ export default function Challenges() {
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
             >
               <LuArrowBigLeft />
             </button>
@@ -98,7 +98,7 @@ export default function Challenges() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
             >
               <LuArrowBigRight />
             </button>

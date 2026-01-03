@@ -5,15 +5,32 @@ import {
   LuLogOut,
   LuMail,
   LuTrash2,
+  LuUserX,
+  LuSun,
+  LuMoon,
 } from "react-icons/lu";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Button from "../Component/Button";
 import { useChallenges } from "../Healper/ChallengesContext";
+import { useAuth } from "../Healper/AuthContext";
+import { toast } from "react-toastify";
+import { useTheme } from "../Healper/themeContext";
 
 export default function Profile() {
+  const { isDark, toggleTheme } = useTheme();
+
   const { deleteAllChallenges } = useChallenges();
-  const [email, setEmail] = useState("amuksit7@gmail.com");
+  const { logout, deleteAccount, user, authType, changePassword } = useAuth();
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState(user?.email || "amuksit7@gmail.com");
   const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // Password change state
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   const handleChangeEmail = () => {
     console.log("New email:", email);
@@ -27,19 +44,68 @@ export default function Profile() {
       )
     ) {
       deleteAllChallenges();
-      alert("All challenges have been deleted successfully!");
+      toast.success("All challenges have been deleted successfully!");
     }
+  };
+
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.success) {
+      toast.success("Logged out successfully!");
+      navigate("/");
+    } else {
+      toast.error("Logout failed. Please try again.");
+    }
+  };
+
+  const handleChangePassword = async () => {
+    // Validation
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      toast.error("Please fill in all password fields");
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      toast.error("New passwords do not match");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters long");
+      return;
+    }
+
+    const result = await changePassword(currentPassword, newPassword);
+    if (result.success) {
+      toast.success("Password changed successfully!");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmNewPassword("");
+    } else {
+      toast.error(result.error || "Failed to change password");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const result = await deleteAccount();
+    if (result.success) {
+      toast.success("Account deleted successfully!");
+      navigate("/");
+    } else {
+      toast.error(result.error || "Failed to delete account. Please try again.");
+    }
+    setShowDeleteModal(false);
   };
 
   return (
     <>
-      <main className="bg-background dark:bg-background-dark flex-1 flex flex-col justify-center py-10 md:px-5 animate-fade-in">
-        <div className="flex-1 flex flex-col justify-center items-center">
-          <section className="flex flex-col justify-center gap-8 bg-white dark:bg-slate-800 shadow-md border dark:border-slate-700 p-2 md:p-8 rounded-xl md:w-5/12 w-11/12 animate-slide-up">
+      <main className="bg-background dark:bg-background-dark flex-1 flex flex-col justify-center items-center py-5 md:px-5 md:mt-20 animate-fade-in">
+        <div className="flex-1 flex flex-col justify-center items-center w-full">
+          <section className="flex flex-col justify-center gap-5 bg-white dark:bg-slate-800 shadow-md border border-black dark:border-slate-700 p-3 md:p-8 rounded-xl md:w-5/12 w-11/12 animate-slide-up">
             {/* Email Section */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
               <div>
-                <label className="flex items-center font-bold text-slate-900 dark:text-white text-lg gap-2 mb-2">
+                <label className="flex items-center font-bold text-slate-900 dark:text-white text-md gap-1">
                   <LuMail size={20} />
                   Email
                 </label>
@@ -51,7 +117,7 @@ export default function Profile() {
                   className="
               w-full rounded-lg px-4 py-3
               bg-white text-black dark:bg-slate-700 dark:text-white
-              shadow-sm
+              shadow-sm text-sm md:text-lg
               outline-none border border-slate-300 dark:border-slate-600
               focus:ring-2 focus:ring-primary focus:border-transparent
               transition-all
@@ -61,9 +127,9 @@ export default function Profile() {
 
               <button
                 onClick={handleChangeEmail}
-                className="ml-auto md:w-3/12 w-8/12 py-2.5 px-4 rounded-lg bg-primary hover:bg-blue-700 text-white font-semibold cursor-pointer active:scale-95 transition-all duration-200 hover:shadow-lg shadow-sm"
+                className="ml-auto py-2 px-4 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200 shadow-sm"
               >
-                Change Email
+                Change
               </button>
             </div>
 
@@ -89,7 +155,7 @@ export default function Profile() {
               {isQuickLinksOpen && (
                 <div className="flex flex-col gap-3 animate-fade-in">
                   <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
+                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
                     to="/"
                   >
                     <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
@@ -102,7 +168,7 @@ export default function Profile() {
                   </Link>
 
                   <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
+                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
                     to="/about"
                   >
                     <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
@@ -115,7 +181,7 @@ export default function Profile() {
                   </Link>
 
                   <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
+                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
                     to="/privacy"
                   >
                     <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
@@ -128,7 +194,7 @@ export default function Profile() {
                   </Link>
 
                   <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
+                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
                     to="/contact"
                   >
                     <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
@@ -143,20 +209,139 @@ export default function Profile() {
               )}
             </div>
 
-            {/* Actions */}
-            <div className="flex gap-4 justify-center">
-              <Button
-                icon={<LuTrash2 size={20} />}
-                showTextOnMobile={false}
-                color={"danger"}
-                textSize="md"
-                text={"Delete all"}
-                onClick={handleDeleteAllChallenges}
-              />
+            {/* Divider */}
+            {/* Divider */}
+            <div className="h-px bg-slate-200 dark:bg-slate-700"></div>
+
+            {/* Password Change Section - Only for Email Users */}
+            {authType === 'email' && (
+              <div className="flex flex-col gap-3">
+                <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">Change Password</h3>
+
+                <div>
+                  <label className="text-sm font-semibold text-slate-900 dark:text-white">Current Password</label>
+                  <input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full rounded-lg px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white shadow-sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-slate-900 dark:text-white">New Password</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full rounded-lg px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white shadow-sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-slate-900 dark:text-white">Confirm New Password</label>
+                  <input
+                    type="password"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full rounded-lg px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white shadow-sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <button
+                  onClick={handleChangePassword}
+                  className="ml-auto py-2 px-6 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200 shadow-sm"
+                >
+                  Update Password
+                </button>
+              </div>
+            )}
+
+            <button
+              onClick={toggleTheme}
+              className="w-full px-4 py-2 text-black dark:text-white text-2xl rounded-xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-primary dark:text-white text-black transition-all duration-200 hover:bg-primary/10 hover:scale-101 active:scale-100"
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {isDark ? <LuSun size={30} /> : <LuMoon size={30} />}
+              <span>{isDark ? "Light" : "Dark"}</span>
+            </button>
+
+            <div className="h-px bg-slate-200 dark:bg-slate-700"></div>
+
+            {/* Account Actions */}
+            <div className="flex flex-col gap-3">
+              <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg text-sm">
+                Account Actions
+              </h3>
+
+              {/* Logout Button */}
+              <button
+                onClick={handleLogout}
+                className="w-full flex justify-center items-center px-4 py-3 rounded-lg bg-blue-300 text-white dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-900/40 transition-all duration-200 hover:shadow-md hover:scale-102 active:scale-100"
+              >
+                <div className="flex items-center gap-3">
+                  <LuLogOut size={20} className="transform -rotate-90 text-white text-sm" />
+                  <span className="text-base md:text-lg font-semibold text-white text-sm">
+                    Logout
+                  </span>
+                </div>
+              </button>
+
+              {/* Delete Account Button */}
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                className="w-full flex justify-center items-center px-4 py-3 rounded-lg bg-red-300 text-white dark:bg-red-900/20 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-900/40 transition-all duration-200 hover:shadow-md hover:scale-102 active:scale-100"
+              >
+                <div className="flex items-center gap-3">
+                  <LuUserX size={20} className="text-white text-sm" />
+                  <span className="text-base md:text-lg font-semibold text-white text-sm">
+                    Delete Account
+                  </span>
+                </div>
+              </button>
             </div>
           </section>
         </div>
       </main>
+
+      {/* Delete Account Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-5 animate-fade-in">
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-2xl border dark:border-slate-700 max-w-md w-full animate-slide-up">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full">
+                <LuUserX size={24} className="text-red-600 dark:text-red-400" />
+              </div>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                Delete Account
+              </h2>
+            </div>
+
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              Are you sure you want to delete your account?
+            </p>
+
+            <div className="flex gap-2 justify-center md:gap-10">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-all active:scale-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                className="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition-all active:scale-100 shadow-md"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
+

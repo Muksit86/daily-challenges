@@ -85,7 +85,7 @@ export default function About() {
               </h2>
               <Link
                 to="/"
-                className="inline-block bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                className="inline-block bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200 hover:scale-101 active:scale-100"
               >
                 Get Started
               </Link>

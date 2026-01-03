@@ -99,7 +99,7 @@ export default function NewChallenge() {
           {/* Save Button */}
           <button
             onClick={handleSave}
-            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-md transition-all duration-200 hover:shadow-lg active:scale-95 shadow-md"
+            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-md transition-all duration-200 hover:shadow-lg active:scale-100 shadow-md"
           >
             Create Challenge
           </button>

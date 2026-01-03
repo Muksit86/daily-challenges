@@ -1,0 +1,372 @@
+{
+  "challenges": [
+    {
+      "id": 1704067200000,
+      "title": "Morning Workout",
+      "days": 30,
+      "createdAt": "2025-12-15T06:00:00.000Z"
+    },
+    {
+      "id": 1704326400000,
+      "title": "Read 10 Pages",
+      "days": 21,
+      "createdAt": "2025-12-20T06:00:00.000Z"
+    },
+    {
+      "id": 1704585600000,
+      "title": "Drink 8 Glasses of Water",
+      "days": 14,
+      "createdAt": "2025-12-25T06:00:00.000Z"
+    },
+    {
+      "id": 1704844800000,
+      "title": "Sleep Before 11 PM",
+      "days": 30,
+      "createdAt": "2025-12-28T06:00:00.000Z"
+    },
+    {
+      "id": 1735104000000,
+      "title": "Meditate 5 Minutes",
+      "days": 7,
+      "createdAt": "2025-12-30T06:00:00.000Z"
+    }
+  ],
+  "logs": [
+    {
+      "date": "2025-12-15T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1734247800000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-16T07:15:00.000Z",
+      "status": true,
+      "timestamp": 1734333300000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-17T07:45:00.000Z",
+      "status": true,
+      "timestamp": 1734421500000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-18T07:20:00.000Z",
+      "status": false,
+      "timestamp": 1734506400000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-19T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1734594600000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-20T08:00:00.000Z",
+      "status": true,
+      "timestamp": 1734681600000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-20T21:00:00.000Z",
+      "status": true,
+      "timestamp": 1734728400000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-21T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1734767400000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-21T20:30:00.000Z",
+      "status": true,
+      "timestamp": 1734814200000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-22T07:45:00.000Z",
+      "status": true,
+      "timestamp": 1734855900000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-22T21:15:00.000Z",
+      "status": true,
+      "timestamp": 1734903300000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-23T08:00:00.000Z",
+      "status": true,
+      "timestamp": 1734940800000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-23T20:00:00.000Z",
+      "status": false,
+      "timestamp": 1734984000000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-24T07:30:00.000Z",
+      "status": false,
+      "timestamp": 1735025400000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-24T21:00:00.000Z",
+      "status": true,
+      "timestamp": 1735074000000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-25T08:15:00.000Z",
+      "status": true,
+      "timestamp": 1735116900000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-25T13:00:00.000Z",
+      "status": true,
+      "timestamp": 1735134000000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2025-12-25T20:45:00.000Z",
+      "status": true,
+      "timestamp": 1735162500000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-26T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1735197000000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-26T14:00:00.000Z",
+      "status": true,
+      "timestamp": 1735220400000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2025-12-26T21:00:00.000Z",
+      "status": true,
+      "timestamp": 1735246800000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-27T07:45:00.000Z",
+      "status": true,
+      "timestamp": 1735284300000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-27T15:00:00.000Z",
+      "status": true,
+      "timestamp": 1735310400000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2025-12-27T20:30:00.000Z",
+      "status": false,
+      "timestamp": 1735330200000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-28T08:00:00.000Z",
+      "status": true,
+      "timestamp": 1735372800000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-28T14:30:00.000Z",
+      "status": true,
+      "timestamp": 1735396200000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2025-12-28T21:00:00.000Z",
+      "status": true,
+      "timestamp": 1735419600000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-28T22:30:00.000Z",
+      "status": true,
+      "timestamp": 1735425000000,
+      "challengeId": 1704844800000
+    },
+    {
+      "date": "2025-12-29T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1735456200000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-29T13:00:00.000Z",
+      "status": true,
+      "timestamp": 1735476000000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2025-12-29T20:45:00.000Z",
+      "status": true,
+      "timestamp": 1735504500000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-29T22:00:00.000Z",
+      "status": false,
+      "timestamp": 1735509000000,
+      "challengeId": 1704844800000
+    },
+    {
+      "date": "2025-12-30T07:45:00.000Z",
+      "status": true,
+      "timestamp": 1735543500000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-30T14:00:00.000Z",
+      "status": true,
+      "timestamp": 1735566000000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2025-12-30T21:00:00.000Z",
+      "status": true,
+      "timestamp": 1735591200000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-30T22:15:00.000Z",
+      "status": true,
+      "timestamp": 1735595700000,
+      "challengeId": 1704844800000
+    },
+    {
+      "date": "2025-12-30T08:00:00.000Z",
+      "status": true,
+      "timestamp": 1735545600000,
+      "challengeId": 1735104000000
+    },
+    {
+      "date": "2025-12-31T08:00:00.000Z",
+      "status": true,
+      "timestamp": 1735632000000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2025-12-31T14:30:00.000Z",
+      "status": true,
+      "timestamp": 1735655400000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2025-12-31T20:30:00.000Z",
+      "status": false,
+      "timestamp": 1735677000000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2025-12-31T22:00:00.000Z",
+      "status": true,
+      "timestamp": 1735682400000,
+      "challengeId": 1704844800000
+    },
+    {
+      "date": "2025-12-31T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1735629000000,
+      "challengeId": 1735104000000
+    },
+    {
+      "date": "2026-01-01T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1735715400000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2026-01-01T13:00:00.000Z",
+      "status": true,
+      "timestamp": 1735735200000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2026-01-01T21:00:00.000Z",
+      "status": true,
+      "timestamp": 1735764000000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2026-01-01T22:30:00.000Z",
+      "status": true,
+      "timestamp": 1735769400000,
+      "challengeId": 1704844800000
+    },
+    {
+      "date": "2026-01-01T08:15:00.000Z",
+      "status": false,
+      "timestamp": 1735718100000,
+      "challengeId": 1735104000000
+    },
+    {
+      "date": "2026-01-02T07:45:00.000Z",
+      "status": true,
+      "timestamp": 1735803300000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2026-01-02T14:00:00.000Z",
+      "status": true,
+      "timestamp": 1735825600000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2026-01-02T20:45:00.000Z",
+      "status": true,
+      "timestamp": 1735850100000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2026-01-02T22:00:00.000Z",
+      "status": false,
+      "timestamp": 1735854600000,
+      "challengeId": 1704844800000
+    },
+    {
+      "date": "2026-01-02T07:30:00.000Z",
+      "status": true,
+      "timestamp": 1735801800000,
+      "challengeId": 1735104000000
+    },
+    {
+      "date": "2026-01-03T08:00:00.000Z",
+      "status": true,
+      "timestamp": 1735891200000,
+      "challengeId": 1704067200000
+    },
+    {
+      "date": "2026-01-03T13:30:00.000Z",
+      "status": true,
+      "timestamp": 1735911000000,
+      "challengeId": 1704585600000
+    },
+    {
+      "date": "2026-01-03T21:00:00.000Z",
+      "status": true,
+      "timestamp": 1735938000000,
+      "challengeId": 1704326400000
+    },
+    {
+      "date": "2026-01-03T07:45:00.000Z",
+      "status": true,
+      "timestamp": 1735888500000,
+      "challengeId": 1735104000000
+    }
+  ]
+}

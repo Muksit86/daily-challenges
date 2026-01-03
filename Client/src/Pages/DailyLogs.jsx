@@ -16,6 +16,7 @@ export default function DailyLogs() {
   const [page, setPage] = useState(1);
 
   const totalPages = Math.ceil(logs.length / ITEMS_PER_PAGE);
+  console.log(totalPages);
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const visibleLogs = logs.slice(startIndex, endIndex);
@@ -69,9 +70,9 @@ export default function DailyLogs() {
           {/* Pagination Controls */}
           <div className="flex gap-3 md:gap-4 animate-slide-up">
             <button
-              disabled={page === 1}
+              disabled={(page - 1) === 0}
               onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 md:px-6 md:py-3 rounded-lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
+              className="px-4 py-2 md:px-6 md:py-3 rounded-lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover:shadow-lg hover:scale-101 active:scale-100 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
             >
               <LuArrowBigLeft size={18} className="md:w-5 md:h-5" />
               <span className="hidden sm:inline">Previous</span>
@@ -80,7 +81,7 @@ export default function DailyLogs() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 md:px-6 md:py-3 rounded-lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
+              className="px-4 py-2 md:px-6 md:py-3 rounded-lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover:shadow-lg hover:scale-101 active:scale-100 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
             >
               <span className="hidden sm:inline">Next</span>
               <LuArrowBigRight size={18} className="md:w-5 md:h-5" />

@@ -13,13 +13,14 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="bg-background dark:bg-background-dark flex flex-col items-center min-h-screen py-3 md:py-5 animate-fade-in">
+      <div className="bg-background dark:bg-background-dark flex flex-col items-center min-h-screen py-5 md:py-5 animate-fade-in">
         {/* Head Button */}
         <header className="w-full flex justify-between items-center px-3 md:px-5 mb-4 md:mb-8 animate-slide-up">
           <Link to="/newchallenge">
             <Button
               showTextOnMobile={false}
               text="New challenge"
+              paddingClass="px-2 py-2"
               icon={<LuPlus className="w-5 h-5" />}
             />
           </Link>
