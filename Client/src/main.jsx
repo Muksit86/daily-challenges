@@ -15,6 +15,9 @@ import Profile from "./Pages/Profile.jsx";
 import DailyLogs from "./Pages/DailyLogs.jsx";
 import Challenges from "./Pages/Challenges.jsx";
 import NewChallenge from "./Pages/NewChallenge.jsx";
+import About from "./Pages/About.jsx";
+import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
+import Contact from "./Pages/Contact.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +47,18 @@ const router = createBrowserRouter([
       {
         path: "/newchallenge",
         element: <NewChallenge />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/privacy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
     ],
   },

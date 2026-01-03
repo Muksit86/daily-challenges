@@ -2,12 +2,55 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const ChallengesContext = createContext();
 
+// Helper function to get date N days ago
+const getDaysAgo = (days) => {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return date.toISOString();
+};
+
 export const ChallengesProvider = ({ children }) => {
-  const [challenges, setChallenges] = useState([]);
-  const [selectedChallengeId, setSelectedChallengeId] = useState(null);
+  // Dummy challenges for testing
+  const dummyChallenges = [
+    {
+      id: 1001,
+      title: "Morning Meditation",
+      days: 30,
+      createdAt: getDaysAgo(15), // 15 days ago
+    },
+    {
+      id: 1002,
+      title: "Daily Exercise",
+      days: 60,
+      createdAt: getDaysAgo(22), // 22 days ago
+    },
+    {
+      id: 1003,
+      title: "Read for 30 Minutes",
+      days: 21,
+      createdAt: getDaysAgo(10), // 10 days ago
+    },
+    {
+      id: 1004,
+      title: "Drink 8 Glasses of Water",
+      days: 45,
+      createdAt: getDaysAgo(8), // 8 days ago
+    },
+    {
+      id: 1005,
+      title: "Code Every Day",
+      days: 90,
+      createdAt: getDaysAgo(25), // 25 days ago
+    },
+  ];
+
+  const [challenges, setChallenges] = useState(dummyChallenges);
+  const [selectedChallengeId, setSelectedChallengeId] = useState(1001);
 
   // Initialize challenges from localStorage
   useEffect(() => {
+    // COMMENTED OUT FOR TESTING - Uncomment to enable localStorage persistence
+    /*
     const savedChallenges = localStorage.getItem("challenges");
     const savedSelectedId = localStorage.getItem("selectedChallengeId");
     if (savedChallenges) {
@@ -29,6 +72,7 @@ export const ChallengesProvider = ({ children }) => {
         setChallenges([]);
       }
     }
+    */
   }, []);
 
   // Add a new challenge
@@ -93,6 +137,14 @@ export const ChallengesProvider = ({ children }) => {
     return challenges.find((ch) => ch.id === selectedChallengeId) || null;
   };
 
+  // Delete all challenges
+  const deleteAllChallenges = () => {
+    setChallenges([]);
+    setSelectedChallengeId(null);
+    localStorage.removeItem("challenges");
+    localStorage.removeItem("selectedChallengeId");
+  };
+
   // Get challenges count
   const getChallengesCount = () => challenges.length;
 
@@ -103,6 +155,7 @@ export const ChallengesProvider = ({ children }) => {
         selectedChallengeId,
         addChallenge,
         deleteChallenge,
+        deleteAllChallenges,
         selectChallenge,
         getChallenges,
         getSelectedChallenge,

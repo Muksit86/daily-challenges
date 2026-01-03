@@ -42,7 +42,7 @@ export default function NewChallenge() {
 
   return (
     <>
-      <main className="flex-1 bg-background dark:bg-background-dark flex justify-center items-center animate-fade-in">
+      <main className="flex-1 bg-background dark:bg-background-dark flex justify-center items-center animate-fade-in py-10">
         <section className="w-11/12 shadow-md flex flex-col gap-10 p-4 md:w-5/12 md:mt-0 bg-white dark:bg-slate-800 md:p-6 rounded-xl border dark:border-slate-700 animate-slide-up">
           {/* Title Section */}
           <section className="flex flex-col text-black dark:text-white gap-2">

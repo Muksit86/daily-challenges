@@ -2,42 +2,25 @@ import React from "react";
 import { useLog } from "../Healper/LogContext";
 import { useChallenges } from "../Healper/ChallengesContext";
 import Button from "../Component/Button";
-import { LuPlus, LuTreePalm } from "react-icons/lu";
-import LogButton from "../Component/LogButton";
-import Progress from "../Component/Progress";
+import { LuPlus } from "react-icons/lu";
 import { Link } from "react-router";
+import ChallenegCard from "../Component/ChallenegCard";
 
 export default function Home() {
-  const { getLogsCount } = useLog();
-  const { getSelectedChallenge, getChallenges } = useChallenges();
+  const { getChallenges } = useChallenges();
 
-  const selectedChallenge = getSelectedChallenge();
   const allChallenges = getChallenges();
-  const logsCount = selectedChallenge ? getLogsCount(selectedChallenge.id) : 0;
-
-  // Calculate progress based on selected challenge
-  const progressPercentage = selectedChallenge
-    ? (logsCount / selectedChallenge.days) * 100
-    : 0;
 
   return (
     <>
-      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-between py-5 animate-fade-in">
+      <div className="bg-background dark:bg-background-dark flex flex-col items-center min-h-screen py-5 animate-fade-in">
         {/* Head Button */}
-        <header className="w-full flex justify-between items-center px-5 animate-slide-up">
-          <Link to="/logs">
-            <Button
-              showTextOnMobile={false}
-              text="View"
-              icon={<LuTreePalm className="w-10 h-10" />}
-            />
-          </Link>
-
+        <header className="w-full flex justify-between items-center px-5 mb-8 animate-slide-up">
           <Link to="/newchallenge">
             <Button
               showTextOnMobile={false}
               text="New challenge"
-              icon={<LuPlus className="w-10 h-10" />}
+              icon={<LuPlus className="w-5 h-5" />}
             />
           </Link>
         </header>
@@ -62,30 +45,16 @@ export default function Home() {
           </section>
         ) : (
           <>
-            {/* Challenge Name */}
-            {selectedChallenge && (
-              <section className="flex flex-col items-center gap-2 animate-slide-up">
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white text-center px-4 line-clamp-2">
-                  {selectedChallenge.title}
-                </h2>
-                <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 font-medium">
-                  {logsCount} / {selectedChallenge.days} days
-                </p>
-              </section>
-            )}
-
-            {/* Progress Wheel */}
-            <section className="animate-bounce-in">
-              <Progress
-                value={Math.floor(Math.min(progressPercentage, 100))}
-                size={200}
-                stroke={30}
-              />
-            </section>
-
-            {/* Today's log */}
-            <section>
-              <LogButton challengeId={selectedChallenge.id} />
+            {/* All Challenges Grid */}
+            <section className="w-full px-5">
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-6 animate-slide-up">
+                Your Challenges
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+                {allChallenges.map((challenge) => (
+                  <ChallenegCard key={challenge.id} challenge={challenge} />
+                ))}
+              </div>
             </section>
           </>
         )}
@@ -93,3 +62,4 @@ export default function Home() {
     </>
   );
 }
+
