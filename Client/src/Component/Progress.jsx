@@ -23,7 +23,7 @@ export default function Progress({
             cy={size / 2}
             r={radius}
             strokeWidth={stroke}
-            className="fill-none stroke-gray-200 dark:stroke-slate-700"
+            className="fill-none stroke-gray-200"
           />
 
           {/* Progress circle */}
@@ -32,7 +32,7 @@ export default function Progress({
             cy={size / 2}
             r={radius}
             strokeWidth={stroke}
-            className="fill-none stroke-primary transition-all duration-700 ease-out"
+            className="fill-none stroke-yellow-300 transition-all duration-700 ease-out"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"
@@ -40,7 +40,7 @@ export default function Progress({
         </svg>
 
         {/* Center text */}
-        <span className="absolute text-3xl dark:text-white font-bold text-slate-900">
+        <span className="absolute text-2xl text-white font-bold">
           {value}%
         </span>
       </div>

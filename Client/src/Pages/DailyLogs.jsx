@@ -22,16 +22,16 @@ export default function DailyLogs() {
 
   return (
     <>
-      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col px-5 py-8 gap-8 animate-fade-in min-h-screen">
+      <div className="bg-background dark:bg-background-dark flex-1 flex flex-col px-3 md:px-5 py-4 md:py-8 gap-5 md:gap-8 animate-fade-in min-h-screen">
         {/* Header Section */}
-        <header className="w-full flex flex-col gap-3 animate-slide-up">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+        <header className="w-full flex flex-col gap-2 md:gap-3 animate-slide-up">
+          <div className="hidden md:flex justify-between items-center">
+            <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white line-clamp-1 pr-2">
               {selectedChallenge?.title || "No Challenge Selected"}
             </h1>
           </div>
-          <div className="flex justify-between items-center text-sm md:text-base">
-            <span className="text-slate-600 dark:text-slate-400 font-medium">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0 text-xs md:text-sm lg:text-base">
+            <span className="hidden md:block text-slate-600 dark:text-slate-400 font-medium">
               Progress: <span className="font-bold text-primary">{logsCount}</span> / {selectedChallenge?.days || 0} days
             </span>
             <span className="text-slate-600 dark:text-slate-400 font-medium">
@@ -41,13 +41,13 @@ export default function DailyLogs() {
         </header>
 
         {/* Heat Map Grid */}
-        <div className="flex-1 flex flex-col justify-center items-center gap-8">
-          <section className="w-full max-w-4xl grid grid-cols-4 sm:grid-cols-5 md:grid-cols-5 gap-3 md:gap-4 place-items-center">
+        <div className="flex-1 flex flex-col-reverse justify-between md:py-10 py-5 items-center animate-fade-in">
+          <section className="flex-1 w-full max-w-4xl grid grid-cols-5 sm:grid-cols-5 md:grid-cols-8 gap-2 md:gap-3 lg:gap-4 grid-rows-4 place-items-center">
             {visibleLogs.map((log, index) => (
               <div
                 key={startIndex + index}
                 className={`
-                  w-16 h-16 md:w-20 md:h-20 rounded-xl
+                   w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl rounded-lg md:rounded-xl
                   flex items-center justify-center
                   transition-all duration-300
                   ${log === 1
@@ -58,8 +58,8 @@ export default function DailyLogs() {
               >
                 {log === 1 && (
                   <LuTreePalm
-                    size={28}
-                    className="drop-shadow-md animate-fade-in"
+                    size={20}
+                    className="md:w-7 md:h-7 drop-shadow-md animate-fade-in"
                   />
                 )}
               </div>
@@ -67,23 +67,23 @@ export default function DailyLogs() {
           </section>
 
           {/* Pagination Controls */}
-          <div className="flex gap-4 animate-slide-up">
+          <div className="flex gap-3 md:gap-4 animate-slide-up">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-6 py-3 rounded-lg bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-2"
+              className="px-4 py-2 md:px-6 md:py-3 rounded-lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
             >
-              <LuArrowBigLeft size={20} />
+              <LuArrowBigLeft size={18} className="md:w-5 md:h-5" />
               <span className="hidden sm:inline">Previous</span>
             </button>
 
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-6 py-3 rounded-lg bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-2"
+              className="px-4 py-2 md:px-6 md:py-3 rounded-lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
             >
               <span className="hidden sm:inline">Next</span>
-              <LuArrowBigRight size={20} />
+              <LuArrowBigRight size={18} className="md:w-5 md:h-5" />
             </button>
           </div>
         </div>

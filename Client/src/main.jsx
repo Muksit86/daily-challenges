@@ -9,7 +9,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import Home from "./Pages/Home.jsx";
+import Dashboard from "./Pages/Dashboard.jsx";
+import LandingPage from "./Pages/LandingPage.jsx";
 import Login from "./Pages/Login.jsx";
 import Profile from "./Pages/Profile.jsx";
 import DailyLogs from "./Pages/DailyLogs.jsx";
@@ -22,11 +23,15 @@ import Contact from "./Pages/Contact.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/",
     element: <App />,
     children: [
       {
-        path: "/",
-        element: <Home />,
+        path: "/dashboard",
+        element: <Dashboard />,
       },
       {
         path: "/logs",

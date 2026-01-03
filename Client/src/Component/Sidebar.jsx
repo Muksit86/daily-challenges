@@ -9,7 +9,7 @@ export default function Sidebar() {
   const NavList = [
     {
       text: "Home",
-      link: "/",
+      link: "/dashboard",
       icon: <LuHouse size={30} />,
     },
     {
@@ -35,7 +35,7 @@ export default function Sidebar() {
                 clsx(
                   "px-4 py-2 text-black dark:text-white text-2xl rounded-xl hover:cursor-pointer flex justify-center items-center gap-2 active:animate-bounce-in transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-700 hover:scale-105 active:scale-95",
                   isActive &&
-                    "bg-primary text-white shadow-md hover:bg-blue-700 hover:scale-105"
+                  "bg-primary text-white shadow-md hover:bg-blue-700 hover:scale-105"
                 )
               }
             >
