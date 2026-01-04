@@ -1,5 +1,4 @@
 import React from "react";
-import { useLog } from "../Healper/LogContext";
 import { useChallenges } from "../Healper/ChallengesContext";
 import Button from "../Component/Button";
 import { LuPlus } from "react-icons/lu";
@@ -13,23 +12,36 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="bg-background dark:bg-background-dark flex flex-col items-center min-h-screen py-5 md:py-5 animate-fade-in">
+      <div className="flex-1 flex flex-col items-center justify-between p-5 border-black dark:border-white bg-background dark:bg-background-dark overflow-x-scroll animate-fade-in">
         {/* Head Button */}
-        <header className="w-full flex justify-between items-center px-3 md:px-5 mb-4 md:mb-8 animate-slide-up">
-          <Link to="/newchallenge">
-            <Button
-              showTextOnMobile={false}
-              text="New challenge"
-              paddingClass="px-2 py-2"
-              icon={<LuPlus className="w-5 h-5" />}
-            />
-          </Link>
-        </header>
+        {allChallenges.length != 0 && (
+          <header className="w-full flex justify-between mb-5 items-center animate-slide-up">
+            <Link to="/newchallenge">
+              <Button
+                showTextOnMobile={false}
+                text="New challenge"
+                paddingClass="px-2 py-2"
+                icon={<LuPlus className="w-5 h-5" />}
+              />
+            </Link>
+          </header>
+        )}
 
         {/* No Challenges */}
         {allChallenges.length === 0 ? (
           <section className="flex flex-col items-center justify-center gap-4 flex-1 animate-slide-up px-4">
-            <div className="text-6xl mb-4">🏃</div>
+            <div className="text-6xl mb-4">
+              <svg
+                width="50"
+                viewBox="0 0 200 200"
+                fill="white"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="44.7761" height="45" />
+                <rect x="155.224" width="44.7761" height="45" />
+                <path d="M31.4079 200H0V169.397H30.7481V141.33H167.861V169.397H199.005V200H167.597V172.727H31.4079V200Z" />
+              </svg>
+            </div>
             <p className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center">
               No challenges yet
             </p>
@@ -47,8 +59,8 @@ export default function Dashboard() {
         ) : (
           <>
             {/* All Challenges Grid */}
-            <section className="w-full px-3 md:px-5">
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mb-4 md:mb-6 animate-slide-up">
+            <section className="w-full">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white mb-4 md:mb-6 animate-slide-up">
                 Your Challenges
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 justify-items-center">
@@ -63,4 +75,3 @@ export default function Dashboard() {
     </>
   );
 }
-

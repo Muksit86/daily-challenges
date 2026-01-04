@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../Healper/AuthContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
@@ -10,8 +10,15 @@ export default function Login() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { login, signup } = useAuth();
+  const { login, signup, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect to dashboard if already authenticated
+  useEffect(() => {
+    if (isAuthenticated && !authLoading && !loading) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, authLoading, loading, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,22 +46,23 @@ export default function Login() {
         const result = await signup(email, password);
         if (result.success) {
           toast.success("Account created successfully!");
-          navigate("/dashboard");
+          // Navigation will happen via useEffect after state updates
         } else {
           toast.error(result.error || "Signup failed");
+          setLoading(false);
         }
       } else {
         const result = await login(email, password);
         if (result.success) {
           toast.success("Login successful!");
-          navigate("/dashboard");
+          // Navigation will happen via useEffect after state updates
         } else {
           toast.error(result.error || "Login failed");
+          setLoading(false);
         }
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
-    } finally {
       setLoading(false);
     }
   };
@@ -83,7 +91,7 @@ export default function Login() {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 w-full md:w-5/12 flex flex-col gap-5 animate-slide-up"
+          className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 w-full md:w-5/12 flex flex-col gap-5 animate-slide-up"
         >
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-slate-900 dark:text-white">
@@ -94,7 +102,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               disabled={loading}
             />
           </div>
@@ -108,7 +116,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               disabled={loading}
             />
           </div>
@@ -123,7 +131,7 @@ export default function Login() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 disabled={loading}
               />
             </div>
@@ -132,7 +140,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 hover:shadow-lg active:scale-100 shadow-md mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3  -lg transition-all duration-200 hover: -lg active:scale-100  -md mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Please wait..." : isSignup ? "Sign Up" : "Sign In"}
           </button>
@@ -151,4 +159,3 @@ export default function Login() {
     </>
   );
 }
-

@@ -65,7 +65,7 @@ export default function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+          <div className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
               <div className="flex flex-col gap-2">
@@ -79,7 +79,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Your name"
-                  className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                  className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 />
               </div>
 
@@ -95,7 +95,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="your@email.com"
-                  className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                  className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 />
               </div>
 
@@ -111,7 +111,7 @@ export default function Contact() {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder="What is this about?"
-                  className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                  className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 />
               </div>
 
@@ -126,14 +126,14 @@ export default function Contact() {
                   onChange={handleChange}
                   placeholder="Tell us what's on your mind..."
                   rows="6"
-                  className="px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
+                  className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 hover:shadow-lg active:scale-100 shadow-md"
+                className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3  -lg transition-all duration-200 hover: -lg active:scale-100  -md"
               >
                 Send Message
               </button>
@@ -142,9 +142,9 @@ export default function Contact() {
 
           {/* Alternative Contact Methods */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border dark:border-slate-700 text-center animate-slide-up">
+            <div className="bg-white dark:bg-slate-800 p-6    -md border dark:border-slate-700 text-center animate-slide-up">
               <div className="flex justify-center mb-4">
-                <div className="bg-primary/10 p-4 rounded-xl">
+                <div className="bg-primary/10 p-4  ">
                   <LuMail size={32} className="text-primary" />
                 </div>
               </div>
@@ -156,9 +156,9 @@ export default function Contact() {
               </p>
             </div>
 
-            <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border dark:border-slate-700 text-center animate-slide-up">
+            <div className="bg-white dark:bg-slate-800 p-6    -md border dark:border-slate-700 text-center animate-slide-up">
               <div className="flex justify-center mb-4">
-                <div className="bg-primary/10 p-4 rounded-xl">
+                <div className="bg-primary/10 p-4  ">
                   <LuMessageCircle size={32} className="text-primary" />
                 </div>
               </div>

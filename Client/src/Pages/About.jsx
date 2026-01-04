@@ -19,7 +19,7 @@ export default function About() {
           {/* Content Sections */}
           <div className="space-y-8">
             {/* Mission */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
                 Our Mission
               </h2>
@@ -32,7 +32,7 @@ export default function About() {
             </section>
 
             {/* How It Works */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
                 How It Works
               </h2>
@@ -64,7 +64,7 @@ export default function About() {
             </section>
 
             {/* Features */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
                 Features
               </h2>
@@ -79,13 +79,13 @@ export default function About() {
             </section>
 
             {/* Contact CTA */}
-            <section className="bg-primary p-6 md:p-8 rounded-xl shadow-md text-white text-center animate-slide-up">
+            <section className="bg-primary p-6 md:p-8    -md text-white text-center animate-slide-up">
               <h2 className="text-2xl font-bold mb-4">
                 Ready to start challenging yourself?
               </h2>
               <Link
                 to="/"
-                className="inline-block bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200 hover:scale-101 active:scale-100"
+                className="inline-block bg-white text-primary px-6 py-3  -lg font-semibold hover: -lg transition-all duration-200 hover:scale-101 active:scale-100"
               >
                 Get Started
               </Link>

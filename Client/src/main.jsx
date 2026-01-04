@@ -83,9 +83,7 @@ createRoot(document.getElementById("root")).render(
       <ThemeProvider>
         <LogProvider>
           <ChallengesProvider>
-            <RouterProvider router={router}>
-              <App />
-            </RouterProvider>
+            <RouterProvider router={router} />
             <ToastContainer
               position="top-center"
               autoClose={1000}

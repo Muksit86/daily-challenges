@@ -9,9 +9,7 @@ function App() {
     <>
       <div className="flex flex-col-reverse md:flex-row h-screen w-full">
         <Sidebar />
-        <div className="flex-1 overflow-scroll">
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </>
   );

@@ -58,10 +58,11 @@ export default function Challenges() {
               >
                 <button
                   onClick={() => handleSelectChallenge(ch.id)}
-                  className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold shadow-md rounded-xl p-4 transition-all duration-200 h-full cursor-pointer hover:shadow-lg active:scale-100 ${selectedChallengeId === ch.id
-                    ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900 shadow-lg"
-                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-                    }`}
+                  className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold  -md   p-4 transition-all duration-200 h-full cursor-pointer hover: -lg active:scale-100 ${
+                    selectedChallengeId === ch.id
+                      ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900  -lg"
+                      : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                  }`}
                 >
                   <div className="flex-1 flex items-center justify-center text-center flex-col gap-2">
                     <span className="text-sm md:text-base dark:text-white text-slate-900 font-semibold">
@@ -76,7 +77,7 @@ export default function Challenges() {
                 {/* Delete Button */}
                 <button
                   onClick={(e) => handleDeleteChallenge(ch.id, e)}
-                  className="absolute top-3 right-3 bg-danger text-white rounded-full p-1.5 opacity-100 shadow-md cursor-pointer active:scale-105"
+                  className="absolute top-3 right-3 bg-danger text-white   p-1.5 opacity-100  -md cursor-pointer active:scale-105"
                   title="Delete challenge"
                 >
                   <LuX size={16} />
@@ -90,7 +91,7 @@ export default function Challenges() {
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
+              className="px-4 py-2  -lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
             >
               <LuArrowBigLeft />
             </button>
@@ -98,7 +99,7 @@ export default function Challenges() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover:shadow-lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
+              className="px-4 py-2  -lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
             >
               <LuArrowBigRight />
             </button>

@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
           {/* Content Sections */}
           <div className="space-y-6 text-slate-700 dark:text-slate-300">
             {/* Introduction */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Introduction
               </h2>
@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* Data Collection */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Information We Collect
               </h2>
@@ -66,7 +66,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* LocalStorage Usage */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 localStorage Usage
               </h2>
@@ -104,7 +104,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* Cookies */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Cookies
               </h2>
@@ -134,7 +134,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* Advertising */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Advertising (Google AdSense)
               </h2>
@@ -181,7 +181,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* Data Security */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Data Security
               </h2>
@@ -214,7 +214,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* User Rights */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Your Rights
               </h2>
@@ -244,7 +244,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* Contact */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Contact Us
               </h2>
@@ -262,7 +262,7 @@ export default function PrivacyPolicy() {
             </section>
 
             {/* Changes */}
-            <section className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-xl shadow-md border dark:border-slate-700 animate-slide-up">
+            <section className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Changes to This Privacy Policy
               </h2>

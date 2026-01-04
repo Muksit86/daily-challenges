@@ -92,20 +92,44 @@ export default function Profile() {
       toast.success("Account deleted successfully!");
       navigate("/");
     } else {
-      toast.error(result.error || "Failed to delete account. Please try again.");
+      toast.error(
+        result.error || "Failed to delete account. Please try again."
+      );
     }
     setShowDeleteModal(false);
   };
 
+  const QuickLins = [
+    {
+      link: "/home",
+      text: "Home",
+    },
+    {
+      link: "/about",
+      text: "About",
+    },
+    {
+      link: "/contact",
+      text: "Contact",
+    },
+    {
+      link: "/privacy",
+      text: "Privacy",
+    },
+    {
+      link: "/privacy",
+      text: "Privacy",
+    },
+  ];
   return (
     <>
-      <main className="bg-background dark:bg-background-dark flex-1 flex flex-col justify-center items-center py-5 md:px-5 md:mt-20 animate-fade-in">
+      <main className="flex-1 flex flex-col justify-center items-center py-5 md:px-5 bg-background dark:bg-background-dark animate-fade-in">
         <div className="flex-1 flex flex-col justify-center items-center w-full">
-          <section className="flex flex-col justify-center gap-5 bg-white dark:bg-slate-800 shadow-md border border-black dark:border-slate-700 p-3 md:p-8 rounded-xl md:w-5/12 w-11/12 animate-slide-up">
+          <section className="flex flex-col justify-center gap-5 bg-white dark:bg-slate-800  -md border border-black dark:border-slate-700 p-3 md:p-8    md:w-5/12 w-11/12 animate-slide-up">
             {/* Email Section */}
-            <div className="flex flex-col gap-3">
-              <div>
-                <label className="flex items-center font-bold text-slate-900 dark:text-white text-md gap-1">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
+                <label className="w-full flex items-center font-bold text-slate-900 dark:text-white text-md gap-2">
                   <LuMail size={20} />
                   Email
                 </label>
@@ -115,10 +139,10 @@ export default function Profile() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="
-              w-full rounded-lg px-4 py-3
+              w-full   px-4 py-3
               bg-white text-black dark:bg-slate-700 dark:text-white
-              shadow-sm text-sm md:text-lg
-              outline-none border border-slate-300 dark:border-slate-600
+               -sm text-sm md:text-lg
+              outline-none border border-black dark:border-slate-600
               focus:ring-2 focus:ring-primary focus:border-transparent
               transition-all
             "
@@ -127,133 +151,64 @@ export default function Profile() {
 
               <button
                 onClick={handleChangeEmail}
-                className="ml-auto py-2 px-4 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200 shadow-sm"
+                className="ml-auto py-2 px-4   bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200  -sm"
               >
                 Change
               </button>
             </div>
 
             {/* Divider */}
-            <div className="h-px bg-slate-200 dark:bg-slate-700"></div>
-
-            {/* Navigation Links */}
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={() => setIsQuickLinksOpen(!isQuickLinksOpen)}
-                className="flex justify-between items-center w-full px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md"
-              >
-                <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
-                  Quick Links
-                </h3>
-                <LuChevronDown
-                  size={24}
-                  className={`text-slate-600 dark:text-slate-400 transition-transform duration-300 ${isQuickLinksOpen ? "rotate-180" : ""
-                    }`}
-                />
-              </button>
-
-              {isQuickLinksOpen && (
-                <div className="flex flex-col gap-3 animate-fade-in">
-                  <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
-                    to="/"
-                  >
-                    <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
-                      Home
-                    </span>
-                    <LuChevronRight
-                      size={24}
-                      className="text-slate-600 dark:text-slate-400"
-                    />
-                  </Link>
-
-                  <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
-                    to="/about"
-                  >
-                    <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
-                      About
-                    </span>
-                    <LuChevronRight
-                      size={24}
-                      className="text-slate-600 dark:text-slate-400"
-                    />
-                  </Link>
-
-                  <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
-                    to="/privacy"
-                  >
-                    <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
-                      Privacy Policy
-                    </span>
-                    <LuChevronRight
-                      size={24}
-                      className="text-slate-600 dark:text-slate-400"
-                    />
-                  </Link>
-
-                  <Link
-                    className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-200 hover:shadow-md hover:scale-101 active:scale-100"
-                    to="/contact"
-                  >
-                    <span className="text-base md:text-lg font-semibold text-slate-900 dark:text-white">
-                      Contact
-                    </span>
-                    <LuChevronRight
-                      size={24}
-                      className="text-slate-600 dark:text-slate-400"
-                    />
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Divider */}
-            {/* Divider */}
-            <div className="h-px bg-slate-200 dark:bg-slate-700"></div>
+            <div className="h-px bg-slate-200 dark:bg-slate-700 my-2"></div>
 
             {/* Password Change Section - Only for Email Users */}
-            {authType === 'email' && (
+            {authType === "email" && (
               <div className="flex flex-col gap-3">
-                <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">Change Password</h3>
+                <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
+                  Change Password
+                </h3>
 
                 <div>
-                  <label className="text-sm font-semibold text-slate-900 dark:text-white">Current Password</label>
+                  <label className="text-sm font-semibold text-slate-900 dark:text-white">
+                    Current Password
+                  </label>
                   <input
                     type="password"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full rounded-lg px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white shadow-sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white  -sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-slate-900 dark:text-white">New Password</label>
+                  <label className="text-sm font-semibold text-slate-900 dark:text-white">
+                    New Password
+                  </label>
                   <input
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full rounded-lg px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white shadow-sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white  -sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-slate-900 dark:text-white">Confirm New Password</label>
+                  <label className="text-sm font-semibold text-slate-900 dark:text-white">
+                    Confirm New Password
+                  </label>
                   <input
                     type="password"
                     value={confirmNewPassword}
                     onChange={(e) => setConfirmNewPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full rounded-lg px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white shadow-sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white  -sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   />
                 </div>
 
                 <button
                   onClick={handleChangePassword}
-                  className="ml-auto py-2 px-6 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200 shadow-sm"
+                  className="ml-auto py-2 px-6   bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200  -sm"
                 >
                   Update Password
                 </button>
@@ -262,7 +217,7 @@ export default function Profile() {
 
             <button
               onClick={toggleTheme}
-              className="w-full px-4 py-2 text-black dark:text-white text-2xl rounded-xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-primary dark:text-white text-black transition-all duration-200 hover:bg-primary/10 hover:scale-101 active:scale-100"
+              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border border-black transition-all duration-200 hover:bg-primary/10 hover:scale-101 active:scale-100"
               title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               {isDark ? <LuSun size={30} /> : <LuMoon size={30} />}
@@ -273,18 +228,21 @@ export default function Profile() {
 
             {/* Account Actions */}
             <div className="flex flex-col gap-3">
-              <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg text-sm">
+              <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
                 Account Actions
               </h3>
 
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="w-full flex justify-center items-center px-4 py-3 rounded-lg bg-blue-300 text-white dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-900/40 transition-all duration-200 hover:shadow-md hover:scale-102 active:scale-100"
+                className="w-full flex justify-center items-center px-4 py-3   bg-blue-300 text-white dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-900/40 transition-all duration-200 hover: -md hover:scale-102 active:scale-100"
               >
                 <div className="flex items-center gap-3">
-                  <LuLogOut size={20} className="transform -rotate-90 text-white text-sm" />
-                  <span className="text-base md:text-lg font-semibold text-white text-sm">
+                  <LuLogOut
+                    size={20}
+                    className="transform -rotate-90 text-white text-sm"
+                  />
+                  <span className="text-base md:text-lg font-semibold text-white">
                     Logout
                   </span>
                 </div>
@@ -293,11 +251,11 @@ export default function Profile() {
               {/* Delete Account Button */}
               <button
                 onClick={() => setShowDeleteModal(true)}
-                className="w-full flex justify-center items-center px-4 py-3 rounded-lg bg-red-300 text-white dark:bg-red-900/20 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-900/40 transition-all duration-200 hover:shadow-md hover:scale-102 active:scale-100"
+                className="w-full flex justify-center items-center px-4 py-3   bg-red-300 text-white dark:bg-red-900/20 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-900/40 transition-all duration-200 hover: -md hover:scale-102 active:scale-100"
               >
                 <div className="flex items-center gap-3">
                   <LuUserX size={20} className="text-white text-sm" />
-                  <span className="text-base md:text-lg font-semibold text-white text-sm">
+                  <span className="text-base md:text-lg font-semibold text-white">
                     Delete Account
                   </span>
                 </div>
@@ -310,9 +268,9 @@ export default function Profile() {
       {/* Delete Account Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-5 animate-fade-in">
-          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-2xl border dark:border-slate-700 max-w-md w-full animate-slide-up">
+          <div className="bg-white dark:bg-slate-800 p-6     -2xl border dark:border-slate-700 max-w-md w-full animate-slide-up">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full">
+              <div className="p-3 bg-red-100 dark:bg-red-900/30  ">
                 <LuUserX size={24} className="text-red-600 dark:text-red-400" />
               </div>
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">
@@ -327,13 +285,13 @@ export default function Profile() {
             <div className="flex gap-2 justify-center md:gap-10">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-all active:scale-100"
+                className="px-4 py-2   bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-all active:scale-100"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteAccount}
-                className="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition-all active:scale-100 shadow-md"
+                className="px-6 py-2   bg-red-600 hover:bg-red-700 text-white font-medium transition-all active:scale-100  -md"
               >
                 Delete
               </button>
@@ -344,4 +302,3 @@ export default function Profile() {
     </>
   );
 }
-

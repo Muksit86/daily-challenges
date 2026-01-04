@@ -43,7 +43,7 @@ export default function NewChallenge() {
   return (
     <>
       <main className="flex-1 bg-background dark:bg-background-dark flex justify-center items-center animate-fade-in py-10">
-        <section className="w-11/12 shadow-md flex flex-col gap-10 p-4 md:w-5/12 md:mt-0 bg-white dark:bg-slate-800 md:p-6 rounded-xl border dark:border-slate-700 animate-slide-up">
+        <section className="w-11/12  -md flex flex-col gap-10 p-4 md:w-5/12 md:mt-0 bg-white dark:bg-slate-800 md:p-6   border dark:border-slate-700 animate-slide-up">
           {/* Title Section */}
           <section className="flex flex-col text-black dark:text-white gap-2">
             <label className="flex items-center gap-2 w-fit text-xl font-semibold text-slate-900 dark:text-white">
@@ -52,7 +52,7 @@ export default function NewChallenge() {
             </label>
             <input
               placeholder="Enter your challenge title"
-              className="border dark:border-slate-600 p-3 text-lg bg-white dark:bg-slate-700 dark:text-white rounded-md focus:outline-blue-400 focus:outline-2 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all"
+              className="border dark:border-slate-600 p-3 text-lg bg-white dark:bg-slate-700 dark:text-white  -md focus:outline-blue-400 focus:outline-2 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -66,7 +66,7 @@ export default function NewChallenge() {
               <span>Duration</span>
             </label>
             <select
-              className="border dark:border-slate-600 p-3 text-lg bg-white dark:bg-slate-700 dark:text-white rounded-md focus:outline-blue-400 focus:outline-2 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all"
+              className="border dark:border-slate-600 p-3 text-lg bg-white dark:bg-slate-700 dark:text-white  -md focus:outline-blue-400 focus:outline-2 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all"
               value={days}
               onChange={(e) => setDays(e.target.value)}
             >
@@ -80,7 +80,7 @@ export default function NewChallenge() {
             {days === "custom" && (
               <input
                 placeholder="Enter number of days"
-                className="border dark:border-slate-600 p-3 text-lg bg-white dark:bg-slate-700 dark:text-white rounded-md focus:outline-blue-400 focus:outline-2 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all animate-slide-up"
+                className="border dark:border-slate-600 p-3 text-lg bg-white dark:bg-slate-700 dark:text-white  -md focus:outline-blue-400 focus:outline-2 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all animate-slide-up"
                 type="number"
                 min="1"
                 value={customDays}
@@ -91,7 +91,7 @@ export default function NewChallenge() {
 
           {/* Error Message */}
           {error && (
-            <div className="p-3 bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded-md text-red-700 dark:text-red-200 text-sm animate-slide-up">
+            <div className="p-3 bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700  -md text-red-700 dark:text-red-200 text-sm animate-slide-up">
               {error}
             </div>
           )}
@@ -99,7 +99,7 @@ export default function NewChallenge() {
           {/* Save Button */}
           <button
             onClick={handleSave}
-            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-md transition-all duration-200 hover:shadow-lg active:scale-100 shadow-md"
+            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4  -md transition-all duration-200 hover: -lg active:scale-100  -md"
           >
             Create Challenge
           </button>

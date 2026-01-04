@@ -49,10 +49,11 @@ export default function LogButton({ challengeId }) {
   return (
     <>
       <label
-        className={`flex items-center justify-between px-6 py-4 rounded-2xl max-w-md cursor-pointer select-none gap-3 md:gap-5 transition-all duration-500 shadow-md hover:shadow-lg hover:scale-101 active:scale-100 ${hasLoggedToday
-          ? "opacity-0 scale-90 pointer-events-none"
-          : "opacity-100 scale-100"
-          }`}
+        className={`flex items-center justify-between px-6 py-4   max-w-md cursor-pointer select-none gap-3 md:gap-5 transition-all duration-500  -md hover: -lg hover:scale-101 active:scale-100 ${
+          hasLoggedToday
+            ? "opacity-0 scale-90 pointer-events-none"
+            : "opacity-100 scale-100"
+        }`}
       >
         {/* Text */}
         <span className="text-xl md:text-3xl font-semibold text-slate-900 dark:text-white">
@@ -71,9 +72,9 @@ export default function LogButton({ challengeId }) {
         {/* Custom UI */}
         <span
           className="
-          w-14 h-14 md:w-18 md:h-18 rounded-2xl flex items-center justify-center
+          w-14 h-14 md:w-18 md:h-18   flex items-center justify-center
           transition-all duration-200
-          border-2 border-blue-400 dark:border-blue-500 bg-white dark:bg-slate-800 shadow-md
+          border-2 border-blue-400 dark:border-blue-500 bg-white dark:bg-slate-800  -md
           peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
           peer-checked:animate-bounce-in hover:border-blue-500 dark:hover:border-blue-400"
         >

@@ -92,28 +92,29 @@ export default function ChallenegCard({ challenge }) {
   return (
     <>
       <div
-        className="relative bg-primary dark:bg-slate-800 p-4 md:p-5 rounded-xl flex flex-col items-center gap-2 md:gap-3 cursor-pointer transition-all duration-200 hover:shadow-lg animate-slide-up w-full max-w-sm hover:scale-101 active:scale-100"
+        className="relative border border-black dark:border-white p-4 flex flex-col items-center gap-2 md:gap-3 cursor-pointer transition-all duration-200 animate-slide-up w-full h-full"
         onClick={handleCardClick}
       >
         {/* More Options Button */}
         <div className="absolute top-2 right-2" ref={menuRef}>
           <button
             onClick={handleMenuClick}
-            className="p-1.5 rounded-lg hover:bg-white/10 transition-colors duration-200"
+            className="p-1.5 hover:bg-white/10 transition-colors duration-200"
           >
             <MdMoreVert className="w-5 h-5 text-white" />
           </button>
 
           {/* Dropdown Menu */}
           {showMenu && (
-            <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden z-10 animate-fade-in">
+            <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800  -lg  -lg border border-slate-200 dark:border-slate-700 overflow-hidden z-10 animate-fade-in">
               <button
                 onClick={handleLog}
                 disabled={hasLoggedToday}
-                className={`w-full px-4 py-2.5 text-left flex items-center gap-2 text-sm transition-colors ${hasLoggedToday
-                  ? "text-slate-400 dark:text-slate-500 cursor-not-allowed"
-                  : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
-                  }`}
+                className={`w-full px-4 py-2.5 text-left flex items-center gap-2 text-sm transition-colors ${
+                  hasLoggedToday
+                    ? "text-slate-400 dark:text-slate-500 cursor-not-allowed"
+                    : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                }`}
               >
                 <FaCheckCircle size={16} />
                 {hasLoggedToday ? "Logged ✓" : "Log Today"}
@@ -139,7 +140,7 @@ export default function ChallenegCard({ challenge }) {
         </div>
 
         <div className="gap-2 md:gap-3 flex flex-col items-center w-full">
-          <Progress value={progressPercentage} size={100} />
+          <Progress value={progressPercentage} size={120} />
 
           {isEditing ? (
             <input
@@ -156,15 +157,15 @@ export default function ChallenegCard({ challenge }) {
               }}
               onClick={(e) => e.stopPropagation()}
               autoFocus
-              className="text-white bg-white/20 font-bold text-base md:text-lg text-center px-2 py-1 rounded border-2 border-white/50 focus:outline-none focus:border-white w-full"
+              className="text-black bg-white/20 font-bold text-base md:text-lg text-center px-2 py-1 focus:outline-none focus:border-black w-full"
             />
           ) : (
-            <span className="text-white font-bold text-base md:text-lg text-center line-clamp-2 px-1">
+            <span className="text-black dark:text-white font-bold text-base md:text-lg text-center line-clamp-2 px-1">
               {challenge.title}
             </span>
           )}
 
-          <span className="text-white/80 text-xs md:text-sm">
+          <span className="text-black dark:text-white text-sm">
             {logsCount} / {challenge.days} days
           </span>
         </div>
