@@ -32,9 +32,10 @@ export default function Dashboard() {
           <section className="flex flex-col items-center justify-center gap-4 flex-1 animate-slide-up px-4">
             <div className="text-6xl mb-4">
               <svg
+                className="fill-black dark:fill-white"
                 width="50"
                 viewBox="0 0 200 200"
-                fill="white"
+                fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <rect width="44.7761" height="45" />

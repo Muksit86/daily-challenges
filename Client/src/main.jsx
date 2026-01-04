@@ -19,19 +19,23 @@ import Challenges from "./Pages/Challenges.jsx";
 import NewChallenge from "./Pages/NewChallenge.jsx";
 import About from "./Pages/About.jsx";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
+import NotFound from "./Pages/NotFound.jsx";
 import Contact from "./Pages/Contact.jsx";
 
-import './tempData/loadDummyData';
-import ProtectedRoute from './Component/ProtectedRoute.jsx';
+import "./tempData/loadDummyData";
+import ProtectedRoute from "./Component/ProtectedRoute.jsx";
+import RequestingPage from "./Pages/RequestingPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
+    errorElement: <NotFound />, // 👈 here
   },
   {
     path: "/login",
-    element: <Login />,
+    // element: <Login />,
+    element: <RequestingPage />,
   },
   {
     path: "/",
@@ -40,37 +44,38 @@ const router = createBrowserRouter([
         <App />
       </ProtectedRoute>
     ),
+    errorElement: <NotFound />,
     children: [
       {
-        path: "/dashboard",
+        path: "dashboard",
         element: <Dashboard />,
       },
       {
-        path: "/logs",
+        path: "logs",
         element: <DailyLogs />,
       },
       {
-        path: "/profile",
+        path: "profile",
         element: <Profile />,
       },
       {
-        path: "/challenges",
+        path: "challenges",
         element: <Challenges />,
       },
       {
-        path: "/newchallenge",
+        path: "newchallenge",
         element: <NewChallenge />,
       },
       {
-        path: "/about",
+        path: "about",
         element: <About />,
       },
       {
-        path: "/privacy",
+        path: "privacy",
         element: <PrivacyPolicy />,
       },
       {
-        path: "/contact",
+        path: "contact",
         element: <Contact />,
       },
     ],
@@ -100,4 +105,3 @@ createRoot(document.getElementById("root")).render(
     </AuthProvider>
   </StrictMode>
 );
-

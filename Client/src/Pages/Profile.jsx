@@ -23,7 +23,7 @@ export default function Profile() {
   const { logout, deleteAccount, user, authType, changePassword } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState(user?.email || "amuksit7@gmail.com");
+  const [email, setEmail] = useState(user?.email || "jonDoe@gmail.com");
   const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -33,7 +33,6 @@ export default function Profile() {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   const handleChangeEmail = () => {
-    console.log("New email:", email);
     // 👉 call API here
   };
 
@@ -217,7 +216,7 @@ export default function Profile() {
 
             <button
               onClick={toggleTheme}
-              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border border-black transition-all duration-200 hover:bg-primary/10 hover:scale-101 active:scale-100"
+              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border border-black dark:border-white transition-all duration-200 hover:bg-primary/10 hover:scale-101 active:scale-100"
               title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               {isDark ? <LuSun size={30} /> : <LuMoon size={30} />}
@@ -235,7 +234,7 @@ export default function Profile() {
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="w-full flex justify-center items-center px-4 py-3   bg-blue-300 text-white dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-900/40 transition-all duration-200 hover: -md hover:scale-102 active:scale-100"
+                className="w-full flex justify-center items-center px-4 py-3 bg-blue-300 text-white dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-200 hover:scale-102 active:scale-100"
               >
                 <div className="flex items-center gap-3">
                   <LuLogOut
@@ -251,7 +250,7 @@ export default function Profile() {
               {/* Delete Account Button */}
               <button
                 onClick={() => setShowDeleteModal(true)}
-                className="w-full flex justify-center items-center px-4 py-3   bg-red-300 text-white dark:bg-red-900/20 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-900/40 transition-all duration-200 hover: -md hover:scale-102 active:scale-100"
+                className="w-full flex justify-center items-center px-4 py-3 bg-red-300 text-white dark:bg-red-900/20 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-500 transition-all duration-200 hover:scale-102 active:scale-100"
               >
                 <div className="flex items-center gap-3">
                   <LuUserX size={20} className="text-white text-sm" />

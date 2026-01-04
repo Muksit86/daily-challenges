@@ -46,7 +46,7 @@ export default function Login() {
         const result = await signup(email, password);
         if (result.success) {
           toast.success("Account created successfully!");
-          // Navigation will happen via useEffect after state updates
+          navigate("/dashboard", { replace: true });
         } else {
           toast.error(result.error || "Signup failed");
           setLoading(false);
@@ -55,7 +55,7 @@ export default function Login() {
         const result = await login(email, password);
         if (result.success) {
           toast.success("Login successful!");
-          // Navigation will happen via useEffect after state updates
+          navigate("/dashboard", { replace: true });
         } else {
           toast.error(result.error || "Login failed");
           setLoading(false);
@@ -77,7 +77,7 @@ export default function Login() {
   return (
     <>
       <div className="min-h-screen bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-center gap-8 px-5 animate-fade-in">
-        <div className="text-7xl mb-4 animate-bounce-in">
+        <div className="text-5xl mb-4 animate-bounce-in">
           {isSignup ? "🎯" : "👋"}
         </div>
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white text-center animate-slide-up">
@@ -91,7 +91,7 @@ export default function Login() {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 w-full md:w-5/12 flex flex-col gap-5 animate-slide-up"
+          className="bg-white dark:bg-slate-800 p-6 md:p-8 border dark:border-slate-700 w-full md:w-5/12 flex flex-col gap-5 animate-slide-up"
         >
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-slate-900 dark:text-white">
