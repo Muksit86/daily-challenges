@@ -24,7 +24,7 @@ export default function Sidebar() {
   ];
   return (
     <>
-      <div className="bg-background dark:bg-background-dark flex flex-col md:h-screen border-black border-t md:border-r md:border-t-0 dark:border-white">
+      <div className="bg-background-sidebar dark:bg-background-sidebar-dark flex flex-col md:h-screen border-black border-t md:border-r md:border-t-0 dark:border-white">
         <section className="flex justify-between md:flex-col md:mt-20 md:gap-10">
           {NavList.map((nav, index) => (
             <NavLink
@@ -32,8 +32,9 @@ export default function Sidebar() {
               to={nav.link}
               className={({ isActive }) =>
                 clsx(
-                  "w-full md:border-y px-4 py-3 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-2 dark:hover:bg-slate-700",
-                  isActive && "bg-primary text-white -md"
+                  "w-full md:border-y px-4 py-3 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-2 hover:bg-hover-light dark:hover:bg-elevation-dark",
+                  isActive &&
+                    "bg-primary text-white hover:bg-primary dark:hover:bg-primary"
                 )
               }
             >

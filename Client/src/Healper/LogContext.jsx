@@ -3,42 +3,58 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const LogContext = createContext();
 
 export const LogProvider = ({ children }) => {
-  const [logs, setLogs] = useState([]);
+  // challengeLogs structure: [{ challengeId, challengeName, logs: [...] }, ...]
+  const [challengeLogs, setChallengeLogs] = useState([]);
   const [hasLoggedToday, setHasLoggedToday] = useState(false);
 
-  // Initialize logs from localStorage
+  // Initialize challengeLogs from localStorage
   useEffect(() => {
-    const savedLogs = localStorage.getItem("dailyLogs");
+    const savedLogs = localStorage.getItem("challengeLogs");
     if (savedLogs) {
       try {
         const parsedLogs = JSON.parse(savedLogs);
-        setLogs(parsedLogs);
-        checkTodayLog(parsedLogs);
+        setChallengeLogs(parsedLogs);
       } catch (error) {
-        console.error("Error parsing logs from localStorage:", error);
-        setLogs([]);
+        console.error("Error parsing challengeLogs from localStorage:", error);
+        setChallengeLogs([]);
       }
     }
   }, []);
 
-  // Check if user has already logged today for a specific challenge
-  const checkTodayLog = (logsArray, challengeId) => {
-    const today = new Date().toDateString();
-    const loggedToday = logsArray.some((log) => {
-      const logDate = new Date(log.date).toDateString();
-      return logDate === today && log.challengeId === challengeId;
-    });
-    setHasLoggedToday(loggedToday);
+  // Helper function to save to localStorage
+  const saveToLocalStorage = (logs) => {
+    localStorage.setItem("challengeLogs", JSON.stringify(logs));
+  };
+
+  // Get or create challenge log entry
+  const getOrCreateChallengeLog = (challengeId, challengeName) => {
+    let challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+
+    if (!challengeLog) {
+      challengeLog = {
+        challengeId: challengeId,
+        challengeName: challengeName,
+        logs: []
+      };
+      const updatedLogs = [...challengeLogs, challengeLog];
+      setChallengeLogs(updatedLogs);
+      saveToLocalStorage(updatedLogs);
+    }
+
+    return challengeLog;
   };
 
   // Add a new log (only if not logged today for that challenge)
-  const addLog = (challengeId, status = true) => {
+  const addLog = (challengeId, challengeName, status = true) => {
     const today = new Date().toDateString();
 
+    // Find the challenge log
+    const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+
     // Check if already logged today for this challenge
-    const alreadyLoggedToday = logs.some((log) => {
+    const alreadyLoggedToday = challengeLog?.logs.some((log) => {
       const logDate = new Date(log.date).toDateString();
-      return logDate === today && log.challengeId === challengeId;
+      return logDate === today;
     });
 
     if (alreadyLoggedToday) {
@@ -51,15 +67,31 @@ export const LogProvider = ({ children }) => {
       date: new Date().toISOString(),
       status: status, // true = logged, false = missed
       timestamp: Date.now(),
-      challengeId: challengeId, // Track which challenge this log belongs to
     };
 
-    const updatedLogs = [newLog, ...logs];
-    setLogs(updatedLogs);
-    setHasLoggedToday(true);
+    // Update or create challenge log
+    const updatedChallengeLogs = challengeLogs.map(cl => {
+      if (cl.challengeId === challengeId) {
+        return {
+          ...cl,
+          logs: [newLog, ...cl.logs]
+        };
+      }
+      return cl;
+    });
 
-    // Save to localStorage
-    localStorage.setItem("dailyLogs", JSON.stringify(updatedLogs));
+    // If challenge log doesn't exist, create it
+    if (!challengeLog) {
+      updatedChallengeLogs.push({
+        challengeId: challengeId,
+        challengeName: challengeName,
+        logs: [newLog]
+      });
+    }
+
+    setChallengeLogs(updatedChallengeLogs);
+    setHasLoggedToday(true);
+    saveToLocalStorage(updatedChallengeLogs);
 
     return true;
   };
@@ -73,6 +105,10 @@ export const LogProvider = ({ children }) => {
     const today = new Date();
     const daysArray = [];
 
+    // Find the challenge log
+    const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+    const logs = challengeLog?.logs || [];
+
     // Generate all days from creation date to today
     for (
       let d = new Date(createdDate);
@@ -85,7 +121,7 @@ export const LogProvider = ({ children }) => {
       // Check if there's a log for this day
       const dayLog = logs.find((log) => {
         const logDate = new Date(log.date).toDateString();
-        return logDate === dayString && log.challengeId === challengeId;
+        return logDate === dayString;
       });
 
       // Add 1 if logged, 0 if not
@@ -95,34 +131,72 @@ export const LogProvider = ({ children }) => {
     return daysArray;
   };
 
-  // Get all logs
-  const getAllLogs = () => logs;
+  // Get all logs for a specific challenge
+  const getAllLogs = (challengeId) => {
+    if (!challengeId) {
+      // Return all logs if no challenge specified
+      return challengeLogs;
+    }
+
+    const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+    return challengeLog?.logs || [];
+  };
 
   // Get logs count for a specific challenge
   const getLogsCount = (challengeId) => {
-    return logs.filter((log) => log.status && log.challengeId === challengeId)
-      .length;
+    const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+    if (!challengeLog) return 0;
+
+    return challengeLog.logs.filter(log => log.status).length;
+  };
+
+  // Delete all logs for a specific challenge
+  const deleteLogById = (challengeId) => {
+    const updatedChallengeLogs = challengeLogs.filter(cl => cl.challengeId !== challengeId);
+    setChallengeLogs(updatedChallengeLogs);
+    saveToLocalStorage(updatedChallengeLogs);
   };
 
   // Check if logged today for a specific challenge
   const hasLoggedTodayForChallenge = (challengeId) => {
     const today = new Date().toDateString();
-    return logs.some((log) => {
+    const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+
+    if (!challengeLog) return false;
+
+    return challengeLog.logs.some((log) => {
       const logDate = new Date(log.date).toDateString();
-      return logDate === today && log.status && log.challengeId === challengeId;
+      return logDate === today && log.status;
     });
+  };
+
+  // Update challenge name when title is edited
+  const updateChallengeName = (challengeId, newName) => {
+    const updatedChallengeLogs = challengeLogs.map(cl => {
+      if (cl.challengeId === challengeId) {
+        return {
+          ...cl,
+          challengeName: newName
+        };
+      }
+      return cl;
+    });
+    setChallengeLogs(updatedChallengeLogs);
+    saveToLocalStorage(updatedChallengeLogs);
   };
 
   return (
     <LogContext.Provider
       value={{
-        logs,
+        challengeLogs,
         hasLoggedToday,
         addLog,
         getLogsForDisplay,
         getAllLogs,
         getLogsCount,
         hasLoggedTodayForChallenge,
+        deleteLogById,
+        updateChallengeName,
       }}
     >
       {children}

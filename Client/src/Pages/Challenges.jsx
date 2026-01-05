@@ -91,7 +91,7 @@ export default function Challenges() {
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2  -lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
+              className="px-4 py-2  -lg border border-primary disabled:opacity-40 bg-primary text-white font-semibold transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
             >
               <LuArrowBigLeft />
             </button>
@@ -99,7 +99,7 @@ export default function Challenges() {
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2  -lg border border-primary disabled:opacity-40 active:scale-105 bg-primary text-white font-semibold transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
+              className="px-4 py-2  -lg border border-primary disabled:opacity-40 bg-primary text-white font-semibold transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:cursor-not-allowed"
             >
               <LuArrowBigRight />
             </button>

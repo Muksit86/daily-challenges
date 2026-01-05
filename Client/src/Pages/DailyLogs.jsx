@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { useLog } from "../Healper/LogContext";
 import { useChallenges } from "../Healper/ChallengesContext";
-import { LuArrowBigLeft, LuArrowBigRight, LuTreePalm } from "react-icons/lu";
+import {
+  LuArrowBigLeft,
+  LuArrowBigRight,
+  LuPlus,
+  LuTreePalm,
+} from "react-icons/lu";
 import useGridSize from "../Healper/useGridSize";
+import { Link } from "react-router";
+import Button from "../Component/Button";
 
 export default function DailyLogs() {
   const { cols: COLS, rows: ROWS } = useGridSize();
@@ -46,18 +53,19 @@ export default function DailyLogs() {
         </header>
 
         {/* Heat Map Grid */}
-        <div className="md:flex-1 flex flex-col justify-between items-center gap-4 animate-fade-in">
-          <span className="w-full text-right text-slate-600 dark:text-slate-400 font-medium">
-            Page: <span className="font-bold">{page}</span> / {totalPages}
-          </span>
+        {visibleLogs.length > 0 ? (
+          <div className="md:flex-1 flex flex-col justify-between items-center gap-4 animate-fade-in">
+            <span className="w-full text-right text-slate-600 dark:text-slate-400 font-medium">
+              Page: <span className="font-bold">{page}</span> / {totalPages}
+            </span>
 
-          <section
-            className={`flex-1 w-full grid gap-2 place-items-center grid-cols-4 md:grid-cols-8 grid-rows-6 md:grid-rows-6`}
-          >
-            {visibleLogs.map((log, index) => (
-              <div
-                key={startIndex + index}
-                className={`
+            <section
+              className={`flex-1 w-full grid gap-2 place-items-center grid-cols-4 md:grid-cols-8 grid-rows-6 md:grid-rows-6`}
+            >
+              {visibleLogs.map((log, index) => (
+                <div
+                  key={startIndex + index}
+                  className={`
                    w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 
                   flex items-center justify-center
                   transition-all duration-300
@@ -67,38 +75,71 @@ export default function DailyLogs() {
                       : "bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 opacity-60 hover:opacity-80"
                   }
                 `}
+                >
+                  {log === 1 && (
+                    <LuTreePalm
+                      size={20}
+                      className="md:w-7 md:h-7 drop- -md animate-fade-in"
+                    />
+                  )}
+                </div>
+              ))}
+            </section>
+
+            {/* Pagination Controls */}
+            <div className="flex gap-15 animate-slide-up">
+              <button
+                disabled={page - 1 === 0}
+                onClick={() => setPage((p) => p - 1)}
+                className="cursor-pointer px-4 py-2 md:px-6 md:py-3  -lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
               >
-                {log === 1 && (
-                  <LuTreePalm
-                    size={20}
-                    className="md:w-7 md:h-7 drop- -md animate-fade-in"
-                  />
-                )}
-              </div>
-            ))}
-          </section>
+                <LuArrowBigLeft size={18} className="md:w-5 md:h-5" />
+                <span className="hidden sm:inline">Previous</span>
+              </button>
 
-          {/* Pagination Controls */}
-          <div className="flex gap-15 animate-slide-up">
-            <button
-              disabled={page - 1 === 0}
-              onClick={() => setPage((p) => p - 1)}
-              className="cursor-pointer px-4 py-2 md:px-6 md:py-3  -lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
-            >
-              <LuArrowBigLeft size={18} className="md:w-5 md:h-5" />
-              <span className="hidden sm:inline">Previous</span>
-            </button>
-
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => p + 1)}
-              className="cursor-pointer px-4 py-2 md:px-6 md:py-3  -lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
-            >
-              <span className="hidden sm:inline">Next</span>
-              <LuArrowBigRight size={18} className="md:w-5 md:h-5" />
-            </button>
+              <button
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="cursor-pointer px-4 py-2 md:px-6 md:py-3  -lg bg-primary text-white font-semibold text-sm md:text-base transition-all duration-200 hover: -lg hover:scale-101 active:scale-100 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-1 md:gap-2"
+              >
+                <span className="hidden sm:inline">Next</span>
+                <LuArrowBigRight size={18} className="md:w-5 md:h-5" />
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <section className="mt-10 flex flex-col items-center justify-center gap-4 animate-slide-up px-4">
+            <div className="mb-2">
+              <svg
+                className="fill-black dark:fill-white"
+                width="50"
+                viewBox="0 0 200 200"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="44.7761" height="45" />
+                <rect x="155.224" width="44.7761" height="45" />
+                <path d="M31.4079 200H0V169.397H30.7481V141.33H167.861V169.397H199.005V200H167.597V172.727H31.4079V200Z" />
+              </svg>
+            </div>
+
+            <p className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center">
+              No challenges yet
+            </p>
+
+            <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 text-center">
+              Create your first challenge to get started
+            </p>
+
+            <Link to="/newchallenge">
+              <Button
+                textSize="text-xs"
+                text="Create Challenge"
+                icon={<LuPlus className="w-6 h-6" />}
+              />
+            </Link>
+          </section>
+        )}
       </div>
     </>
   );

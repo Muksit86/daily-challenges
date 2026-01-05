@@ -124,11 +124,11 @@ export default function Profile() {
     <>
       <main className="flex-1 flex flex-col justify-center items-center py-5 md:px-5 bg-background dark:bg-background-dark animate-fade-in">
         <div className="flex-1 flex flex-col justify-center items-center w-full">
-          <section className="flex flex-col justify-center gap-5 bg-white dark:bg-slate-800  -md border border-black dark:border-slate-700 p-3 md:p-8    md:w-5/12 w-11/12 animate-slide-up">
+          <section className="flex flex-col justify-center gap-5 shadow-md border border-gray-900 dark:bg-elevation-dark p-3 md:p-8 md:w-5/12 w-11/12 animate-slide-up">
             {/* Email Section */}
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
-                <label className="w-full flex items-center font-bold text-slate-900 dark:text-white text-md gap-2">
+                <label className="w-full flex items-center font-bold text-black dark:text-white text-md gap-2">
                   <LuMail size={20} />
                   Email
                 </label>
@@ -137,27 +137,21 @@ export default function Profile() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="
-              w-full   px-4 py-3
-              bg-white text-black dark:bg-slate-700 dark:text-white
-               -sm text-sm md:text-lg
-              outline-none border border-black dark:border-slate-600
-              focus:ring-2 focus:ring-primary focus:border-transparent
-              transition-all
-            "
+                  className="w-full px-4 py-3 border-2 text-black dark:bg-elevation dark:text-white text-sm md:text-lg 
+                  outline-none border-black dark:border-white/50 focus:ring-2 focus:ring-border-white/50 focus:border-transparent transition-all"
                 />
               </div>
 
               <button
                 onClick={handleChangeEmail}
-                className="ml-auto py-2 px-4   bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200  -sm"
+                className="ml-auto py-2 px-4 bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200  -sm"
               >
                 Change
               </button>
             </div>
 
             {/* Divider */}
-            <div className="h-px bg-slate-200 dark:bg-slate-700 my-2"></div>
+            <div className="h-px bg-slate-200 dark:bg-hover-dark my-2"></div>
 
             {/* Password Change Section - Only for Email Users */}
             {authType === "email" && (
@@ -201,7 +195,7 @@ export default function Profile() {
                     value={confirmNewPassword}
                     onChange={(e) => setConfirmNewPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white  -sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   />
                 </div>
 
@@ -216,14 +210,14 @@ export default function Profile() {
 
             <button
               onClick={toggleTheme}
-              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border border-black dark:border-white transition-all duration-200 hover:bg-primary/10 hover:scale-101 active:scale-100"
+              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-black dark:border-white/50 transition-all duration-200 hover:bg-background-sidebar dark:hover:bg-background-sidebar-dark hover:scale-101 active:scale-100"
               title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               {isDark ? <LuSun size={30} /> : <LuMoon size={30} />}
               <span>{isDark ? "Light" : "Dark"}</span>
             </button>
 
-            <div className="h-px bg-slate-200 dark:bg-slate-700"></div>
+            <div className="h-px bg-slate-200 dark:bg-hover-dark"></div>
 
             {/* Account Actions */}
             <div className="flex flex-col gap-3">
@@ -234,7 +228,7 @@ export default function Profile() {
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="w-full flex justify-center items-center px-4 py-3 bg-blue-300 text-white dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-200 hover:scale-102 active:scale-100"
+                className="w-full flex justify-center items-center px-4 py-3 bg-blue-500 text-white dark:bg-blue-900/90 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-200 hover:scale-102 active:scale-100"
               >
                 <div className="flex items-center gap-3">
                   <LuLogOut
@@ -250,7 +244,7 @@ export default function Profile() {
               {/* Delete Account Button */}
               <button
                 onClick={() => setShowDeleteModal(true)}
-                className="w-full flex justify-center items-center px-4 py-3 bg-red-300 text-white dark:bg-red-900/20 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-500 transition-all duration-200 hover:scale-102 active:scale-100"
+                className="w-full flex justify-center items-center px-4 py-3 bg-red-500 text-white dark:bg-red-900/90 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-500 transition-all duration-200 hover:scale-102 active:scale-100"
               >
                 <div className="flex items-center gap-3">
                   <LuUserX size={20} className="text-white text-sm" />

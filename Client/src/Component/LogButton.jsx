@@ -3,7 +3,7 @@ import { LuTreePalm } from "react-icons/lu";
 import { toast } from "react-toastify";
 import { useLog } from "../Healper/LogContext";
 
-export default function LogButton({ challengeId }) {
+export default function LogButton({ handleLog, challengeId, challengeName }) {
   const { addLog, hasLoggedTodayForChallenge } = useLog();
   const [isChecked, setIsChecked] = useState(false);
   const [hasLoggedToday, setHasLoggedToday] = useState(false);
@@ -19,11 +19,13 @@ export default function LogButton({ challengeId }) {
     const checked = e.target.checked;
 
     if (checked && !hasLoggedToday) {
-      // Only add log if not already logged today for this challenge
-      const success = addLog(challengeId, true);
+      const success = addLog(challengeId, challengeName, true);
+
       if (success) {
         setIsChecked(true);
+
         setHasLoggedToday(true);
+
         toast.success("🎉 Great job! Log recorded successfully!", {
           position: "top-center",
           autoClose: 3000,
@@ -49,14 +51,13 @@ export default function LogButton({ challengeId }) {
   return (
     <>
       <label
-        className={`flex items-center justify-between px-6 py-4   max-w-md cursor-pointer select-none gap-3 md:gap-5 transition-all duration-500  -md hover: -lg hover:scale-101 active:scale-100 ${
-          hasLoggedToday
-            ? "opacity-0 scale-90 pointer-events-none"
-            : "opacity-100 scale-100"
-        }`}
+        className={`mt-5 flex items-center justify-between gap-5 select-none transition-all duration-1000 ${hasLoggedToday
+            ? "pointer-events-none line-through animate-fade-out hidden"
+            : ""
+          }`}
       >
         {/* Text */}
-        <span className="text-xl md:text-3xl font-semibold text-slate-900 dark:text-white">
+        <span className="md:text-sx text-sm font-semibold text-slate-900 dark:text-white">
           Log today's win
         </span>
 
@@ -72,15 +73,15 @@ export default function LogButton({ challengeId }) {
         {/* Custom UI */}
         <span
           className="
-          w-14 h-14 md:w-18 md:h-18   flex items-center justify-center
+          w-10 h-10 md:w-12 md:h-12 flex items-center justify-center
           transition-all duration-200
-          border-2 border-blue-400 dark:border-blue-500 bg-white dark:bg-slate-800  -md
+          border-2 border-blue-400 dark:border-blue-500 bg-white dark:bg-slate-800 rounded-md
           peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
           peer-checked:animate-bounce-in hover:border-blue-500 dark:hover:border-blue-400"
         >
           <LuTreePalm
             className="
-            w-7 h-7 md:w-10 md:h-10 dark:text-white text-slate-900 peer-checked:text-white
+            w-5 h-5 md:w-5 md:h-5 dark:text-white text-slate-900 peer-checked:text-white
           "
           />
         </span>

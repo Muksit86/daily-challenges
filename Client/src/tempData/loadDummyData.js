@@ -9,17 +9,20 @@ export const loadDummyData = () => {
         // Save challenges to localStorage
         localStorage.setItem('challenges', JSON.stringify(dummyData.challenges));
 
-        // Save logs to localStorage
-        localStorage.setItem('dailyLogs', JSON.stringify(dummyData.logs));
+        // Save challengeLogs to localStorage (new nested structure)
+        localStorage.setItem('challengeLogs', JSON.stringify(dummyData.challengeLogs));
 
         // Set the first challenge as selected
         if (dummyData.challenges.length > 0) {
             localStorage.setItem('selectedChallengeId', dummyData.challenges[0].id.toString());
         }
 
+        // Count total logs
+        const totalLogs = dummyData.challengeLogs.reduce((sum, cl) => sum + cl.logs.length, 0);
+
         console.log('✅ Dummy data loaded successfully!');
         console.log(`📊 Loaded ${dummyData.challenges.length} challenges`);
-        console.log(`📝 Loaded ${dummyData.logs.length} logs`);
+        console.log(`📝 Loaded ${totalLogs} logs across ${dummyData.challengeLogs.length} challenges`);
 
         return true;
     } catch (error) {
@@ -34,7 +37,7 @@ export const loadDummyData = () => {
 export const clearAllData = () => {
     try {
         localStorage.removeItem('challenges');
-        localStorage.removeItem('dailyLogs');
+        localStorage.removeItem('challengeLogs');
         localStorage.removeItem('selectedChallengeId');
 
         console.log('🗑️ All data cleared successfully!');
@@ -50,14 +53,17 @@ export const clearAllData = () => {
  */
 export const getDataSummary = () => {
     const challenges = JSON.parse(localStorage.getItem('challenges') || '[]');
-    const logs = JSON.parse(localStorage.getItem('dailyLogs') || '[]');
+    const challengeLogs = JSON.parse(localStorage.getItem('challengeLogs') || '[]');
     const selectedId = localStorage.getItem('selectedChallengeId');
+
+    const totalLogs = challengeLogs.reduce((sum, cl) => sum + cl.logs.length, 0);
 
     return {
         challengesCount: challenges.length,
-        logsCount: logs.length,
+        logsCount: totalLogs,
         selectedChallengeId: selectedId,
-        challenges: challenges.map(c => ({ id: c.id, title: c.title, days: c.days }))
+        challenges: challenges.map(c => ({ id: c.id, title: c.title, days: c.days })),
+        challengeLogs: challengeLogs.map(cl => ({ challengeId: cl.challengeId, challengeName: cl.challengeName, logsCount: cl.logs.length }))
     };
 };
 

@@ -1,17 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
-import { LuTrash2, LuPencil } from "react-icons/lu";
+import { LuTrash2, LuPencil, LuTreePalm } from "react-icons/lu";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
-
+import clsx from "clsx";
 import Progress from "./Progress";
 import { useNavigate } from "react-router";
 import { useChallenges } from "../Healper/ChallengesContext";
 import { useLog } from "../Healper/LogContext";
+import LogButton from "./LogButton";
 
 export default function ChallenegCard({ challenge }) {
   const navigate = useNavigate();
   const { selectChallenge, deleteChallenge, updateChallenge } = useChallenges();
-  const { getLogsCount, addLog, hasLoggedTodayForChallenge } = useLog();
+  const {
+    getLogsCount,
+    addLog,
+    hasLoggedTodayForChallenge,
+    deleteLogById,
+    updateChallengeName,
+  } = useLog();
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(challenge.title);
@@ -56,6 +63,7 @@ export default function ChallenegCard({ challenge }) {
     e.stopPropagation();
     if (confirm(`Are you sure you want to delete "${challenge.title}"?`)) {
       deleteChallenge(challenge.id);
+      deleteLogById(challenge.id);
     }
     setShowMenu(false);
   };
@@ -70,6 +78,8 @@ export default function ChallenegCard({ challenge }) {
     e.stopPropagation();
     if (editedTitle.trim() && editedTitle !== challenge.title) {
       updateChallenge(challenge.id, { title: editedTitle.trim() });
+      // Also update the challenge name in logs
+      updateChallengeName(challenge.id, editedTitle.trim());
     } else {
       setEditedTitle(challenge.title); // Reset if empty or unchanged
     }
@@ -79,7 +89,7 @@ export default function ChallenegCard({ challenge }) {
   const handleLog = (e) => {
     e.stopPropagation();
     if (!hasLoggedToday) {
-      const success = addLog(challenge.id);
+      const success = addLog(challenge.id, challenge.title);
       if (success) {
         alert("✅ Logged successfully!");
       }
@@ -91,35 +101,32 @@ export default function ChallenegCard({ challenge }) {
 
   return (
     <>
-      <div
-        className="relative border border-black dark:border-white p-4 flex flex-col items-center gap-2 md:gap-3 cursor-pointer transition-all duration-200 animate-slide-up w-full h-full"
-        onClick={handleCardClick}
-      >
+      <div className="relative border-2 border-black dark:border-white dark:bg-elevation-dark shadow-md p-4 flex flex-col items-center md:gap-3 cursor-pointer transition-all duration-200 animate-slide-up w-full h-full">
         {/* More Options Button */}
-        <div className="absolute top-2 right-2" ref={menuRef}>
+        <div className="w-full flex justify-between mb-5" ref={menuRef}>
           <button
             onClick={handleMenuClick}
             className="p-1.5 hover:bg-white/10 transition-colors duration-200"
           >
-            <MdMoreVert className="w-5 h-5 text-white" />
+            <MdMoreVert className="w-5 h-5 text-black dark:text-white" />
+          </button>
+
+          <button onClick={handleLog} disabled={hasLoggedToday}>
+            <span
+              className={clsx(
+                "w-8 h-8 md:w-10 md:h-10 flex items-center justify-center transition-all duration-200 active:animate-bounce-in",
+                hasLoggedToday
+                  ? "bg-primary dark:bg-primary pointer-events-none"
+                  : "border-2 border-blue-900 cursor-pointer"
+              )}
+            >
+              <LuTreePalm className="w-5 h-5 md:w-5 md:h-5 text-white" />
+            </span>
           </button>
 
           {/* Dropdown Menu */}
           {showMenu && (
-            <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800  -lg  -lg border border-slate-200 dark:border-slate-700 overflow-hidden z-10 animate-fade-in">
-              <button
-                onClick={handleLog}
-                disabled={hasLoggedToday}
-                className={`w-full px-4 py-2.5 text-left flex items-center gap-2 text-sm transition-colors ${
-                  hasLoggedToday
-                    ? "text-slate-400 dark:text-slate-500 cursor-not-allowed"
-                    : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
-                }`}
-              >
-                <FaCheckCircle size={16} />
-                {hasLoggedToday ? "Logged ✓" : "Log Today"}
-              </button>
-
+            <div className="absolute left-4 top-12 mt-2 w-40 bg-white dark:bg-slate-800  -lg  -lg border border-slate-200 dark:border-slate-700 overflow-hidden z-10 animate-fade-in">
               <button
                 onClick={handleEditClick}
                 className="w-full px-4 py-2.5 text-left flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
@@ -139,7 +146,10 @@ export default function ChallenegCard({ challenge }) {
           )}
         </div>
 
-        <div className="gap-2 md:gap-3 flex flex-col items-center w-full">
+        <div
+          onClick={handleCardClick}
+          className="gap-2 md:gap-3 flex flex-col items-center w-full"
+        >
           <Progress value={progressPercentage} size={120} />
 
           {isEditing ? (

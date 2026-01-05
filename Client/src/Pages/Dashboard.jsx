@@ -30,7 +30,7 @@ export default function Dashboard() {
         {/* No Challenges */}
         {allChallenges.length === 0 ? (
           <section className="flex flex-col items-center justify-center gap-4 flex-1 animate-slide-up px-4">
-            <div className="text-6xl mb-4">
+            <div className="mb-4">
               <svg
                 className="fill-black dark:fill-white"
                 width="50"
@@ -51,7 +51,7 @@ export default function Dashboard() {
             </p>
             <Link to="/newchallenge">
               <Button
-                textSize="sm"
+                textSize="text-xs md:text-2xl"
                 text="Create Challenge"
                 icon={<LuPlus className="w-6 h-6" />}
               />
@@ -60,7 +60,7 @@ export default function Dashboard() {
         ) : (
           <>
             {/* All Challenges Grid */}
-            <section className="w-full">
+            <section className="w-full flex-1">
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white mb-4 md:mb-6 animate-slide-up">
                 Your Challenges
               </h2>

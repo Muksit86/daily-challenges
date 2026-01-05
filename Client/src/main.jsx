@@ -33,6 +33,18 @@ const router = createBrowserRouter([
     errorElement: <NotFound />, // 👈 here
   },
   {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
+  },
+  {
     path: "/login",
     // element: <Login />,
     element: <RequestingPage />,
@@ -59,24 +71,8 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "challenges",
-        element: <Challenges />,
-      },
-      {
         path: "newchallenge",
         element: <NewChallenge />,
-      },
-      {
-        path: "about",
-        element: <About />,
-      },
-      {
-        path: "privacy",
-        element: <PrivacyPolicy />,
-      },
-      {
-        path: "contact",
-        element: <Contact />,
       },
     ],
   },
