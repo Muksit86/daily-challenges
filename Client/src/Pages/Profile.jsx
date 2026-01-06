@@ -124,7 +124,7 @@ export default function Profile() {
     <>
       <main className="flex-1 flex flex-col justify-center items-center py-5 md:px-5 bg-background dark:bg-background-dark animate-fade-in">
         <div className="flex-1 flex flex-col justify-center items-center w-full">
-          <section className="flex flex-col justify-center gap-5 shadow-md border border-gray-900 dark:bg-elevation-dark p-3 md:p-8 md:w-5/12 w-11/12 animate-slide-up">
+          <section className="flex flex-col justify-center gap-5 shadow-sharp-lg border border-gray-900 dark:bg-elevation-dark p-3 md:p-8 md:w-5/12 w-11/12 animate-slide-up">
             {/* Email Section */}
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
@@ -210,7 +210,7 @@ export default function Profile() {
 
             <button
               onClick={toggleTheme}
-              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-black dark:border-white/50 transition-all duration-200 hover:bg-background-sidebar dark:hover:bg-background-sidebar-dark hover:scale-101 active:scale-100"
+              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-black dark:border-white/50 transition-all duration-200 hover:bg-hover-light dark:hover:bg-hover-dark hover:scale-101 active:scale-100"
               title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               {isDark ? <LuSun size={30} /> : <LuMoon size={30} />}

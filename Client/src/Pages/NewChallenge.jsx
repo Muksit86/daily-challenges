@@ -72,7 +72,7 @@ export default function NewChallenge() {
               <option value="30">30 Days</option>
               <option value="75">75 Days</option>
               <option value="100">100 Days</option>
-              <option value="custom">Custom Days</option>
+              {/* <option value="custom">Custom Days</option> */}
             </select>
 
             {/* Custom Days Input */}

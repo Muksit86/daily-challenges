@@ -101,7 +101,7 @@ export default function ChallenegCard({ challenge }) {
 
   return (
     <>
-      <div className="relative border-2 border-black dark:border-white dark:bg-elevation-dark shadow-md p-4 flex flex-col items-center md:gap-3 cursor-pointer transition-all duration-200 animate-slide-up w-full h-full">
+      <div className="relative border-2 shadow-sharp border-black dark:border-white dark:bg-elevation-dark shadow-md p-4 flex flex-col items-center md:gap-3 cursor-pointer transition-all duration-200 animate-slide-up w-full h-full">
         {/* More Options Button */}
         <div className="w-full flex justify-between mb-5" ref={menuRef}>
           <button

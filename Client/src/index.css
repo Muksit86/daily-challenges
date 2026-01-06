@@ -24,15 +24,15 @@ body {
   --color-background: hsl(0, 0%, 100%);
   --color-background-dark: hsl(0, 0%, 13%);
 
-
   --color-background-sidebar: hsl(0, 0%, 97%);
   --color-background-sidebar-dark: hsl(0, 0%, 10%);
 
-
   --color-elevation-dark: hsl(0, 0%, 19%);
+
+  --color-border: #c5d8ff;
+
   --color-hover-light: hsl(0, 0%, 90%);
   --color-hover-dark: hsl(0, 0%, 25%);
-  --color-border: #c5d8ff;
 
   --animate-bounce-in: bounce-in 180ms ease-out;
   --animate-fade-in: fade-in 300ms ease-out;
