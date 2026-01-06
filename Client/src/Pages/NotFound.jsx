@@ -11,7 +11,7 @@ export default function NotFound() {
           <img src={wrongUrl} alt="meme-image" />
         </div>
 
-        <div className="flex-1 text-center w-6/12 text-2xl">
+        <div className="flex-1 text-center w-6/12 text-2xl text-black dark:text-white">
           <span>Looks like you typed a wrong url</span>
         </div>
 
