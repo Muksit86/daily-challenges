@@ -1,11 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
+import * as logService from "../services/logService";
+import { isFreeVersion } from "../services/apiClient";
 
 const LogContext = createContext();
 
 export const LogProvider = ({ children }) => {
+  const { user, authType, loading: authLoading } = useAuth();
   // challengeLogs structure: [{ challengeId, challengeName, logs: [...] }, ...]
   const [challengeLogs, setChallengeLogs] = useState([]);
   const [hasLoggedToday, setHasLoggedToday] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // TEST MODE: Read from localStorage or default to false
   const [TEST_MODE, setTEST_MODE] = useState(() => {
@@ -13,19 +19,63 @@ export const LogProvider = ({ children }) => {
     return savedTestMode === "true";
   });
 
-  // Initialize challengeLogs from localStorage
+  // Initialize challengeLogs from localStorage or server
   useEffect(() => {
-    const savedLogs = localStorage.getItem("challengeLogs");
-    if (savedLogs) {
+    if (authLoading) return; // Wait for auth to load
+
+    const fetchLogs = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        const parsedLogs = JSON.parse(savedLogs);
-        setChallengeLogs(parsedLogs);
-      } catch (error) {
-        console.error("Error parsing challengeLogs from localStorage:", error);
-        setChallengeLogs([]);
+        if (isFreeVersion()) {
+          // Free mode: use localStorage
+          const savedLogs = localStorage.getItem("challengeLogs");
+          if (savedLogs) {
+            const parsedLogs = JSON.parse(savedLogs);
+            setChallengeLogs(parsedLogs);
+          }
+        } else if (user && authType === "email") {
+          // Email user: fetch from server
+          const serverLogs = await logService.getLogs();
+
+          // Transform server logs to client structure
+          // Group logs by challenge_id
+          const logsMap = new Map();
+
+          serverLogs.forEach((log) => {
+            const challengeId = log.challenge_id;
+            if (!logsMap.has(challengeId)) {
+              logsMap.set(challengeId, {
+                challengeId: challengeId,
+                challengeName: `Challenge ${challengeId}`, // Will be updated from challenges context
+                logs: [],
+              });
+            }
+
+            logsMap.get(challengeId).logs.push({
+              id: log.id,
+              date: log.date,
+              status: log.completed,
+              timestamp: new Date(log.created_at).getTime(),
+              notes: log.notes,
+              mood: log.mood,
+            });
+          });
+
+          const transformedLogs = Array.from(logsMap.values());
+          setChallengeLogs(transformedLogs);
+        }
+      } catch (err) {
+        console.error("Error fetching logs:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    }
-  }, []);
+    };
+
+    fetchLogs();
+  }, [user, authType, authLoading]);
 
   // Helper function to save to localStorage
   const saveToLocalStorage = (logs) => {
@@ -51,7 +101,7 @@ export const LogProvider = ({ children }) => {
   };
 
   // Add a new log (only if not logged today for that challenge)
-  const addLog = (challengeId, challengeName, status = true) => {
+  const addLog = async (challengeId, challengeName, status = true) => {
     const now = new Date();
     const today = TEST_MODE
       ? `${now.toDateString()} ${now.getHours()}:${now.getMinutes()}`
@@ -76,38 +126,65 @@ export const LogProvider = ({ children }) => {
       return false;
     }
 
-    // Create new log entry
-    const newLog = {
-      date: new Date().toISOString(),
-      status: status, // true = logged, false = missed
-      timestamp: Date.now(),
-    };
+    setLoading(true);
+    setError(null);
 
-    // Update or create challenge log
-    const updatedChallengeLogs = challengeLogs.map(cl => {
-      if (cl.challengeId === challengeId) {
-        return {
-          ...cl,
-          logs: [newLog, ...cl.logs]
-        };
+    try {
+      // Create new log entry
+      const newLog = {
+        date: new Date().toISOString(),
+        status: status, // true = logged, false = missed
+        timestamp: Date.now(),
+      };
+
+      // If email user, create log on server
+      if (!isFreeVersion()) {
+        const serverLog = await logService.createLog(
+          challengeId,
+          new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+          status
+        );
+
+        // Add server ID to the log
+        newLog.id = serverLog.id;
       }
-      return cl;
-    });
 
-    // If challenge log doesn't exist, create it
-    if (!challengeLog) {
-      updatedChallengeLogs.push({
-        challengeId: challengeId,
-        challengeName: challengeName,
-        logs: [newLog]
+      // Update or create challenge log
+      const updatedChallengeLogs = challengeLogs.map(cl => {
+        if (cl.challengeId === challengeId) {
+          return {
+            ...cl,
+            logs: [newLog, ...cl.logs]
+          };
+        }
+        return cl;
       });
+
+      // If challenge log doesn't exist, create it
+      if (!challengeLog) {
+        updatedChallengeLogs.push({
+          challengeId: challengeId,
+          challengeName: challengeName,
+          logs: [newLog]
+        });
+      }
+
+      setChallengeLogs(updatedChallengeLogs);
+      setHasLoggedToday(true);
+
+      // Save to localStorage for free users
+      if (isFreeVersion()) {
+        saveToLocalStorage(updatedChallengeLogs);
+      }
+
+      return true;
+    } catch (err) {
+      console.error("Error adding log:", err);
+      setError(err.message);
+      return false;
+    } finally {
+      setLoading(false);
     }
-
-    setChallengeLogs(updatedChallengeLogs);
-    setHasLoggedToday(true);
-    saveToLocalStorage(updatedChallengeLogs);
-
-    return true;
   };
 
   // Get logs as array of 1s and 0s for display (1 = logged, 0 = not logged) for a specific challenge
@@ -273,10 +350,42 @@ export const LogProvider = ({ children }) => {
   };
 
   // Delete all logs for a specific challenge
-  const deleteLogById = (challengeId) => {
-    const updatedChallengeLogs = challengeLogs.filter(cl => cl.challengeId !== challengeId);
-    setChallengeLogs(updatedChallengeLogs);
-    saveToLocalStorage(updatedChallengeLogs);
+  const deleteLogById = async (challengeId) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // If email user, delete all logs for this challenge from server
+      if (!isFreeVersion()) {
+        // Get all logs for this challenge
+        const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+        if (challengeLog?.logs) {
+          // Delete each log from server
+          for (const log of challengeLog.logs) {
+            if (log.id) {
+              await logService.deleteLog(log.id);
+            }
+          }
+        }
+      }
+
+      // Update local state
+      const updatedChallengeLogs = challengeLogs.filter(cl => cl.challengeId !== challengeId);
+      setChallengeLogs(updatedChallengeLogs);
+
+      // Save to localStorage for free users
+      if (isFreeVersion()) {
+        saveToLocalStorage(updatedChallengeLogs);
+      }
+
+      return { success: true };
+    } catch (err) {
+      console.error("Error deleting logs:", err);
+      setError(err.message);
+      return { success: false, error: err.message };
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Check if logged today (or this minute in test mode) for a specific challenge
@@ -287,6 +396,7 @@ export const LogProvider = ({ children }) => {
       : now.toDateString();
 
     const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
+    console.log(challengeLog);
 
     if (!challengeLog) return false;
 
@@ -326,6 +436,8 @@ export const LogProvider = ({ children }) => {
       value={{
         challengeLogs,
         hasLoggedToday,
+        loading,
+        error,
         addLog,
         getLogsForDisplay,
         getLogsWithDates,

@@ -20,15 +20,13 @@ export const createLog = async (req, res) => {
 
         // Insert log into database
         const { data, error } = await supabase
-            .from('logs')
+            .from('daily_logs')
             .insert([
                 {
                     user_id: user.id,
                     challenge_id: challenge_id || null,
-                    date,
-                    completed: completed || false,
-                    notes: notes?.trim() || null,
-                    mood: mood || null
+                    log_date: date,
+                    completed: completed || false
                 }
             ])
             .select()
@@ -59,7 +57,7 @@ export const getLogs = async (req, res) => {
         const { challenge_id, date, start_date, end_date } = req.query;
 
         let query = supabase
-            .from('logs')
+            .from('daily_logs')
             .select('*')
             .eq('user_id', user.id);
 
@@ -70,15 +68,15 @@ export const getLogs = async (req, res) => {
 
         // Filter by specific date if provided
         if (date) {
-            query = query.eq('date', date);
+            query = query.eq('log_date', date);
         }
 
         // Filter by date range if provided
         if (start_date && end_date) {
-            query = query.gte('date', start_date).lte('date', end_date);
+            query = query.gte('log_date', start_date).lte('log_date', end_date);
         }
 
-        query = query.order('date', { ascending: false });
+        query = query.order('log_date', { ascending: false });
 
         const { data, error } = await query;
 
@@ -104,7 +102,7 @@ export const getLogById = async (req, res) => {
         const user = req.user;
 
         const { data, error } = await supabase
-            .from('logs')
+            .from('daily_logs')
             .select('*')
             .eq('id', id)
             .eq('user_id', user.id)
@@ -148,14 +146,12 @@ export const updateLog = async (req, res) => {
             updated_at: new Date().toISOString()
         };
 
-        if (date) updateData.date = date;
+        if (date) updateData.log_date = date;
         if (completed !== undefined) updateData.completed = completed;
-        if (notes !== undefined) updateData.notes = notes?.trim() || null;
-        if (mood !== undefined) updateData.mood = mood;
 
         // Update log
         const { data, error } = await supabase
-            .from('logs')
+            .from('daily_logs')
             .update(updateData)
             .eq('id', id)
             .eq('user_id', user.id)
@@ -190,7 +186,7 @@ export const deleteLog = async (req, res) => {
         const user = req.user;
 
         const { error } = await supabase
-            .from('logs')
+            .from('daily_logs')
             .delete()
             .eq('id', id)
             .eq('user_id', user.id);

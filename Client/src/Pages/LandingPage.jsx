@@ -20,7 +20,7 @@ export default function LandingPage() {
   const maxTicks = 20;
   const progress = (tickCount / maxTicks) * 100;
   const navigate = useNavigate();
-  const { loginAsGuest, isAuthenticated } = useAuth();
+  const { loginAsFree, isAuthenticated } = useAuth();
   const { isDark, toggleTheme } = useTheme();
 
   const pricingRef = useRef(null);
@@ -42,8 +42,8 @@ export default function LandingPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleGuestLogin = () => {
-    loginAsGuest();
+  const handleFreeLogin = () => {
+    loginAsFree();
     navigate("/dashboard");
   };
 
@@ -153,12 +153,12 @@ export default function LandingPage() {
               {/* CTA Buttons */}
               <div className="flex gap-8 flex-row-reverse">
                 <Button
-                  text="Guest Mode"
+                  text="Try Free Version"
                   textSize="text-sm"
                   paddingClass="md:px-4 md:py-4 px-4 py-2"
                   shadow="shadow-sm/30"
                   className="bg-blue-400"
-                  onClick={handleGuestLogin}
+                  onClick={handleFreeLogin}
                 />
 
                 <button
@@ -170,7 +170,7 @@ export default function LandingPage() {
               </div>
 
               <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">
-                Guest is a demo • No login required • Start instantly
+                Free version • No login required • Limited to 3 challenges
               </p>
             </div>
 
@@ -356,7 +356,7 @@ export default function LandingPage() {
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                   <span className="text-primary  font-bold">✓</span>
                   <span>
-                    Limited challenges
+                    Max 3 challenges
                     <span
                       onMouseEnter={() => setdetail(true)}
                       onMouseLeave={() => setdetail(false)}
@@ -384,7 +384,7 @@ export default function LandingPage() {
 
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                   <span className="text-primary  font-bold">✓</span>
-                  <span>No login required (guest mode)</span>
+                  <span>No login required (free version)</span>
                 </div>
 
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
@@ -408,7 +408,7 @@ export default function LandingPage() {
                 textSize="text-lg"
                 paddingClass="px-4 py-2 w-full"
                 className="bg-primary"
-                onClick={handleGuestLogin}
+                onClick={handleFreeLogin}
               />
             </div>
 

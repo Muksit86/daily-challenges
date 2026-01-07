@@ -10,6 +10,7 @@ export default function Challenges() {
     deleteChallenge,
     selectChallenge,
     selectedChallengeId,
+    loading,
   } = useChallenges();
   const [challengeList, setChallengeList] = useState(getChallenges());
   const [page, setPage] = useState(1);
@@ -50,41 +51,50 @@ export default function Challenges() {
             </span>
           </header>
 
-          <section className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 px-4 flex-1">
-            {visibleChallenge.map((ch, index) => (
-              <div
-                key={startIndex + index}
-                className="relative group animate-slide-up"
-              >
-                <button
-                  onClick={() => handleSelectChallenge(ch.id)}
-                  className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold  -md   p-4 transition-all duration-200 h-full cursor-pointer hover: -lg active:scale-100 ${
-                    selectedChallengeId === ch.id
+          {/* Loading State */}
+          {loading ? (
+            <section className="w-full flex flex-col items-center justify-center gap-4 flex-1">
+              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-sm md:text-base text-slate-600 dark:text-slate-400">
+                Loading challenges...
+              </p>
+            </section>
+          ) : (
+            <section className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 px-4 flex-1">
+              {visibleChallenge.map((ch, index) => (
+                <div
+                  key={startIndex + index}
+                  className="relative group animate-slide-up"
+                >
+                  <button
+                    onClick={() => handleSelectChallenge(ch.id)}
+                    className={`w-full flex flex-col bg-white dark:bg-slate-800 border-2 font-bold  -md   p-4 transition-all duration-200 h-full cursor-pointer hover: -lg active:scale-100 ${selectedChallengeId === ch.id
                       ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900  -lg"
                       : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-                  }`}
-                >
-                  <div className="flex-1 flex items-center justify-center text-center flex-col gap-2">
-                    <span className="text-sm md:text-base dark:text-white text-slate-900 font-semibold">
-                      {ch.title}
-                    </span>
-                    <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                      {ch.days} days
-                    </span>
-                  </div>
-                </button>
+                      }`}
+                  >
+                    <div className="flex-1 flex items-center justify-center text-center flex-col gap-2">
+                      <span className="text-sm md:text-base dark:text-white text-slate-900 font-semibold">
+                        {ch.title}
+                      </span>
+                      <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                        {ch.days} days
+                      </span>
+                    </div>
+                  </button>
 
-                {/* Delete Button */}
-                <button
-                  onClick={(e) => handleDeleteChallenge(ch.id, e)}
-                  className="absolute top-3 right-3 bg-danger text-white   p-1.5 opacity-100  -md cursor-pointer active:scale-105"
-                  title="Delete challenge"
-                >
-                  <LuX size={16} />
-                </button>
-              </div>
-            ))}
-          </section>
+                  {/* Delete Button */}
+                  <button
+                    onClick={(e) => handleDeleteChallenge(ch.id, e)}
+                    className="absolute top-3 right-3 bg-danger text-white   p-1.5 opacity-100  -md cursor-pointer active:scale-105"
+                    title="Delete challenge"
+                  >
+                    <LuX size={16} />
+                  </button>
+                </div>
+              ))}
+            </section>
+          )}
 
           {/* Pagination controls */}
           <div className="w-full flex gap-4 justify-center animate-slide-up">

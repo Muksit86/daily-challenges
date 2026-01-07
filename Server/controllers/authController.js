@@ -1,75 +1,98 @@
 import { supabase } from "../config/supabase.js";
-import { User } from "../models/User.js";
 
 /**
- * User Signup
- * @route POST /api/auth/signup
+ * Send Magic Link
+ * @route POST /api/auth/send-magic-link
  */
-export const signup = async (req, res) => {
+export const sendMagicLink = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email } = req.body;
 
-    // Validate input
-    const validation = User.validate({ email, password });
-    if (!validation.isValid) {
+    // Validate email
+    if (!email) {
       return res.status(400).json({
-        error: validation.errors.join(", "),
+        error: "Email is required",
       });
     }
 
-    // Create user with Supabase Auth
-    const { data, error } = await supabase.auth.signUp({
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        error: "Invalid email format",
+      });
+    }
+
+    // Send magic link using Supabase
+    const { data, error } = await supabase.auth.signInWithOtp({
       email,
-      password,
+      options: {
+        emailRedirectTo: `${process.env.CLIENT_URL}/dashboard`,
+      },
     });
 
     if (error) {
       return res.status(400).json({ error: error.message });
     }
 
-    res.status(201).json({
-      message: "User created successfully",
-      user: data.user,
-      session: data.session,
+    res.status(200).json({
+      message: "Magic link sent! Check your email.",
+      email: email,
     });
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("Send magic link error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
 /**
- * User Login
- * @route POST /api/auth/login
+ * Verify Magic Link Token
+ * @route POST /api/auth/verify-otp
  */
-export const login = async (req, res) => {
+export const verifyOtp = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { token_hash, type } = req.body;
 
-    // Validate input
-    if (!email || !password) {
+    if (!token_hash || !type) {
       return res.status(400).json({
-        error: "Email and password are required",
+        error: "Token hash and type are required",
       });
     }
 
-    // Sign in with Supabase Auth
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const { data, error } = await supabase.auth.verifyOtp({
+      token_hash,
+      type,
     });
 
     if (error) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid or expired token" });
     }
 
+    const access_token = data.session.access_token;
+    const refresh_token = data.session.refresh_token;
+    const expires_at = data.session.expires_at;
+
+    // Set cookies
+    res.cookie("sb-access-token", access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: expires_at * 1000 - Date.now(),
+    });
+
+    res.cookie("sb-refresh-token", refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
+    });
+
     res.json({
-      message: "Login successful",
+      message: "Verification successful",
       user: data.user,
-      session: data.session,
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Verify OTP error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -85,6 +108,19 @@ export const logout = async (req, res) => {
     if (error) {
       return res.status(400).json({ error: error.message });
     }
+
+    // Clear cookies
+    res.clearCookie("sb-access-token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.clearCookie("sb-refresh-token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
     res.json({ message: "Logout successful" });
   } catch (error) {
@@ -103,11 +139,23 @@ export const deleteAccount = async (req, res) => {
 
     // Delete user using admin API
     const { error } = await supabase.auth.admin.deleteUser(user.id);
-    console.log("Supabase delete error:", JSON.stringify(error, null, 2));
 
     if (error) {
       return res.status(400).json({ error: error.message });
     }
+
+    // Clear cookies
+    res.clearCookie("sb-access-token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.clearCookie("sb-refresh-token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
     res.json({ message: "Account deleted successfully" });
   } catch (error) {
@@ -117,17 +165,24 @@ export const deleteAccount = async (req, res) => {
 };
 
 /**
- * Verify Session
- * @route POST /api/auth/verify
+ * Get Current User (Session Check)
+ * @route GET /api/auth/me
  */
-export const verifySession = async (req, res) => {
+export const getCurrentUser = async (req, res) => {
   try {
     // User is already attached by auth middleware
     const user = req.user;
 
-    res.json({ user });
+    res.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+      },
+    });
   } catch (error) {
-    console.error("Verify error:", error);
+    console.error("Get current user error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

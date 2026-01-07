@@ -5,14 +5,14 @@ import { useChallenges } from "../Healper/ChallengesContext";
 
 export default function NewChallenge() {
   const navigate = useNavigate();
-  const { addChallenge } = useChallenges();
+  const { addChallenge, loading } = useChallenges();
 
   const [title, setTitle] = useState("");
   const [days, setDays] = useState("100");
   const [customDays, setCustomDays] = useState("");
   const [error, setError] = useState("");
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setError("");
 
     // Validate title
@@ -32,10 +32,12 @@ export default function NewChallenge() {
     }
 
     // Add the challenge
-    const success = addChallenge(title, selectedDays);
-    if (success) {
+    const result = await addChallenge(title, selectedDays);
+    if (result.success) {
       // Navigate back to challenges page
       navigate("/dashboard");
+    } else {
+      setError(result.error || "Failed to create challenge");
     }
   };
 
@@ -98,9 +100,10 @@ export default function NewChallenge() {
           {/* Save Button */}
           <button
             onClick={handleSave}
-            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 transition-all duration-200 active:scale-100"
+            disabled={loading}
+            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 transition-all duration-200 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Create Challenge
+            {loading ? "Creating..." : "Create Challenge"}
           </button>
         </section>
       </main>
