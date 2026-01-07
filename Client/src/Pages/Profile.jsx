@@ -154,7 +154,7 @@ export default function Profile() {
             <div className="h-px bg-slate-200 dark:bg-hover-dark my-2"></div>
 
             {/* Password Change Section - Only for Email Users */}
-            {authType === "email" && (
+            {/* {authType === "email" && (
               <div className="flex flex-col gap-3">
                 <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
                   Change Password
@@ -206,7 +206,7 @@ export default function Profile() {
                   Update Password
                 </button>
               </div>
-            )}
+            )} */}
 
             <button
               onClick={toggleTheme}
@@ -261,7 +261,7 @@ export default function Profile() {
       {/* Delete Account Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-5 animate-fade-in">
-          <div className="bg-white dark:bg-slate-800 p-6     -2xl border dark:border-slate-700 max-w-md w-full animate-slide-up">
+          <div className="bg-white dark:bg-slate-800 p-6 border dark:border-slate-700 max-w-md w-full animate-slide-up">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-red-100 dark:bg-red-900/30  ">
                 <LuUserX size={24} className="text-red-600 dark:text-red-400" />
@@ -284,7 +284,7 @@ export default function Profile() {
               </button>
               <button
                 onClick={handleDeleteAccount}
-                className="px-6 py-2   bg-red-600 hover:bg-red-700 text-white font-medium transition-all active:scale-100  -md"
+                className="px-6 py-2  cursor-pointer bg-red-600 hover:bg-red-700 text-white font-medium transition-all active:scale-100  -md"
               >
                 Delete
               </button>

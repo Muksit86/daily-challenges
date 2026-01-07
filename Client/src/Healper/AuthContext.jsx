@@ -183,6 +183,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${session.access_token}`,
         },
       });
+      console.log(response);
 
       const data = await response.json();
 

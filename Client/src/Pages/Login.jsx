@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../Healper/AuthContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
@@ -9,6 +10,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [showpassword, setShowPassword] = useState(true);
 
   const { login, signup, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -76,22 +79,19 @@ export default function Login() {
 
   return (
     <>
-      <div className="min-h-screen bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-center gap-8 px-5 animate-fade-in">
-        <div className="text-5xl mb-4 animate-bounce-in">
-          {isSignup ? "🎯" : "👋"}
+      <div className="min-h-screen bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-center gap-8 px-3 animate-fade-in">
+        <div className="flex flex-col items-center justify-center gap-2 mt-5">
+          <div className="text-5xl animate-bounce-in">
+            {isSignup ? "🎯" : "👋"}
+          </div>
+          <h1 className="text-2xl md:text-4xl font-bold text-slate-900 dark:text-white text-center animate-slide-up">
+            {isSignup ? "Create Account" : "Welcome back!"}
+          </h1>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white text-center animate-slide-up">
-          {isSignup ? "Create Account" : "Welcome back!"}
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400 text-center max-w-md animate-slide-up">
-          {isSignup
-            ? "Sign up to start tracking your daily challenges"
-            : "Sign in to your account to continue tracking your daily challenges"}
-        </p>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white dark:bg-slate-800 p-6 md:p-8 border dark:border-slate-700 w-full md:w-5/12 flex flex-col gap-5 animate-slide-up"
+          className="bg-white dark:bg-background-dark px-3 py-4 md:p-8 shadow-sharp-xl border border-black dark:border-white w-full md:w-5/12 flex flex-col gap-5 animate-slide-up"
         >
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-slate-900 dark:text-white">
@@ -102,23 +102,30 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              className="px-4 py-3 border border-black dark:border-slate-600 bg-background-sidebar dark:bg-slate-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               disabled={loading}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <label className="text-sm font-semibold text-slate-900 dark:text-white">
               Password
             </label>
             <input
-              type="password"
+              type={showpassword ? "password" : "text"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              className="px-4 py-3 border border-black dark:border-slate-600 bg-background-sidebar dark:bg-slate-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               disabled={loading}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showpassword)}
+              className="absolute top-11 right-5 cursor-pointer"
+            >
+              {showpassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
+            </button>
           </div>
 
           {isSignup && (
@@ -131,7 +138,7 @@ export default function Login() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                className="px-4 py-3  -lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                className="px-4 py-3 border border-black dark:border-slate-600 bg-background-sidebar dark:bg-slate-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 disabled={loading}
               />
             </div>
@@ -140,7 +147,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3  -lg transition-all duration-200 hover: -lg active:scale-100  -md mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3  -lg transition-all duration-200 hover: -lg active:scale-100  -md mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Please wait..." : isSignup ? "Sign Up" : "Sign In"}
           </button>

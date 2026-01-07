@@ -1,5 +1,6 @@
 import React from "react";
 import { useChallenges } from "../Healper/ChallengesContext";
+import { useLog } from "../Healper/LogContext";
 import Button from "../Component/Button";
 import { LuPlus } from "react-icons/lu";
 import { Link } from "react-router";
@@ -7,6 +8,7 @@ import ChallenegCard from "../Component/ChallenegCard";
 
 export default function Dashboard() {
   const { getChallenges } = useChallenges();
+  const { TEST_MODE, toggleTestMode } = useLog();
 
   const allChallenges = getChallenges();
 
@@ -24,6 +26,17 @@ export default function Dashboard() {
                 icon={<LuPlus className="w-5 h-5" />}
               />
             </Link>
+
+            {/* Test Mode Toggle */}
+            <button
+              onClick={toggleTestMode}
+              className={`px-3 py-2 rounded-lg font-semibold text-xs md:text-sm transition-all duration-200 ${TEST_MODE
+                  ? "bg-yellow-400 text-black hover:bg-yellow-500"
+                  : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+                }`}
+            >
+              {TEST_MODE ? "🧪 Minutes Mode" : "📅 Days Mode"}
+            </button>
           </header>
         )}
 
