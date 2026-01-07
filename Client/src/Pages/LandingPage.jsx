@@ -167,7 +167,7 @@ export default function LandingPage() {
               </div>
 
               <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">
-                Guest mode is free • No login required • Start instantly
+                Guest mode is free • No login required • Ads (if many visitors)
               </p>
             </div>
 
@@ -222,10 +222,11 @@ export default function LandingPage() {
 
                 <button
                   onClick={handleTick}
-                  className={`w-16 h-16 flex items-center justify-center text-3xl border-2 cursor-pointer ${tickCount > 0
-                    ? "bg-primary border-primary"
-                    : "bg-white dark:bg-elevation-dark border-blue-900"
-                    } hover:bg-primary transition-all`}
+                  className={`w-16 h-16 flex items-center justify-center text-3xl border-2 cursor-pointer ${
+                    tickCount > 0
+                      ? "bg-primary border-primary"
+                      : "bg-white dark:bg-elevation-dark border-blue-900"
+                  } hover:bg-primary transition-all`}
                 >
                   <LuTreePalm className="text-black dark:text-white" />
                 </button>
@@ -362,6 +363,11 @@ export default function LandingPage() {
               <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                 <span className="text-primary  font-bold">✓</span>
                 <span>No login required (guest mode)</span>
+              </div>
+
+              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                <span className="text-primary  font-bold">✓</span>
+                <span>Ads (only if many visitors)</span>
               </div>
 
               <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
