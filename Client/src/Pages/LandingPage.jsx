@@ -416,30 +416,55 @@ export default function LandingPage() {
             <div className="bg-white dark:bg-elevation-dark border-2 border-black dark:border-white p-8 md:p-10 shadow-sharp-xl mb-8">
               <div className="text-center border-b-2 border-black dark:border-white pb-6 mb-8">
                 <h3 className="text-xl font-bold text-black dark:text-white mb-4">
-                  For Forever
+                  Free Forever
                 </h3>
                 <div className="flex items-center justify-center">
-                  <span className="text-5xl font-bold text-primary mr-2">
-                    ₹499
-                  </span>
+                  <span className="text-5xl font-bold text-primary">₹0</span>
                   <span className="text-lg text-gray-600 dark:text-gray-400">
-                    (One Time)
+                    /month
                   </span>
                 </div>
               </div>
 
-              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                <span className="text-primary  font-bold">✓</span>
-                <span>Ads (only if many visitors)</span>
-              </div>
+              <div className="space-y-4 mb-8">
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Unlimited challenges</span>
+                </div>
 
-              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                <span className="text-primary  font-bold">✓</span>
-                <span>Your data stays in your browser</span>
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Track progress daily</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Visual progress tracking</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Login required</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Data is sync between devices</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Custom days posible</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Data saved in database</span>
+                </div>
               </div>
 
               <Button
-                text="Sign in"
+                text="Sign up"
                 textSize="text-lg"
                 paddingClass="px-4 py-2 w-full"
                 className="bg-primary"
@@ -447,61 +472,8 @@ export default function LandingPage() {
               />
             </div>
           </div>
-
-          {/* <div className="bg-gray-100 dark:bg-hover-dark border-2 border-black dark:border-white p-6 text-center">
-            <p className="text-gray-700 dark:text-gray-300">
-              <strong>100% Free.</strong> We show light ads to support
-              development. You can remove them anytime. Your data is stored
-              locally in your browser.
-            </p>
-          </div> */}
         </div>
       </section>
-
-      {/* <section className="bg-gray-100 dark:bg-elevation-dark border-b-2 border-black dark:border-white px-4 py-8">
-        <div className="md:w-5/12 w-full mx-auto">
-          <div className="bg-white dark:bg-background-dark border-2 border-black dark:border-white p-8 md:p-12 shadow-sharp-xl">
-            <div className="text-center text-4xl mb-2">🔒</div>
-            <h2 className="text-xl md:text-3xl font-bold text-center text-black dark:text-white mb-4">
-              Your data stays in your browser
-            </h2>
-            <p className="text-xs text-center text-gray-700 dark:text-gray-300 mb-8">
-              We don't require accounts. Everything is saved locally in your
-              browser using localStorage.
-            </p>
-
-            <div className="space-y-8">
-              <div className="flex items-start gap-3">
-                <div className="text-white text-xl shrink-0 bg-green-500 px-2">
-                  ✓
-                </div>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <span className="font-semibold">No login required</span> for
-                  the free version — start instantly
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="text-white text-xl shrink-0 bg-green-500 px-2">
-                  ✓
-                </div>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <span className="font-semibold">You own your data</span> —
-                  stored in your browser, not our servers
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="text-white text-xl shrink-0 bg-green-500 px-2">
-                  ✓
-                </div>
-                <p className="text-gray-700 dark:text-gray-300">
-                  <span className="font-semibold">Delete anytime</span> — clear
-                  your data whenever you want
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       <section className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white px-4 py-8">
         <div className="md:w-5/12 w-full mx-auto flex flex-col gap-10 items-center justify-center">
