@@ -20,17 +20,12 @@ export default function Profile() {
   const { isDark, toggleTheme } = useTheme();
 
   const { deleteAllChallenges } = useChallenges();
-  const { logout, deleteAccount, user, authType, changePassword } = useAuth();
+  const { logout, deleteAccount, user, authType } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState(user?.email || "jonDoe@gmail.com");
   const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  // Password change state
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   const handleChangeEmail = () => {
     // 👉 call API here
@@ -57,33 +52,7 @@ export default function Profile() {
     }
   };
 
-  const handleChangePassword = async () => {
-    // Validation
-    if (!currentPassword || !newPassword || !confirmNewPassword) {
-      toast.error("Please fill in all password fields");
-      return;
-    }
 
-    if (newPassword !== confirmNewPassword) {
-      toast.error("New passwords do not match");
-      return;
-    }
-
-    if (newPassword.length < 6) {
-      toast.error("New password must be at least 6 characters long");
-      return;
-    }
-
-    const result = await changePassword(currentPassword, newPassword);
-    if (result.success) {
-      toast.success("Password changed successfully!");
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmNewPassword("");
-    } else {
-      toast.error(result.error || "Failed to change password");
-    }
-  };
 
   const handleDeleteAccount = async () => {
     const result = await deleteAccount();
@@ -153,61 +122,6 @@ export default function Profile() {
             {/* Divider */}
             <div className="h-px bg-slate-200 dark:bg-hover-dark my-2"></div>
 
-            {/* Password Change Section - Only for Email Users */}
-            {authType === "email" && (
-              <div className="flex flex-col gap-3">
-                <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
-                  Change Password
-                </h3>
-
-                <div>
-                  <label className="text-sm font-semibold text-slate-900 dark:text-white">
-                    Current Password
-                  </label>
-                  <input
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white  -sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-slate-900 dark:text-white">
-                    New Password
-                  </label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white  -sm text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-slate-900 dark:text-white">
-                    Confirm New Password
-                  </label>
-                  <input
-                    type="password"
-                    value={confirmNewPassword}
-                    onChange={(e) => setConfirmNewPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full   px-4 py-3 mt-1 bg-white text-black dark:bg-slate-700 dark:text-white text-sm md:text-lg outline-none border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  />
-                </div>
-
-                <button
-                  onClick={handleChangePassword}
-                  className="ml-auto py-2 px-6   bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200  -sm"
-                >
-                  Update Password
-                </button>
-              </div>
-            )}
-
             <button
               onClick={toggleTheme}
               className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-black dark:border-white/50 transition-all duration-200 hover:bg-hover-light dark:hover:bg-hover-dark hover:scale-101 active:scale-100"
@@ -261,7 +175,7 @@ export default function Profile() {
       {/* Delete Account Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-5 animate-fade-in">
-          <div className="bg-white dark:bg-slate-800 p-6     -2xl border dark:border-slate-700 max-w-md w-full animate-slide-up">
+          <div className="bg-white dark:bg-slate-800 p-6 border dark:border-slate-700 max-w-md w-full animate-slide-up">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-red-100 dark:bg-red-900/30  ">
                 <LuUserX size={24} className="text-red-600 dark:text-red-400" />
@@ -284,7 +198,7 @@ export default function Profile() {
               </button>
               <button
                 onClick={handleDeleteAccount}
-                className="px-6 py-2   bg-red-600 hover:bg-red-700 text-white font-medium transition-all active:scale-100  -md"
+                className="px-6 py-2  cursor-pointer bg-red-600 hover:bg-red-700 text-white font-medium transition-all active:scale-100  -md"
               >
                 Delete
               </button>

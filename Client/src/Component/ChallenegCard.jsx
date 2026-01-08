@@ -111,7 +111,7 @@ export default function ChallenegCard({ challenge }) {
             <MdMoreVert className="w-5 h-5 text-black dark:text-white" />
           </button>
 
-          <button onClick={handleLog} disabled={hasLoggedToday}>
+          <button onClick={handleLog}>
             <span
               className={clsx(
                 "w-8 h-8 md:w-10 md:h-10 flex items-center justify-center transition-all duration-200 active:animate-bounce-in",

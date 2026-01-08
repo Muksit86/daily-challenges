@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 
 export default function Button({
-  className,
+  className = "bg-primary",
   icon,
   text,
   showTextOnMobile = true,
@@ -22,7 +22,6 @@ export default function Button({
           shadow,
           className,
           textSize,
-          color === "primary" && "bg-primary",
           color === "danger" && "bg-danger hover:bg-red-600"
         )}
       >

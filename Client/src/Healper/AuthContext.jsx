@@ -12,132 +12,104 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [authType, setAuthType] = useState(null); // 'guest' | 'email'
+  const [authType, setAuthType] = useState(null); // 'free' | 'email'
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
+  // Check session from cookies on mount
+  const checkSession = async () => {
+    try {
+      const response = await fetch(`${API_URL}/auth/me`, {
+        method: "GET",
+        credentials: "include", // Send cookies
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+        setAuthType("email");
+        localStorage.setItem("authType", "email");
+      } else {
+        // No valid session, check for free mode
+        const storedAuthType = localStorage.getItem("authType");
+        if (storedAuthType === "free") {
+          setAuthType("free");
+          setUser({ email: "free" });
+        }
+      }
+    } catch (error) {
+      console.error("Session check error:", error);
+      // Check for free mode on error
+      const storedAuthType = localStorage.getItem("authType");
+      if (storedAuthType === "free") {
+        setAuthType("free");
+        setUser({ email: "free" });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Check for existing session on mount
   useEffect(() => {
-    const storedSession = localStorage.getItem("session");
-    const storedUser = localStorage.getItem("user");
-    const storedAuthType = localStorage.getItem("authType");
-
-    if (storedAuthType === "guest") {
-      // Guest mode
-      setAuthType("guest");
-      setUser({ email: "guest" });
-    } else if (storedSession && storedUser) {
-      // Email authentication
-      setSession(JSON.parse(storedSession));
-      setUser(JSON.parse(storedUser));
-      setAuthType("email");
-    }
-    setLoading(false);
+    checkSession();
   }, []);
 
-  // Login as guest
-  const loginAsGuest = () => {
-    setAuthType("guest");
-    setUser({ email: "guest" });
-    localStorage.setItem("authType", "guest");
+  // Login as free user
+  const loginAsFree = () => {
+    setAuthType("free");
+    setUser({ email: "free" });
+    localStorage.setItem("authType", "free");
     return { success: true };
   };
 
-  // Signup function
-  const signup = async (email, password) => {
+  // Send magic link to email
+  const sendMagicLink = async (email) => {
     try {
-      const response = await fetch(`${API_URL}/auth/signup`, {
+      const response = await fetch(`${API_URL}/auth/send-magic-link`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        credentials: "include",
+        body: JSON.stringify({ email }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Signup failed");
+        throw new Error(data.error || "Failed to send magic link");
       }
 
-      // Store user and session
-      if (data.user && data.session) {
-        setUser(data.user);
-        setSession(data.session);
-        setAuthType("email");
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("session", JSON.stringify(data.session));
-        localStorage.setItem("authType", "email");
-      }
-
-      return { success: true, data };
+      return { success: true, message: data.message };
     } catch (error) {
       return { success: false, error: error.message };
     }
   };
 
-  // Login function
-  const login = async (email, password) => {
+  // Verify magic link (called when user clicks link from email)
+  const verifyMagicLink = async (token_hash, type) => {
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const response = await fetch(`${API_URL}/auth/verify-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        credentials: "include",
+        body: JSON.stringify({ token_hash, type }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Login failed");
+        throw new Error(data.error || "Verification failed");
       }
 
-      // Store user and session
-      if (data.user && data.session) {
-        setUser(data.user);
-        setSession(data.session);
-        setAuthType("email");
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("session", JSON.stringify(data.session));
-        localStorage.setItem("authType", "email");
-      }
+      // Fetch current user from cookies
+      await checkSession();
 
       return { success: true, data };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  };
-
-  // Change password function
-  const changePassword = async (currentPassword, newPassword) => {
-    try {
-      if (authType !== "email") {
-        throw new Error("Password change is only available for email users");
-      }
-
-      if (!session?.access_token) {
-        throw new Error("No active session");
-      }
-
-      const response = await fetch(`${API_URL}/auth/change-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ currentPassword, newPassword }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to change password");
-      }
-
-      return { success: true, message: "Password changed successfully" };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -149,15 +121,13 @@ export const AuthProvider = ({ children }) => {
       if (authType === "email") {
         await fetch(`${API_URL}/auth/logout`, {
           method: "POST",
+          credentials: "include", // Send cookies to clear them
         });
       }
 
       // Clear state and localStorage
       setUser(null);
-      setSession(null);
       setAuthType(null);
-      localStorage.removeItem("user");
-      localStorage.removeItem("session");
       localStorage.removeItem("authType");
 
       return { success: true };
@@ -173,15 +143,9 @@ export const AuthProvider = ({ children }) => {
         throw new Error("Account deletion is only available for email users");
       }
 
-      if (!session?.access_token) {
-        throw new Error("No active session");
-      }
-
       const response = await fetch(`${API_URL}/auth/delete-account`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
+        credentials: "include", // Send cookies for authentication
       });
 
       const data = await response.json();
@@ -192,10 +156,7 @@ export const AuthProvider = ({ children }) => {
 
       // Clear state and localStorage
       setUser(null);
-      setSession(null);
       setAuthType(null);
-      localStorage.removeItem("user");
-      localStorage.removeItem("session");
       localStorage.removeItem("authType");
 
       return { success: true };
@@ -206,15 +167,13 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-    session,
     loading,
     authType,
-    signup,
-    login,
-    loginAsGuest,
+    sendMagicLink,
+    verifyMagicLink,
+    loginAsFree,
     logout,
     deleteAccount,
-    changePassword,
     isAuthenticated: !!user && !!authType,
   };
 

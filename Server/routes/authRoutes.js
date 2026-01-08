@@ -1,22 +1,22 @@
 import express from 'express';
 import { authenticateUser } from '../middleware/authMiddleware.js';
 import {
-    signup,
-    login,
+    sendMagicLink,
+    verifyOtp,
     logout,
     deleteAccount,
-    verifySession
+    getCurrentUser
 } from '../controllers/authController.js';
 
 const router = express.Router();
 
 // Public routes
-router.post('/signup', signup);
-router.post('/login', login);
+router.post('/send-magic-link', sendMagicLink);
+router.post('/verify-otp', verifyOtp);
 router.post('/logout', logout);
 
 // Protected routes
 router.delete('/delete-account', authenticateUser, deleteAccount);
-router.post('/verify', authenticateUser, verifySession);
+router.get('/me', authenticateUser, getCurrentUser);
 
 export default router;

@@ -48,13 +48,13 @@ const router = createBrowserRouter([
     element: <Contact />,
   },
   {
-    path: "/privacy-policy",
+    path: "/privacy",
     element: <PrivacyPolicy />,
   },
   {
     path: "/login",
-    // element: <Login />,
-    element: <RequestingPage />,
+    element: <Login />,
+    // element: <RequestingPage />,
   },
   {
     path: "/",

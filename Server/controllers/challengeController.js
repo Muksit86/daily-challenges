@@ -7,11 +7,11 @@ import { Challenge } from '../models/Challenge.js';
  */
 export const createChallenge = async (req, res) => {
     try {
-        const { title, description } = req.body;
+        const { title, duration } = req.body;
         const user = req.user;
 
         // Validate input
-        const validation = Challenge.validate({ title, description });
+        const validation = Challenge.validate({ title, duration });
         if (!validation.isValid) {
             return res.status(400).json({
                 error: validation.errors.join(', ')
@@ -25,7 +25,8 @@ export const createChallenge = async (req, res) => {
                 {
                     user_id: user.id,
                     title: title.trim(),
-                    description: description?.trim() || null
+                    duration: parseInt(duration),
+                    start_date: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
                 }
             ])
             .select()
@@ -110,25 +111,21 @@ export const getChallengeById = async (req, res) => {
 export const updateChallenge = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description } = req.body;
+        const { title, duration } = req.body;
         const user = req.user;
 
-        // Validate input
-        const validation = Challenge.validate({ title, description });
-        if (!validation.isValid) {
-            return res.status(400).json({
-                error: validation.errors.join(', ')
-            });
-        }
+        // Build update object
+        const updateData = {
+            updated_at: new Date().toISOString()
+        };
+
+        if (title) updateData.title = title.trim();
+        if (duration) updateData.duration = parseInt(duration);
 
         // Update challenge
         const { data, error } = await supabase
             .from('challenges')
-            .update({
-                title: title.trim(),
-                description: description?.trim() || null,
-                updated_at: new Date().toISOString()
-            })
+            .update(updateData)
             .eq('id', id)
             .eq('user_id', user.id)
             .select()

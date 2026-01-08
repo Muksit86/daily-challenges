@@ -1,21 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router";
-import { LuMenu, LuMoon, LuSun, LuTreePalm } from "react-icons/lu";
+import {
+  LuFileQuestion,
+  LuMenu,
+  LuMoon,
+  LuShieldQuestion,
+  LuSun,
+  LuTreePalm,
+} from "react-icons/lu";
 import Button from "../Component/Button";
 import { useAuth } from "../Healper/AuthContext";
 import { useTheme } from "../Healper/themeContext";
-import Requesting from "../Component/Requesting";
-import IconImage from "../assets/header_logo_sm.png";
+import { CiCircleQuestion } from "react-icons/ci";
 
 export default function LandingPage() {
   const [menu, setMenu] = useState(false);
-  const [requsting, setRequesting] = useState(null);
+  const [detail, setdetail] = useState(null);
   const [tickCount, setTickCount] = useState(0);
   const maxTicks = 20;
   const progress = (tickCount / maxTicks) * 100;
   const navigate = useNavigate();
-  const { loginAsGuest, isAuthenticated } = useAuth();
+  const { loginAsFree, isAuthenticated } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+
+  const pricingRef = useRef(null);
+  const scrollTo = (ref) => {
+    ref.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   const quickLinks = [
     { link: "/", text: "Home" },
@@ -31,9 +42,13 @@ export default function LandingPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleGuestLogin = () => {
-    loginAsGuest();
+  const handleFreeLogin = () => {
+    loginAsFree();
     navigate("/dashboard");
+  };
+
+  const handleSignIn = () => {
+    navigate("/login");
   };
 
   const handleLinkMenu = () => {
@@ -58,36 +73,29 @@ export default function LandingPage() {
       <nav className="w-full bg-white dark:bg-elevation-dark border-black dark:border-white sticky top-0 z-50">
         <div className="flex justify-between items-center md:px-4 md:py-3 p-3 border-black border-b-2">
           <div className="">
-            <span className="text-xl font-bold text-primary">
-              Challenge Hub
+            <span className="text-xl font-bold text-primary cursor-pointer">
+              <Link to="/">Challenge Hub</Link>
             </span>
           </div>
 
           <div className="hidden md:flex lg:gap-10 md:gap-4">
-            <Link
-              to="/"
-              className="text-sm md:text-base font-medium text-black dark:text-white hover:text-primary dark:hover:text-primary px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-primary/5 transition-all"
+            {quickLinks.map((ql, index) => (
+              <Link
+                key={index}
+                to={ql.link}
+                className="text-xs md:text-base font-medium text-black dark:text-white hover:text-primary dark:hover:text-primary px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-primary/5 transition-all"
+              >
+                {ql.text}
+              </Link>
+            ))}
+
+            <button
+              onClick={() => scrollTo(pricingRef)}
+              className="cursor-pointer text-xs md:text-base font-medium text-black dark:text-white hover:text-primary dark:hover:text-primary px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-primary/5 transition-all"
             >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="text-sm md:text-base font-medium text-black dark:text-white hover:text-primary dark:hover:text-primary px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-primary/5 transition-all"
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className="text-sm md:text-base font-medium text-black dark:text-white hover:text-primary dark:hover:text-primary px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-primary/5 transition-all"
-            >
-              Contact Us
-            </Link>
-            <Link
-              to="/privacy-policy"
-              className="text-sm md:text-base font-medium text-black dark:text-white hover:text-primary dark:hover:text-primary px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-primary/5 transition-all"
-            >
-              Privacy Policy
-            </Link>
+              Pricing
+            </button>
+
             <button
               onClick={toggleTheme}
               className="cursor-pointer text-xl p-2 border-2 border-black dark:border-white hover:bg-background-sidebar dark:hover:bg-hover-dark transition-all"
@@ -110,7 +118,7 @@ export default function LandingPage() {
         </div>
 
         {menu && (
-          <div className="md:hidden absolute top-15 bg-background-sidebar p-2 flex flex-col justify-between">
+          <div className="md:hidden absolute w-full top-15 bg-background-sidebar dark:bg-background-sidebar-dark p-2 flex justify-between">
             {quickLinks.map((ql, index) => (
               <Link
                 key={index}
@@ -124,13 +132,15 @@ export default function LandingPage() {
         )}
       </nav>
 
-      <section className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white px-4 py-8">
+      <section className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white p-8">
+        {/* Section 1 */}
         <div className="mx-auto">
-          <div className="flex flex-col justify-center md:flex-row md:justify-between items-center gap-12">
-            <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col justify-center gap-10 md:justify-between md:flex-row items-center">
+            {/* Hero text */}
+            <div className="flex flex-col gap-4 items-start">
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-black dark:text-white">
                 Build consistency,
-                <span className="block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <span className="block bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
                   one small win a day
                 </span>
               </h1>
@@ -140,30 +150,23 @@ export default function LandingPage() {
                 login, no pressure.
               </p>
 
-              <div className="flex flex-col gap-2 relative">
+              {/* CTA Buttons */}
+              <div className="flex gap-8 flex-row-reverse">
                 <Button
-                  text="Continue as Guest"
+                  text="Try Free Version"
                   textSize="text-sm"
-                  paddingClass="md:px-8 md:py-4 px-4 py-2"
+                  paddingClass="md:px-4 md:py-4 px-4 py-2"
                   shadow="shadow-sm/30"
-                  onClick={handleGuestLogin}
+                  className="bg-blue-400"
+                  onClick={handleFreeLogin}
                 />
 
                 <button
-                  onMouseEnter={() => setRequesting(true)}
-                  onMouseLeave={() => setRequesting(false)}
-                  className="md:px-8 md:py-4 px-4 py-2 text-sm font-semibold bg-gray-400 text-white/50 border-2 border-gray-400 transition-all"
+                  onClick={handleSignIn}
+                  className="md:px-12 md:py-4 px-4 py-2 text-sm font-semibold bg-primary text-white transition-all cursor-pointer shadow-sharp hover:scale-101 active:scale-98"
                 >
                   Sign In
                 </button>
-
-                {requsting && (
-                  <Requesting
-                    className={
-                      "absolute md:right-40 md:-top-50  right-0 -top-50"
-                    }
-                  />
-                )}
               </div>
 
               <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">
@@ -171,6 +174,7 @@ export default function LandingPage() {
               </p>
             </div>
 
+            {/* Progress Wheel */}
             <div className="flex justify-center">
               <div className="border-2 border-black dark:border-white bg-white dark:bg-elevation-dark p-6 md:p-8 shadow-sharp-xl w-full max-w-md flex flex-col items-center gap-6">
                 <div className="w-full text-center border-b-2 border-black dark:border-white pb-3">
@@ -276,7 +280,7 @@ export default function LandingPage() {
             </div>
 
             <div className="bg-white dark:bg-background-dark border-2 border-black dark:border-white p-6 shadow-sharp-lg hover:shadow-sharp-xl hover:-translate-x-1 hover:-translate-y-1 transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary text-white flex items-center justify-center text-2xl font-bold border-2 border-black dark:border-white mb-4">
+              <div className="w-12 h-12 bg-linear-to-br from-primary to-secondary text-white flex items-center justify-center text-2xl font-bold border-2 border-black dark:border-white mb-4">
                 3
               </div>
               <h3 className="text-xl md:text-2xl font-bold text-black dark:text-white mb-3">
@@ -322,8 +326,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white px-4 py-8">
-        <div className="md:w-5/12 w-full mx-auto">
+      <section
+        ref={pricingRef}
+        className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white px-4 py-8"
+      >
+        <div className="md:w-12/12 w-full mx-auto">
           <h2 className="text-2xl md:text-4xl font-bold text-center text-black dark:text-white mb-2">
             Simple & Transparent Pricing
           </h2>
@@ -331,38 +338,94 @@ export default function LandingPage() {
             Start tracking your habits today, completely free
           </p>
 
-          <div className="bg-white dark:bg-elevation-dark border-2 border-black dark:border-white p-8 md:p-10 shadow-sharp-xl mb-8">
-            <div className="text-center border-b-2 border-black dark:border-white pb-6 mb-8">
-              <h3 className="text-xl font-bold text-black dark:text-white mb-4">
-                Free Forever
-              </h3>
-              <div className="flex items-center justify-center">
-                <span className="text-5xl font-bold text-primary">$0</span>
-                <span className="text-lg text-gray-600 dark:text-gray-400">
-                  /month
-                </span>
+          {/* Pricings */}
+          <div className="flex flex-col-reverse md:flex-row gap-15 items-center justify-center w-full">
+            <div className="bg-white dark:bg-elevation-dark border-2 border-black dark:border-white p-8 md:p-10 shadow-sharp-xl mb-8">
+              <div className="text-center border-b-2 border-black dark:border-white pb-6 mb-8">
+                <h3 className="text-xl font-bold text-black dark:text-white mb-4">
+                  Free Forever
+                </h3>
+                <div className="flex items-center justify-center">
+                  <span className="text-5xl font-bold text-primary">₹0</span>
+                  <span className="text-lg text-gray-600 dark:text-gray-400">
+                    /month
+                  </span>
+                </div>
               </div>
+
+              <div className="space-y-4 mb-8">
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>
+                    Max 3 challenges
+                    <span
+                      onMouseEnter={() => setdetail(true)}
+                      onMouseLeave={() => setdetail(false)}
+                      className="inline-block ml-2 relative"
+                    >
+                      <CiCircleQuestion />
+                      {detail && (
+                        <div className="absolute bg-background-dark p-1 text-xs -top-18">
+                          as much as your browser can fit
+                        </div>
+                      )}
+                    </span>
+                  </span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Track progress daily</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Visual progress tracking</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>No login required (free version)</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Data is not sync between devices</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>No custom day set</span>
+                </div>
+
+                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                  <span className="text-primary  font-bold">✓</span>
+                  <span>Your data stays in your browser</span>
+                </div>
+              </div>
+
+              <Button
+                text="Get Started"
+                textSize="text-lg"
+                paddingClass="px-4 py-2 w-full"
+                className="bg-primary"
+                onClick={handleFreeLogin}
+              />
             </div>
 
-            <div className="space-y-4 mb-8">
-              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                <span className="text-primary  font-bold">✓</span>
-                <span>Unlimited challenges</span>
-              </div>
-
-              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                <span className="text-primary  font-bold">✓</span>
-                <span>Track progress daily</span>
-              </div>
-
-              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                <span className="text-primary  font-bold">✓</span>
-                <span>Visual progress tracking</span>
-              </div>
-
-              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                <span className="text-primary  font-bold">✓</span>
-                <span>No login required (guest mode)</span>
+            <div className="bg-white dark:bg-elevation-dark border-2 border-black dark:border-white p-8 md:p-10 shadow-sharp-xl mb-8">
+              <div className="text-center border-b-2 border-black dark:border-white pb-6 mb-8">
+                <h3 className="text-xl font-bold text-black dark:text-white mb-4">
+                  For Forever
+                </h3>
+                <div className="flex items-center justify-center">
+                  <span className="text-5xl font-bold text-primary mr-2">
+                    ₹499
+                  </span>
+                  <span className="text-lg text-gray-600 dark:text-gray-400">
+                    (One Time)
+                  </span>
+                </div>
               </div>
 
               <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
@@ -374,20 +437,15 @@ export default function LandingPage() {
                 <span className="text-primary  font-bold">✓</span>
                 <span>Your data stays in your browser</span>
               </div>
-              {/* <div className="   gap-3 text-gray-700 dark:text-gray-300">
-                <span className="text-gray-600 dark:text-gray-400 text-xl">
-                  ℹ️
-                </span>
-                <span>Light ads support development</span>
-              </div> */}
-            </div>
 
-            <Button
-              text="Get Started"
-              textSize="text-lg"
-              paddingClass="px-4 py-2 w-full"
-              onClick={handleGuestLogin}
-            />
+              <Button
+                text="Sign in"
+                textSize="text-lg"
+                paddingClass="px-4 py-2 w-full"
+                className="bg-primary"
+                onClick={handleSignIn}
+              />
+            </div>
           </div>
 
           {/* <div className="bg-gray-100 dark:bg-hover-dark border-2 border-black dark:border-white p-6 text-center">
@@ -400,7 +458,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-gray-100 dark:bg-elevation-dark border-b-2 border-black dark:border-white px-4 py-8">
+      {/* <section className="bg-gray-100 dark:bg-elevation-dark border-b-2 border-black dark:border-white px-4 py-8">
         <div className="md:w-5/12 w-full mx-auto">
           <div className="bg-white dark:bg-background-dark border-2 border-black dark:border-white p-8 md:p-12 shadow-sharp-xl">
             <div className="text-center text-4xl mb-2">🔒</div>
@@ -414,7 +472,7 @@ export default function LandingPage() {
 
             <div className="space-y-8">
               <div className="flex items-start gap-3">
-                <div className="text-secondary text-xl shrink-0 bg-green-500 px-2">
+                <div className="text-white text-xl shrink-0 bg-green-500 px-2">
                   ✓
                 </div>
                 <p className="text-gray-700 dark:text-gray-300">
@@ -423,7 +481,7 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="text-secondary text-xl shrink-0 bg-green-500 px-2">
+                <div className="text-white text-xl shrink-0 bg-green-500 px-2">
                   ✓
                 </div>
                 <p className="text-gray-700 dark:text-gray-300">
@@ -432,7 +490,7 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="text-secondary text-xl shrink-0 bg-green-500 px-2">
+                <div className="text-white text-xl shrink-0 bg-green-500 px-2">
                   ✓
                 </div>
                 <p className="text-gray-700 dark:text-gray-300">
@@ -443,7 +501,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white px-4 py-8">
         <div className="md:w-5/12 w-full mx-auto flex flex-col gap-10 items-center justify-center">
@@ -459,11 +517,11 @@ export default function LandingPage() {
           <div className="text-center">
             <div className="w-full">
               <Button
-                text="Continue as Guest"
+                text="Sign in"
                 textSize="text-xs md:text-2xl"
                 paddingClass="px-8 py-3"
-                className="mx-auto"
-                onClick={handleGuestLogin}
+                className="mx-auto bg-primary"
+                onClick={handleSignIn}
                 shadow="shadow-xl/30"
               />
             </div>
