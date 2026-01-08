@@ -21,10 +21,17 @@ import About from "./Pages/About.jsx";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
 import NotFound from "./Pages/NotFound.jsx";
 import Contact from "./Pages/Contact.jsx";
-
+import { PostHogProvider } from "posthog-js/react";
 import "./tempData/loadDummyData";
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import RequestingPage from "./Pages/RequestingPage.jsx";
+
+const options = {
+  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+  autocapture: true,
+};
+
+console.log(options);
 
 const router = createBrowserRouter([
   {
@@ -80,24 +87,29 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <ThemeProvider>
-        <LogProvider>
-          <ChallengesProvider>
-            <RouterProvider router={router} />
-            <ToastContainer
-              position="top-center"
-              autoClose={1000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              draggable
-              theme="light"
-            />
-          </ChallengesProvider>
-        </LogProvider>
-      </ThemeProvider>
-    </AuthProvider>
+    <PostHogProvider
+      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+      options={options}
+    >
+      <AuthProvider>
+        <ThemeProvider>
+          <LogProvider>
+            <ChallengesProvider>
+              <RouterProvider router={router} />
+              <ToastContainer
+                position="top-center"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                draggable
+                theme="light"
+              />
+            </ChallengesProvider>
+          </LogProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </PostHogProvider>
   </StrictMode>
 );
