@@ -76,13 +76,15 @@ export const verifyPayment = async (req, res) => {
             });
         }
 
-        // Payment is valid - Update user to premium
+        // Payment is valid - Update user to premium and paid account
         const { error: updateError } = await supabase.auth.admin.updateUserById(
             user.id,
             {
                 user_metadata: {
                     ...user.user_metadata,
+                    account_type: 'paid',
                     is_premium: true,
+                    trial_ends_at: null,
                     premium_activated_at: new Date().toISOString(),
                     payment_id: razorpay_payment_id,
                     order_id: razorpay_order_id,

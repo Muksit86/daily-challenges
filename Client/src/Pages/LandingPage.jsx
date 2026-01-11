@@ -43,12 +43,12 @@ export default function LandingPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSignup = () => {
-    navigate("/signup");
+  const handleFreeTrial = () => {
+    navigate("/signup", { state: { fromFreeTrial: true } });
   };
 
-  const handleSignIn = () => {
-    navigate("/login");
+  const handlePaidSignup = () => {
+    navigate("/signup", { state: { fromPaidSignup: true } });
   };
 
   const handleLinkMenu = () => {
@@ -152,20 +152,18 @@ export default function LandingPage() {
 
               {/* CTA Buttons */}
               <div className="flex gap-8 flex-row-reverse">
-                <Button
-                  text={`Start ${FREE_TRIAL_DAYS}-Day Free Trial`}
-                  textSize="text-sm"
-                  paddingClass="md:px-4 md:py-4 px-4 py-2"
-                  shadow="shadow-sm/30"
-                  className="bg-blue-400"
-                  onClick={handleSignup}
-                />
+                <button
+                  onClick={handleFreeTrial}
+                  className="md:px-12 md:py-4 px-4 py-2 text-md font-semibold bg-blue-500 text-white transition-all cursor-pointer hover:scale-101 active:scale-98"
+                >
+                  Free Trial
+                </button>
 
                 <button
-                  onClick={handleSignIn}
-                  className="md:px-12 md:py-4 px-4 py-2 text-sm font-semibold bg-primary text-white transition-all cursor-pointer shadow-sharp hover:scale-101 active:scale-98"
+                  onClick={handlePaidSignup}
+                  className="md:px-12 md:py-4 px-4 py-2 text-md font-semibold bg-primary text-white transition-all cursor-pointer shadow-sharp hover:scale-101 active:scale-98"
                 >
-                  Sign In
+                  Sign Up
                 </button>
               </div>
 
@@ -226,11 +224,10 @@ export default function LandingPage() {
 
                 <button
                   onClick={handleTick}
-                  className={`w-16 h-16 flex items-center justify-center text-3xl border-2 cursor-pointer ${
-                    tickCount > 0
-                      ? "bg-primary border-primary"
-                      : "bg-white dark:bg-elevation-dark border-blue-900"
-                  } hover:bg-primary transition-all`}
+                  className={`w-16 h-16 flex items-center justify-center text-3xl border-2 cursor-pointer ${tickCount > 0
+                    ? "bg-primary border-primary"
+                    : "bg-white dark:bg-elevation-dark border-blue-900"
+                    } hover:bg-primary transition-all`}
                 >
                   <LuTreePalm className="text-black dark:text-white" />
                 </button>
@@ -388,25 +385,17 @@ export default function LandingPage() {
                   <span>Data stored locally (no sync)</span>
                 </div>
               </div>
-
-              <Button
-                text="Sign Up Free"
-                textSize="text-lg"
-                paddingClass="px-4 py-2 w-full"
-                className="bg-primary"
-                onClick={handleSignup}
-              />
             </div>
 
             <div className="bg-white dark:bg-elevation-dark border-2 border-black dark:border-white p-8 md:p-10 shadow-sharp-xl mb-8">
               <div className="text-center border-b-2 border-black dark:border-white pb-6 mb-8">
                 <h3 className="text-xl font-bold text-black dark:text-white mb-4">
-                  Free Forever
+                  Forever
                 </h3>
                 <div className="flex items-center justify-center">
-                  <span className="text-5xl font-bold text-primary">₹0</span>
+                  <span className="text-5xl font-bold text-primary">₹899</span>
                   <span className="text-lg text-gray-600 dark:text-gray-400">
-                    /month
+                    (one-time)
                   </span>
                 </div>
               </div>
@@ -447,45 +436,7 @@ export default function LandingPage() {
                   <span>Data saved in database</span>
                 </div>
               </div>
-
-              <Button
-                text="Sign up"
-                textSize="text-lg"
-                paddingClass="px-4 py-2 w-full"
-                className="bg-primary"
-                onClick={handleSignIn}
-              />
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white px-4 py-8">
-        <div className="md:w-5/12 w-full mx-auto flex flex-col gap-10 items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white mb-3">
-              Ready to build your first habit?
-            </h2>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              Start your first challenge in less than 30 seconds
-            </p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-full">
-              <Button
-                text="Sign in"
-                textSize="text-xs md:text-2xl"
-                paddingClass="px-8 py-3"
-                className="mx-auto bg-primary"
-                onClick={handleSignIn}
-                shadow="shadow-xl/30"
-              />
-            </div>
-
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">
-              {FREE_TRIAL_DAYS} days free trial • No credit card required
-            </p>
           </div>
         </div>
       </section>

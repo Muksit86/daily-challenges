@@ -6,12 +6,19 @@ import { supabase } from "../config/supabase.js";
  */
 export const signup = async (req, res) => {
   try {
-    const { email, password, username } = req.body;
+    const { email, password, username, account_type = "free_trial" } = req.body;
 
     // Validate input
     if (!email || !password || !username) {
       return res.status(400).json({
         error: "Email, password, and username are required",
+      });
+    }
+
+    // Validate account_type
+    if (!['free_trial', 'paid'].includes(account_type)) {
+      return res.status(400).json({
+        error: "Invalid account type. Must be 'free_trial' or 'paid'",
       });
     }
 
@@ -37,18 +44,21 @@ export const signup = async (req, res) => {
       });
     }
 
-    // Calculate trial end date (7 days from now)
-    const trialEndsAt = new Date();
-    trialEndsAt.setDate(trialEndsAt.getDate() + 7);
+    // Calculate trial end date (7 days from now) - only for free trial accounts
+    const trialEndsAt = account_type === "free_trial" ? new Date() : null;
+    if (trialEndsAt) {
+      trialEndsAt.setDate(trialEndsAt.getDate() + 7);
+    }
 
-    // Create user with Supabase, storing username and trial info in metadata
+    // Create user with Supabase, storing username, account type, and trial info in metadata
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           username: username,
-          trial_ends_at: trialEndsAt.toISOString(),
+          account_type: account_type,
+          trial_ends_at: trialEndsAt ? trialEndsAt.toISOString() : null,
           is_premium: false,
         },
       },
@@ -85,6 +95,7 @@ export const signup = async (req, res) => {
           email: data.user.email,
           username: data.user.user_metadata?.username,
           created_at: data.user.created_at,
+          account_type: data.user.user_metadata?.account_type || 'free_trial',
           trial_ends_at: data.user.user_metadata?.trial_ends_at,
           is_premium: data.user.user_metadata?.is_premium || false,
         },
@@ -154,6 +165,7 @@ export const login = async (req, res) => {
         email: data.user.email,
         username: data.user.user_metadata?.username,
         created_at: data.user.created_at,
+        account_type: data.user.user_metadata?.account_type || 'free_trial',
         trial_ends_at: data.user.user_metadata?.trial_ends_at,
         is_premium: data.user.user_metadata?.is_premium || false,
       },
@@ -247,6 +259,7 @@ export const getCurrentUser = async (req, res) => {
         username: user.user_metadata?.username,
         created_at: user.created_at,
         updated_at: user.updated_at,
+        account_type: user.user_metadata?.account_type || 'free_trial',
         trial_ends_at: user.user_metadata?.trial_ends_at,
         is_premium: user.user_metadata?.is_premium || false,
       },

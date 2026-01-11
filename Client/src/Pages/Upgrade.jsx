@@ -14,6 +14,7 @@ export default function Upgrade() {
 
     const handleContinueWithTrial = () => {
         toast.success("Welcome! Enjoy your free trial! 🎉");
+        // Navigate to dashboard without banner since they came through the upgrade page
         navigate("/dashboard");
     };
 
@@ -138,7 +139,7 @@ export default function Upgrade() {
                 {/* Pricing Cards */}
                 <div className="flex flex-col md:flex-row gap-8 items-stretch justify-center max-w-5xl mx-auto animate-slide-up">
                     {/* Free Trial Card */}
-                    <div className="w-full md:w-1/2 bg-white dark:bg-elevation-dark border-2 border-gray-300 dark:border-gray-600 p-6 md:p-8 shadow-sharp-lg flex flex-col">
+                    {/*<div className="w-full md:w-1/2 bg-white dark:bg-elevation-dark border-2 border-gray-300 dark:border-gray-600 p-6 md:p-8 shadow-sharp-lg flex flex-col">
                         <div className="text-center border-b-2 border-gray-300 dark:border-gray-600 pb-6 mb-6">
                             <div className="flex items-center justify-center gap-2 mb-4">
                                 <LuClock className="text-gray-600 dark:text-gray-400 text-2xl" />
@@ -190,7 +191,7 @@ export default function Upgrade() {
                         >
                             {isPremium ? "Already Premium" : "Continue with Free Trial"}
                         </button>
-                    </div>
+                    </div> */}
 
                     {/* Premium Card */}
                     <div className="w-full md:w-1/2 bg-white dark:bg-elevation-dark border-2 border-primary p-6 md:p-8 shadow-sharp-xl relative flex flex-col">
@@ -207,7 +208,7 @@ export default function Upgrade() {
                                 </h3>
                             </div>
                             <div className="flex items-center justify-center">
-                                <span className="text-5xl font-bold text-primary">₹499</span>
+                                <span className="text-5xl font-bold text-primary">₹899</span>
                                 <span className="text-lg text-gray-600 dark:text-gray-400 ml-2">
                                     one-time
                                 </span>

@@ -8,7 +8,7 @@ import { useAuth } from "../Healper/AuthContext";
  */
 export const useTrialProtection = () => {
     const navigate = useNavigate();
-    const { authType, trialStatus } = useAuth();
+    const { user, accountType, trialStatus } = useAuth();
 
     /**
      * Wraps an action and checks trial status before executing
@@ -18,20 +18,25 @@ export const useTrialProtection = () => {
      */
     const handleProtectedAction = (action) => {
         return (...args) => {
-            // Only enforce trial protection for free users
-            if (authType === "free" && trialStatus.isExpired) {
-                navigate("/payment");
+            // Only enforce trial protection for free trial users with expired trials
+            if (accountType === "free_trial" && trialStatus.isExpired) {
+                navigate("/upgrade");
                 return;
             }
 
-            // Trial is active or user is email-authenticated, execute action
+            // Trial is active or user is paid, execute action
             if (typeof action === "function") {
                 return action(...args);
             }
         };
     };
 
-    return { handleProtectedAction, isTrialExpired: trialStatus.isExpired };
+    return {
+        handleProtectedAction,
+        isTrialExpired: trialStatus.isExpired,
+        user,
+        accountType
+    };
 };
 
 export default useTrialProtection;

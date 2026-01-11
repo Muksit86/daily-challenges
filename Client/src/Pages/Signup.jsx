@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../Healper/AuthContext";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, useLocation, Link } from "react-router";
 import { toast } from "react-toastify";
 import { LuMail, LuLock, LuUser, LuUserPlus } from "react-icons/lu";
 
@@ -12,6 +12,9 @@ export default function Signup() {
 
     const { signup } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const fromFreeTrial = location.state?.fromFreeTrial || false;
+    const fromPaidSignup = location.state?.fromPaidSignup || false;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,11 +44,21 @@ export default function Signup() {
         setLoading(true);
 
         try {
-            const result = await signup(email, password, username);
+            // Determine account type based on signup flow
+            const accountType = fromPaidSignup ? "paid" : "free_trial";
+
+            const result = await signup(email, password, username, accountType);
 
             if (result.success) {
                 toast.success("Account created successfully!");
-                navigate("/upgrade");
+                // Free trial users go to dashboard with trial banner
+                // Paid signup users go to payment page first
+                if (fromPaidSignup) {
+                    navigate("/upgrade");
+                } else {
+                    // Free trial or default signup
+                    navigate("/dashboard?showBanner=true");
+                }
             } else {
                 toast.error(result.error || "Signup failed");
             }

@@ -183,7 +183,7 @@ export default function Payment() {
                                 Premium Forever
                             </h3>
                             <div className="flex items-center justify-center">
-                                <span className="text-5xl font-bold text-primary">₹499</span>
+                                <span className="text-5xl font-bold text-primary">₹899</span>
                                 <span className="text-lg text-gray-600 dark:text-gray-400 ml-2">
                                     one-time
                                 </span>

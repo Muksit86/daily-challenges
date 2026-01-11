@@ -88,8 +88,8 @@ export const AuthProvider = ({ children }) => {
     checkSession();
   }, []);
 
-  // Signup with email, password, and username
-  const signup = async (email, password, username) => {
+  // Signup with email, password, username, and optional account_type
+  const signup = async (email, password, username, account_type = "free_trial") => {
     try {
       const response = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ email, password, username }),
+        body: JSON.stringify({ email, password, username, account_type }),
       });
 
       const data = await response.json();
@@ -207,6 +207,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     trialStatus,
+    accountType: user?.account_type || null,
     signup,
     login,
     logout,
