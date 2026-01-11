@@ -22,13 +22,7 @@ import About from "./Pages/About.jsx";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
 import NotFound from "./Pages/NotFound.jsx";
 import Contact from "./Pages/Contact.jsx";
-<<<<<<< HEAD
-import Payment from "./Pages/Payment.jsx";
-import Upgrade from "./Pages/Upgrade.jsx";
-
-=======
 import { PostHogProvider } from "posthog-js/react";
->>>>>>> 0068c2117d02ac2788eab1cb915d44bc22bfb669
 import "./tempData/loadDummyData";
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import RequestingPage from "./Pages/RequestingPage.jsx";
