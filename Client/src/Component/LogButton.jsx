@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { LuTreePalm } from "react-icons/lu";
 import { toast } from "react-toastify";
 import { useLog } from "../Healper/LogContext";
+import { useTrialProtection } from "../hooks/useTrialProtection";
 
 export default function LogButton({ handleLog, challengeId, challengeName }) {
   const { addLog, hasLoggedTodayForChallenge } = useLog();
+  const { handleProtectedAction } = useTrialProtection();
   const [isChecked, setIsChecked] = useState(false);
   const [hasLoggedToday, setHasLoggedToday] = useState(false);
 
@@ -19,32 +21,34 @@ export default function LogButton({ handleLog, challengeId, challengeName }) {
     const checked = e.target.checked;
 
     if (checked && !hasLoggedToday) {
-      const success = addLog(challengeId, challengeName, true);
+      // Protect this action - redirect if trial expired
+      handleProtectedAction(() => {
+        const success = addLog(challengeId, challengeName, true);
 
-      if (success) {
-        setIsChecked(true);
+        if (success) {
+          setIsChecked(true);
+          setHasLoggedToday(true);
 
-        setHasLoggedToday(true);
-
-        toast.success("🎉 Great job! Log recorded successfully!", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      } else {
-        setIsChecked(false);
-        toast.error("❌ You can only log once per day!", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      }
+          toast.success("🎉 Great job! Log recorded successfully!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          setIsChecked(false);
+          toast.error("❌ You can only log once per day!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      })();
     }
   };
 
@@ -52,8 +56,8 @@ export default function LogButton({ handleLog, challengeId, challengeName }) {
     <>
       <label
         className={`mt-5 flex items-center justify-between gap-5 select-none transition-all duration-1000 ${hasLoggedToday
-            ? "pointer-events-none line-through animate-fade-out hidden"
-            : ""
+          ? "pointer-events-none line-through animate-fade-out hidden"
+          : ""
           }`}
       >
         {/* Text */}

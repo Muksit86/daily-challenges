@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { FREE_TRIAL_DAYS } from "../config/clientConfig";
 
 const AuthContext = createContext();
 
@@ -13,9 +14,48 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [authType, setAuthType] = useState(null); // 'free' | 'email'
+  const [trialStatus, setTrialStatus] = useState({
+    isTrialActive: false,
+    daysRemaining: 0,
+    trialEndsAt: null,
+    isExpired: false,
+  });
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+  // Helper function to calculate trial status
+  const calculateTrialStatus = (trialEndsAt, isPremium) => {
+    // Premium users don't have trial
+    if (isPremium) {
+      return {
+        isTrialActive: false,
+        daysRemaining: 0,
+        trialEndsAt: null,
+        isExpired: false,
+      };
+    }
+
+    if (!trialEndsAt) {
+      return {
+        isTrialActive: false,
+        daysRemaining: 0,
+        trialEndsAt: null,
+        isExpired: false,
+      };
+    }
+
+    const now = new Date();
+    const endDate = new Date(trialEndsAt);
+    const timeDiff = endDate - now;
+    const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    return {
+      isTrialActive: daysRemaining > 0,
+      daysRemaining: Math.max(0, daysRemaining),
+      trialEndsAt: endDate,
+      isExpired: daysRemaining <= 0,
+    };
+  };
 
   // Check session from cookies on mount
   const checkSession = async () => {
@@ -28,24 +68,16 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
-        setAuthType("email");
-        localStorage.setItem("authType", "email");
-      } else {
-        // No valid session, check for free mode
-        const storedAuthType = localStorage.getItem("authType");
-        if (storedAuthType === "free") {
-          setAuthType("free");
-          setUser({ email: "free" });
-        }
+
+        // Calculate trial status from backend data
+        const status = calculateTrialStatus(
+          data.user.trial_ends_at,
+          data.user.is_premium
+        );
+        setTrialStatus(status);
       }
     } catch (error) {
       console.error("Session check error:", error);
-      // Check for free mode on error
-      const storedAuthType = localStorage.getItem("authType");
-      if (storedAuthType === "free") {
-        setAuthType("free");
-        setUser({ email: "free" });
-      }
     } finally {
       setLoading(false);
     }
@@ -56,30 +88,34 @@ export const AuthProvider = ({ children }) => {
     checkSession();
   }, []);
 
-  // Login as free user
-  const loginAsFree = () => {
-    setAuthType("free");
-    setUser({ email: "free" });
-    localStorage.setItem("authType", "free");
-    return { success: true };
-  };
-
-  // Send magic link to email
-  const sendMagicLink = async (email) => {
+  // Signup with email, password, and username
+  const signup = async (email, password, username) => {
     try {
-      const response = await fetch(`${API_URL}/auth/send-magic-link`, {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, password, username }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to send magic link");
+        throw new Error(data.error || "Signup failed");
+      }
+
+      // If signup succeeded and session was created
+      if (data.user) {
+        setUser(data.user);
+
+        // Calculate trial status from backend data
+        const status = calculateTrialStatus(
+          data.user.trial_ends_at,
+          data.user.is_premium
+        );
+        setTrialStatus(status);
       }
 
       return { success: true, message: data.message };
@@ -88,22 +124,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Verify magic link (called when user clicks link from email)
-  const verifyMagicLink = async (token_hash, type) => {
+  // Login with email and password
+  const login = async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/auth/verify-otp`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ token_hash, type }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Verification failed");
+        throw new Error(data.error || "Login failed");
       }
 
       // Fetch current user from cookies
@@ -118,17 +154,19 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = async () => {
     try {
-      if (authType === "email") {
-        await fetch(`${API_URL}/auth/logout`, {
-          method: "POST",
-          credentials: "include", // Send cookies to clear them
-        });
-      }
+      await fetch(`${API_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include", // Send cookies to clear them
+      });
 
-      // Clear state and localStorage
+      // Clear state
       setUser(null);
-      setAuthType(null);
-      localStorage.removeItem("authType");
+      setTrialStatus({
+        isTrialActive: false,
+        daysRemaining: 0,
+        trialEndsAt: null,
+        isExpired: false,
+      });
 
       return { success: true };
     } catch (error) {
@@ -139,10 +177,6 @@ export const AuthProvider = ({ children }) => {
   // Delete account function
   const deleteAccount = async () => {
     try {
-      if (authType !== "email") {
-        throw new Error("Account deletion is only available for email users");
-      }
-
       const response = await fetch(`${API_URL}/auth/delete-account`, {
         method: "DELETE",
         credentials: "include", // Send cookies for authentication
@@ -154,10 +188,14 @@ export const AuthProvider = ({ children }) => {
         throw new Error(data.error || "Failed to delete account");
       }
 
-      // Clear state and localStorage
+      // Clear state
       setUser(null);
-      setAuthType(null);
-      localStorage.removeItem("authType");
+      setTrialStatus({
+        isTrialActive: false,
+        daysRemaining: 0,
+        trialEndsAt: null,
+        isExpired: false,
+      });
 
       return { success: true };
     } catch (error) {
@@ -168,13 +206,12 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
-    authType,
-    sendMagicLink,
-    verifyMagicLink,
-    loginAsFree,
+    trialStatus,
+    signup,
+    login,
     logout,
     deleteAccount,
-    isAuthenticated: !!user && !!authType,
+    isAuthenticated: !!user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,8 +1,8 @@
 import express from 'express';
 import { authenticateUser } from '../middleware/authMiddleware.js';
 import {
-    sendMagicLink,
-    verifyOtp,
+    signup,
+    login,
     logout,
     deleteAccount,
     getCurrentUser
@@ -11,8 +11,8 @@ import {
 const router = express.Router();
 
 // Public routes
-router.post('/send-magic-link', sendMagicLink);
-router.post('/verify-otp', verifyOtp);
+router.post('/signup', signup);
+router.post('/login', login);
 router.post('/logout', logout);
 
 // Protected routes

@@ -9,7 +9,7 @@ const ChallengesContext = createContext();
 const FREE_CHALLENGE_LIMIT = 3;
 
 export const ChallengesProvider = ({ children }) => {
-  const { user, authType, loading: authLoading } = useAuth();
+  const { user, authType, loading: authLoading, trialStatus } = useAuth();
   const [challenges, setChallenges] = useState([]);
   const [selectedChallengeId, setSelectedChallengeId] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -85,11 +85,12 @@ export const ChallengesProvider = ({ children }) => {
 
     try {
       if (isFreeVersion()) {
-        // Check challenge limit for free users
-        if (challenges.length >= FREE_CHALLENGE_LIMIT) {
+        // Check challenge limit ONLY for expired trial users
+        // Active trial users get unlimited challenges
+        if (trialStatus.isExpired && challenges.length >= FREE_CHALLENGE_LIMIT) {
           return {
             success: false,
-            error: `Free version is limited to ${FREE_CHALLENGE_LIMIT} challenges. Upgrade to Premium for unlimited challenges!`,
+            error: `Your free trial has expired. Upgrade to Premium for unlimited challenges!`,
           };
         }
 
