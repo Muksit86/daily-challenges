@@ -146,8 +146,8 @@ export default function LandingPage() {
               </h1>
 
               <p className="text-sm md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed md:w-6/12">
-                A simple challenge tracker to help you stick to habits.
-                Get started with your free {FREE_TRIAL_DAYS}-day trial.
+                A simple challenge tracker to help you stick to habits. Get
+                started with your free {FREE_TRIAL_DAYS}-day trial.
               </p>
 
               {/* CTA Buttons */}
@@ -170,7 +170,7 @@ export default function LandingPage() {
               </div>
 
               <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">
-                Full premium features for {FREE_TRIAL_DAYS} days • No credit card required
+                Guest mode is free • No login required • Ads (if many visitors)
               </p>
             </div>
 
@@ -226,10 +226,11 @@ export default function LandingPage() {
 
                 <button
                   onClick={handleTick}
-                  className={`w-16 h-16 flex items-center justify-center text-3xl border-2 cursor-pointer ${tickCount > 0
-                    ? "bg-primary border-primary"
-                    : "bg-white dark:bg-elevation-dark border-blue-900"
-                    } hover:bg-primary transition-all`}
+                  className={`w-16 h-16 flex items-center justify-center text-3xl border-2 cursor-pointer ${
+                    tickCount > 0
+                      ? "bg-primary border-primary"
+                      : "bg-white dark:bg-elevation-dark border-blue-900"
+                  } hover:bg-primary transition-all`}
                 >
                   <LuTreePalm className="text-black dark:text-white" />
                 </button>
@@ -372,7 +373,9 @@ export default function LandingPage() {
 
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                   <span className="text-primary  font-bold">✓</span>
-                  <span><strong>Custom date options enabled</strong></span>
+                  <span>
+                    <strong>Custom date options enabled</strong>
+                  </span>
                 </div>
 
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
@@ -410,41 +413,14 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="space-y-4 mb-8">
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>Unlimited challenges</span>
-                </div>
+              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                <span className="text-primary  font-bold">✓</span>
+                <span>Ads (only if many visitors)</span>
+              </div>
 
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>Track progress daily</span>
-                </div>
-
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>Visual progress tracking</span>
-                </div>
-
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>No ads</span>
-                </div>
-
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>Data is sync between devices</span>
-                </div>
-
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>Custom day possible</span>
-                </div>
-
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>Data saved in database</span>
-                </div>
+              <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
+                <span className="text-primary  font-bold">✓</span>
+                <span>Your data stays in your browser</span>
               </div>
 
               <Button
