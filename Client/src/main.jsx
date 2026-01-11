@@ -66,6 +66,14 @@ const router = createBrowserRouter([
     element: <Payment />,
   },
   {
+    path: "/upgrade",
+    element: (
+      <ProtectedRoute>
+        <Upgrade />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: "/",
     element: (
       <ProtectedRoute>

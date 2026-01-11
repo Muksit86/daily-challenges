@@ -48,7 +48,7 @@ export default function TrialBanner() {
                             </div>
                         </div>
                         <Link
-                            to="/payment"
+                            to="/upgrade"
                             className="flex items-center gap-2 bg-white text-red-600 dark:bg-red-100 dark:text-red-900 px-6 py-2 font-bold text-sm md:text-base hover:scale-105 transition-all shadow-lg whitespace-nowrap"
                         >
                             Upgrade Now
@@ -107,7 +107,7 @@ export default function TrialBanner() {
                         </div>
                     </div>
                     <Link
-                        to="/payment"
+                        to="/upgrade"
                         className="bg-white dark:bg-slate-100 text-blue-600 dark:text-blue-800 px-4 py-1.5 font-semibold text-xs md:text-sm hover:scale-105 transition-all shadow-md whitespace-nowrap"
                     >
                         View Plans
