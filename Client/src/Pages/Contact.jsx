@@ -57,17 +57,17 @@ export default function Contact() {
           {/* Header */}
           <div className="mb-12 text-center animate-slide-up">
             <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Get in Touch
+              Email me at
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400">
-              We'd love to hear from you. Send us a message!
+              inphorment@gmail.com
             </p>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
+
+          {/* <div className="bg-white dark:bg-slate-800 p-6 md:p-8    -md border dark:border-slate-700 animate-slide-up">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name Field */}
+              
               <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
                   <LuUser size={20} className="text-primary" />
@@ -83,7 +83,7 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Email Field */}
+              
               <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
                   <LuMail size={20} className="text-primary" />
@@ -99,7 +99,7 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Subject Field */}
+              
               <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
                   <LuMessageCircle size={20} className="text-primary" />
@@ -115,7 +115,7 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Message Field */}
+              
               <div className="flex flex-col gap-2">
                 <label className="font-semibold text-slate-900 dark:text-white">
                   Message
@@ -130,7 +130,7 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Submit Button */}
+              
               <button
                 type="submit"
                 className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3  -lg transition-all duration-200 hover: -lg active:scale-100  -md"
@@ -140,7 +140,7 @@ export default function Contact() {
             </form>
           </div>
 
-          {/* Alternative Contact Methods */}
+          
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-slate-800 p-6    -md border dark:border-slate-700 text-center animate-slide-up">
               <div className="flex justify-center mb-4">
@@ -169,7 +169,7 @@ export default function Contact() {
                 We typically respond within 24 hours
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

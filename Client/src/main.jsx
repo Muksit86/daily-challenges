@@ -13,6 +13,7 @@ import { RouterProvider } from "react-router/dom";
 import Dashboard from "./Pages/Dashboard.jsx";
 import LandingPage from "./Pages/LandingPage.jsx";
 import Login from "./Pages/Login.jsx";
+import Signup from "./Pages/Signup.jsx";
 import Profile from "./Pages/Profile.jsx";
 import DailyLogs from "./Pages/DailyLogs.jsx";
 import Challenges from "./Pages/Challenges.jsx";
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
-    errorElement: <NotFound />, // 👈 here
+    errorElement: <NotFound />,
   },
   {
     path: "/about",
@@ -54,7 +55,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-    // element: <RequestingPage />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/payment",
+    element: <Payment />,
   },
   {
     path: "/",

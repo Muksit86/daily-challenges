@@ -12,6 +12,7 @@ import Button from "../Component/Button";
 import { useAuth } from "../Healper/AuthContext";
 import { useTheme } from "../Healper/themeContext";
 import { CiCircleQuestion } from "react-icons/ci";
+import { FREE_TRIAL_DAYS } from "../config/clientConfig";
 
 export default function LandingPage() {
   const [menu, setMenu] = useState(false);
@@ -20,7 +21,7 @@ export default function LandingPage() {
   const maxTicks = 20;
   const progress = (tickCount / maxTicks) * 100;
   const navigate = useNavigate();
-  const { loginAsFree, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { isDark, toggleTheme } = useTheme();
 
   const pricingRef = useRef(null);
@@ -42,9 +43,8 @@ export default function LandingPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleFreeLogin = () => {
-    loginAsFree();
-    navigate("/dashboard");
+  const handleSignup = () => {
+    navigate("/signup");
   };
 
   const handleSignIn = () => {
@@ -146,19 +146,19 @@ export default function LandingPage() {
               </h1>
 
               <p className="text-sm md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed md:w-6/12">
-                A simple challenge tracker to help you stick to habits — no
-                login, no pressure.
+                A simple challenge tracker to help you stick to habits. Get
+                started with your free {FREE_TRIAL_DAYS}-day trial.
               </p>
 
               {/* CTA Buttons */}
               <div className="flex gap-8 flex-row-reverse">
                 <Button
-                  text="Try Free Version"
+                  text={`Start ${FREE_TRIAL_DAYS}-Day Free Trial`}
                   textSize="text-sm"
                   paddingClass="md:px-4 md:py-4 px-4 py-2"
                   shadow="shadow-sm/30"
                   className="bg-blue-400"
-                  onClick={handleFreeLogin}
+                  onClick={handleSignup}
                 />
 
                 <button
@@ -343,7 +343,7 @@ export default function LandingPage() {
             <div className="bg-white dark:bg-elevation-dark border-2 border-black dark:border-white p-8 md:p-10 shadow-sharp-xl mb-8">
               <div className="text-center border-b-2 border-black dark:border-white pb-6 mb-8">
                 <h3 className="text-xl font-bold text-black dark:text-white mb-4">
-                  Free Forever
+                  {FREE_TRIAL_DAYS}-Day Free Trial
                 </h3>
                 <div className="flex items-center justify-center">
                   <span className="text-5xl font-bold text-primary">₹0</span>
@@ -357,19 +357,7 @@ export default function LandingPage() {
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                   <span className="text-primary  font-bold">✓</span>
                   <span>
-                    Max 3 challenges
-                    <span
-                      onMouseEnter={() => setdetail(true)}
-                      onMouseLeave={() => setdetail(false)}
-                      className="inline-block ml-2 relative"
-                    >
-                      <CiCircleQuestion />
-                      {detail && (
-                        <div className="absolute bg-background-dark p-1 text-xs -top-18">
-                          as much as your browser can fit
-                        </div>
-                      )}
-                    </span>
+                    <strong>Unlimited challenges</strong> during trial
                   </span>
                 </div>
 
@@ -385,31 +373,28 @@ export default function LandingPage() {
 
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                   <span className="text-primary  font-bold">✓</span>
-                  <span>No login required (free version)</span>
+                  <span>
+                    <strong>Custom date options enabled</strong>
+                  </span>
                 </div>
 
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                   <span className="text-primary  font-bold">✓</span>
-                  <span>Data is not sync between devices</span>
+                  <span>All premium features unlocked</span>
                 </div>
 
                 <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
                   <span className="text-primary  font-bold">✓</span>
-                  <span>No custom day set</span>
-                </div>
-
-                <div className="text-sm flex gap-2 text-gray-700 dark:text-gray-300">
-                  <span className="text-primary  font-bold">✓</span>
-                  <span>Your data stays in your browser</span>
+                  <span>Data stored locally (no sync)</span>
                 </div>
               </div>
 
               <Button
-                text="Get Started"
+                text="Sign Up Free"
                 textSize="text-lg"
                 paddingClass="px-4 py-2 w-full"
                 className="bg-primary"
-                onClick={handleFreeLogin}
+                onClick={handleSignup}
               />
             </div>
 
@@ -499,7 +484,7 @@ export default function LandingPage() {
             </div>
 
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">
-              No registration needed • Start tracking immediately
+              {FREE_TRIAL_DAYS} days free trial • No credit card required
             </p>
           </div>
         </div>

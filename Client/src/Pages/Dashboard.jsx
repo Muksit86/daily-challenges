@@ -3,8 +3,9 @@ import { useChallenges } from "../Healper/ChallengesContext";
 import { useLog } from "../Healper/LogContext";
 import Button from "../Component/Button";
 import { LuPlus } from "react-icons/lu";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import ChallenegCard from "../Component/ChallenegCard";
+import { useTrialProtection } from "../hooks/useTrialProtection";
 
 export default function Dashboard() {
   const { getChallenges, loading: challengesLoading } = useChallenges();
@@ -12,6 +13,8 @@ export default function Dashboard() {
 
   const allChallenges = getChallenges();
   const isLoading = challengesLoading || logsLoading;
+  const navigate = useNavigate();
+  const { handleProtectedAction } = useTrialProtection();
 
   return (
     <>
@@ -19,21 +22,20 @@ export default function Dashboard() {
         {/* Head Button */}
         {allChallenges.length != 0 && (
           <header className="w-full flex justify-between mb-5 items-center animate-slide-up">
-            <Link to="/newchallenge">
-              <Button
-                showTextOnMobile={false}
-                text="New challenge"
-                paddingClass="px-2 py-2"
-                icon={<LuPlus className="w-5 h-5" />}
-              />
-            </Link>
+            <Button
+              onClick={handleProtectedAction(() => navigate("/newchallenge"))}
+              showTextOnMobile={false}
+              text="New challenge"
+              paddingClass="px-2 py-2"
+              icon={<LuPlus className="w-5 h-5" />}
+            />
 
             {/* Test Mode Toggle */}
             <button
               onClick={toggleTestMode}
               className={`px-3 py-2 rounded-lg font-semibold text-xs md:text-sm transition-all duration-200 ${TEST_MODE
-                  ? "bg-yellow-400 text-black hover:bg-yellow-500"
-                  : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+                ? "bg-yellow-400 text-black hover:bg-yellow-500"
+                : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
                 }`}
             >
               {TEST_MODE ? "🧪 Minutes Mode" : "📅 Days Mode"}
@@ -73,13 +75,14 @@ export default function Dashboard() {
                 <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 text-center">
                   Create your first challenge to get started
                 </p>
-                <Link to="/newchallenge">
-                  <Button
-                    textSize="text-xs md:text-2xl"
-                    text="Create Challenge"
-                    icon={<LuPlus className="w-6 h-6" />}
-                  />
-                </Link>
+
+                <Button
+                  onClick={handleProtectedAction(() => navigate("/newchallenge"))}
+                  textSize="text-xs md:text-2xl"
+                  text="Create Challenge"
+                  icon={<LuPlus className="w-6 h-6" />}
+                />
+
               </section>
             ) : (
               <>

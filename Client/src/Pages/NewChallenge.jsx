@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { LuCalendar, LuTreePalm } from "react-icons/lu";
 import { useNavigate } from "react-router";
 import { useChallenges } from "../Healper/ChallengesContext";
+import { useAuth } from "../Healper/AuthContext";
+import { useTrialProtection } from "../hooks/useTrialProtection";
 
 export default function NewChallenge() {
   const navigate = useNavigate();
   const { addChallenge, loading } = useChallenges();
+  const { authType, trialStatus } = useAuth();
+  const { handleProtectedAction } = useTrialProtection();
 
   const [title, setTitle] = useState("");
   const [days, setDays] = useState("100");
@@ -13,32 +17,35 @@ export default function NewChallenge() {
   const [error, setError] = useState("");
 
   const handleSave = async () => {
-    setError("");
+    // Check trial status first - redirect if expired
+    handleProtectedAction(async () => {
+      setError("");
 
-    // Validate title
-    if (!title.trim()) {
-      setError("Please enter a challenge title");
-      return;
-    }
-
-    // Determine which days value to use
-    let selectedDays = days;
-    if (days === "custom") {
-      if (!customDays || isNaN(customDays) || customDays <= 0) {
-        setError("Please enter a valid number of days");
+      // Validate title
+      if (!title.trim()) {
+        setError("Please enter a challenge title");
         return;
       }
-      selectedDays = customDays;
-    }
 
-    // Add the challenge
-    const result = await addChallenge(title, selectedDays);
-    if (result.success) {
-      // Navigate back to challenges page
-      navigate("/dashboard");
-    } else {
-      setError(result.error || "Failed to create challenge");
-    }
+      // Determine which days value to use
+      let selectedDays = days;
+      if (days === "custom") {
+        if (!customDays || isNaN(customDays) || customDays <= 0) {
+          setError("Please enter a valid number of days");
+          return;
+        }
+        selectedDays = customDays;
+      }
+
+      // Add the challenge
+      const result = await addChallenge(title, selectedDays);
+      if (result.success) {
+        // Navigate back to challenges page
+        navigate("/dashboard");
+      } else {
+        setError(result.error || "Failed to create challenge");
+      }
+    })();
   };
 
   return (

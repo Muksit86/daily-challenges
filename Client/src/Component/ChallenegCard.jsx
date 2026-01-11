@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import { useChallenges } from "../Healper/ChallengesContext";
 import { useLog } from "../Healper/LogContext";
 import LogButton from "./LogButton";
+import { useTrialProtection } from "../hooks/useTrialProtection";
 
 export default function ChallenegCard({ challenge }) {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function ChallenegCard({ challenge }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(challenge.title);
   const menuRef = useRef(null);
+  const { handleProtectedAction } = useTrialProtection();
 
   // Calculate progress for this challenge
   const logsCount = getLogsCount(challenge.id);
@@ -88,15 +90,17 @@ export default function ChallenegCard({ challenge }) {
 
   const handleLog = (e) => {
     e.stopPropagation();
-    if (!hasLoggedToday) {
-      const success = addLog(challenge.id, challenge.title);
-      if (success) {
-        alert("✅ Logged successfully!");
+    handleProtectedAction(() => {
+      if (!hasLoggedToday) {
+        const success = addLog(challenge.id, challenge.title);
+        if (success) {
+          alert("✅ Logged successfully!");
+        }
+      } else {
+        alert("You've already logged today for this challenge!");
       }
-    } else {
-      alert("You've already logged today for this challenge!");
-    }
-    setShowMenu(false);
+      setShowMenu(false);
+    })();
   };
 
   return (

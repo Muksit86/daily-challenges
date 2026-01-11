@@ -1,35 +1,27 @@
 import React, { useState } from "react";
 import {
-  LuChevronRight,
-  LuChevronDown,
   LuLogOut,
+  LuUser,
   LuMail,
-  LuTrash2,
   LuUserX,
   LuSun,
   LuMoon,
 } from "react-icons/lu";
-import { Link, useNavigate } from "react-router";
-import Button from "../Component/Button";
+import { useNavigate, Link } from "react-router";
 import { useChallenges } from "../Healper/ChallengesContext";
 import { useAuth } from "../Healper/AuthContext";
 import { toast } from "react-toastify";
 import { useTheme } from "../Healper/themeContext";
+import { FREE_TRIAL_DAYS } from "../config/clientConfig";
 
 export default function Profile() {
   const { isDark, toggleTheme } = useTheme();
 
   const { deleteAllChallenges } = useChallenges();
-  const { logout, deleteAccount, user, authType } = useAuth();
+  const { logout, deleteAccount, user, trialStatus } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState(user?.email || "jonDoe@gmail.com");
-  const [isQuickLinksOpen, setIsQuickLinksOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const handleChangeEmail = () => {
-    // 👉 call API here
-  };
 
   const handleDeleteAllChallenges = () => {
     if (
@@ -52,8 +44,6 @@ export default function Profile() {
     }
   };
 
-
-
   const handleDeleteAccount = async () => {
     const result = await deleteAccount();
     if (result.success) {
@@ -67,61 +57,85 @@ export default function Profile() {
     setShowDeleteModal(false);
   };
 
-  const QuickLins = [
-    {
-      link: "/home",
-      text: "Home",
-    },
-    {
-      link: "/about",
-      text: "About",
-    },
-    {
-      link: "/contact",
-      text: "Contact",
-    },
-    {
-      link: "/privacy",
-      text: "Privacy",
-    },
-    {
-      link: "/privacy",
-      text: "Privacy",
-    },
-  ];
   return (
     <>
-      <main className="flex-1 flex flex-col justify-center items-center py-5 md:px-5 bg-background dark:bg-background-dark animate-fade-in">
+      <main className="flex-1 flex flex-col justify-center items-center py-5 md:px-5 bg-background dark:bg-background-dark animate-fade-in overflow-y-scroll">
         <div className="flex-1 flex flex-col justify-center items-center w-full">
           <section className="flex flex-col justify-center gap-5 shadow-sharp-lg border border-gray-900 dark:bg-elevation-dark p-3 md:p-8 md:w-5/12 w-11/12 animate-slide-up">
-            {/* Email Section */}
-            <div className="flex flex-col gap-2">
+
+            {/* User Info - Read Only */}
+            <div className="flex flex-col gap-4">
+              <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
+                Account Information
+              </h3>
+
+              {/* Username Display */}
+              {user?.username && (
+                <div className="flex flex-col gap-2">
+                  <label className="flex items-center font-medium text-slate-600 dark:text-slate-400 text-sm gap-2">
+                    <LuUser size={18} />
+                    Username
+                  </label>
+                  <div className="px-4 py-3 border-2 bg-slate-50 dark:bg-slate-800/50 border-slate-300 dark:border-slate-600 text-black dark:text-white text-base md:text-lg font-semibold">
+                    {user.username}
+                  </div>
+                </div>
+              )}
+
+              {/* Email Display */}
               <div className="flex flex-col gap-2">
-                <label className="w-full flex items-center font-bold text-black dark:text-white text-md gap-2">
-                  <LuMail size={20} />
+                <label className="flex items-center font-medium text-slate-600 dark:text-slate-400 text-sm gap-2">
+                  <LuMail size={18} />
                   Email
                 </label>
-
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border-2 text-black dark:bg-elevation dark:text-white text-sm md:text-lg 
-                  outline-none border-black dark:border-white/50 focus:ring-2 focus:ring-border-white/50 focus:border-transparent transition-all"
-                />
+                <div className="px-4 py-3 border-2 bg-slate-50 dark:bg-slate-800/50 border-slate-300 dark:border-slate-600 text-black dark:text-white text-sm md:text-base">
+                  {user?.email || "Not logged in"}
+                </div>
               </div>
 
-              <button
-                onClick={handleChangeEmail}
-                className="ml-auto py-2 px-4 bg-primary hover:bg-blue-700 text-white font-medium cursor-pointer active:scale-100 transition-all duration-200  -sm"
-              >
-                Change
-              </button>
+              {/* Trial Status - Show for all users with trial */}
+              {(trialStatus.isTrialActive || trialStatus.isExpired) && (
+                <div className="flex flex-col gap-2 mt-4 p-4 border-2 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold text-blue-900 dark:text-blue-200">
+                        Free Trial Status
+                      </p>
+                      {trialStatus.isExpired ? (
+                        <>
+                          <p className="text-red-700 dark:text-red-300 text-sm font-semibold">
+                            Trial Expired
+                          </p>
+                          <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+                            You had full premium access for {FREE_TRIAL_DAYS} days
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-blue-700 dark:text-blue-300 text-sm">
+                            {trialStatus.daysRemaining} {trialStatus.daysRemaining === 1 ? "day" : "days"} of premium access remaining
+                          </p>
+                          <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                            All premium features unlocked
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <Link
+                      to="/payment"
+                      className="px-4 py-2 bg-primary text-white text-sm font-semibold hover:scale-105 transition-all"
+                    >
+                      Upgrade
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Divider */}
             <div className="h-px bg-slate-200 dark:bg-hover-dark my-2"></div>
 
+            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
               className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-black dark:border-white/50 transition-all duration-200 hover:bg-hover-light dark:hover:bg-hover-dark hover:scale-101 active:scale-100"

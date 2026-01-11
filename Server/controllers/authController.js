@@ -1,17 +1,17 @@
 import { supabase } from "../config/supabase.js";
 
 /**
- * Send Magic Link
- * @route POST /api/auth/send-magic-link
+ * User Signup
+ * @route POST /api/auth/signup
  */
-export const sendMagicLink = async (req, res) => {
+export const signup = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, password, username } = req.body;
 
-    // Validate email
-    if (!email) {
+    // Validate input
+    if (!email || !password || !username) {
       return res.status(400).json({
-        error: "Email is required",
+        error: "Email, password, and username are required",
       });
     }
 
@@ -23,11 +23,34 @@ export const sendMagicLink = async (req, res) => {
       });
     }
 
-    // Send magic link using Supabase
-    const { data, error } = await supabase.auth.signInWithOtp({
+    // Password validation
+    if (password.length < 6) {
+      return res.status(400).json({
+        error: "Password must be at least 6 characters",
+      });
+    }
+
+    // Username validation
+    if (username.length < 3) {
+      return res.status(400).json({
+        error: "Username must be at least 3 characters",
+      });
+    }
+
+    // Calculate trial end date (7 days from now)
+    const trialEndsAt = new Date();
+    trialEndsAt.setDate(trialEndsAt.getDate() + 7);
+
+    // Create user with Supabase, storing username and trial info in metadata
+    const { data, error } = await supabase.auth.signUp({
       email,
+      password,
       options: {
-        emailRedirectTo: `${process.env.CLIENT_URL}/dashboard`,
+        data: {
+          username: username,
+          trial_ends_at: trialEndsAt.toISOString(),
+          is_premium: false,
+        },
       },
     });
 
@@ -35,44 +58,81 @@ export const sendMagicLink = async (req, res) => {
       return res.status(400).json({ error: error.message });
     }
 
-    res.status(200).json({
-      message: "Magic link sent! Check your email.",
-      email: email,
+    if (data?.session) {
+      const access_token = data.session.access_token;
+      const refresh_token = data.session.refresh_token;
+      const expires_at = data.session.expires_at;
+
+      // Set HTTP-only cookies
+      res.cookie("sb-access-token", access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: expires_at * 1000 - Date.now(),
+      });
+
+      res.cookie("sb-refresh-token", refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
+      });
+
+      return res.status(201).json({
+        message: "Signup successful",
+        user: {
+          id: data.user.id,
+          email: data.user.email,
+          username: data.user.user_metadata?.username,
+          created_at: data.user.created_at,
+          trial_ends_at: data.user.user_metadata?.trial_ends_at,
+          is_premium: data.user.user_metadata?.is_premium || false,
+        },
+      });
+    }
+
+    // If email confirmation is required
+    return res.status(200).json({
+      message: "Please check your email to confirm your account",
+      user: data.user,
     });
   } catch (error) {
-    console.error("Send magic link error:", error);
+    console.error("Signup error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-/**
- * Verify Magic Link Token
- * @route POST /api/auth/verify-otp
- */
-export const verifyOtp = async (req, res) => {
-  try {
-    const { token_hash, type } = req.body;
 
-    if (!token_hash || !type) {
+/**
+ * User Login
+ * @route POST /api/auth/login
+ */
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate input
+    if (!email || !password) {
       return res.status(400).json({
-        error: "Token hash and type are required",
+        error: "Email and password are required",
       });
     }
 
-    const { data, error } = await supabase.auth.verifyOtp({
-      token_hash,
-      type,
+    // Sign in with Supabase
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
     if (error) {
-      return res.status(401).json({ error: "Invalid or expired token" });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     const access_token = data.session.access_token;
     const refresh_token = data.session.refresh_token;
     const expires_at = data.session.expires_at;
 
-    // Set cookies
+    // Set HTTP-only cookies
     res.cookie("sb-access-token", access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -88,11 +148,18 @@ export const verifyOtp = async (req, res) => {
     });
 
     res.json({
-      message: "Verification successful",
-      user: data.user,
+      message: "Login successful",
+      user: {
+        id: data.user.id,
+        email: data.user.email,
+        username: data.user.user_metadata?.username,
+        created_at: data.user.created_at,
+        trial_ends_at: data.user.user_metadata?.trial_ends_at,
+        is_premium: data.user.user_metadata?.is_premium || false,
+      },
     });
   } catch (error) {
-    console.error("Verify OTP error:", error);
+    console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -177,8 +244,11 @@ export const getCurrentUser = async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
+        username: user.user_metadata?.username,
         created_at: user.created_at,
         updated_at: user.updated_at,
+        trial_ends_at: user.user_metadata?.trial_ends_at,
+        is_premium: user.user_metadata?.is_premium || false,
       },
     });
   } catch (error) {
@@ -186,3 +256,4 @@ export const getCurrentUser = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
