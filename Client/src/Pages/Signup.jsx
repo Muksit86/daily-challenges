@@ -10,15 +10,8 @@ export default function Signup() {
     const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const { signup, isAuthenticated, loading: authLoading } = useAuth();
+    const { signup } = useAuth();
     const navigate = useNavigate();
-
-    // Redirect to dashboard if already authenticated
-    useEffect(() => {
-        if (isAuthenticated && !authLoading) {
-            navigate("/dashboard", { replace: true });
-        }
-    }, [isAuthenticated, authLoading, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,7 +45,7 @@ export default function Signup() {
 
             if (result.success) {
                 toast.success("Account created successfully!");
-                navigate("/dashboard");
+                navigate("/upgrade");
             } else {
                 toast.error(result.error || "Signup failed");
             }

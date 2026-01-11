@@ -23,6 +23,7 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
 import NotFound from "./Pages/NotFound.jsx";
 import Contact from "./Pages/Contact.jsx";
 import Payment from "./Pages/Payment.jsx";
+import Upgrade from "./Pages/Upgrade.jsx";
 
 import "./tempData/loadDummyData";
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
   {
     path: "/payment",
     element: <Payment />,
+  },
+  {
+    path: "/upgrade",
+    element: (
+      <ProtectedRoute>
+        <Upgrade />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/",

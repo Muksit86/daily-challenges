@@ -25,7 +25,7 @@ export const createOrder = async (req, res) => {
         const options = {
             amount: 49900, // ₹499 in paise (₹499 * 100)
             currency: 'INR',
-            receipt: `receipt_${user.id}_${Date.now()}`,
+            receipt: `receipt_${user.id.slice(0, 10)}_${Date.now().toString().slice(-6)}`,
             notes: {
                 user_id: user.id,
                 email: user.email,

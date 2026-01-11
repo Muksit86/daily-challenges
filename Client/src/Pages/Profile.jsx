@@ -122,7 +122,7 @@ export default function Profile() {
                       )}
                     </div>
                     <Link
-                      to="/payment"
+                      to="/upgrade"
                       className="px-4 py-2 bg-primary text-white text-sm font-semibold hover:scale-105 transition-all"
                     >
                       Upgrade
