@@ -26,6 +26,7 @@ import { PostHogProvider } from "posthog-js/react";
 import "./tempData/loadDummyData";
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import RequestingPage from "./Pages/RequestingPage.jsx";
+import Payment from "./Pages/Payment.jsx";
 
 const options = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
