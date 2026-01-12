@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router";
 import {
+  LuContact,
   LuFileQuestion,
+  LuHouse,
+  LuInfo,
+  LuLock,
   LuMenu,
   LuMoon,
   LuShieldQuestion,
   LuSun,
+  LuTerminal,
   LuTreePalm,
 } from "react-icons/lu";
 import Button from "../Component/Button";
@@ -70,7 +75,7 @@ export default function LandingPage() {
   const strokeDashoffset = circumference * (1 - progress / 100);
 
   return (
-    <div className="bg-background dark:bg-background-dark min-h-screen">
+    <div className="bg-background dark:bg-background-dark min-h-screen max-w-screen">
       <SEO
         title="ChallengerDaily - Build Consistency One Day at a Time"
         description="Simple challenge tracker to build lasting habits. Get started with a 7-day free trial. Track daily progress, visualize growth, and achieve your goals with unlimited challenges."
@@ -80,7 +85,7 @@ export default function LandingPage() {
       {/* Navigation Bar */}
       <nav className="w-full bg-white dark:bg-elevation-dark border-black dark:border-white sticky top-0 z-50">
         <div className="flex justify-between items-center md:px-4 md:py-3 p-3 border-black border-b-2">
-          <div>
+          <div className="hidden md:block">
             <span className="text-xl font-bold text-primary cursor-pointer">
               <Link to="/">Challenge Hub</Link>
             </span>
@@ -151,11 +156,11 @@ export default function LandingPage() {
         )}
       </nav>
 
-      <section className="bg-white dark:bg-background-dark border-b-2 border-black dark:border-white p-8">
-        {/* Section 1 */}
+      <section className="w-full bg-white dark:bg-background-dark border-b-2 border-black dark:border-white p-8">
+
         <div className="mx-auto">
           <div className="flex flex-col justify-center gap-10 md:justify-between md:flex-row items-center">
-            {/* Hero text */}
+
             <div className="flex flex-col gap-4 items-start">
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-black dark:text-white">
                 Build consistency,
@@ -169,7 +174,7 @@ export default function LandingPage() {
                 started with your free {FREE_TRIAL_DAYS}-day trial.
               </p>
 
-              {/* CTA Buttons */}
+
               <div className="flex gap-8 flex-row-reverse">
                 <button
                   onClick={handleFreeTrial}
@@ -191,7 +196,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Progress Wheel */}
+
             <div className="flex justify-center">
               <div className="border-2 border-black dark:border-white bg-white dark:bg-elevation-dark p-6 md:p-8 shadow-sharp-xl w-full max-w-md flex flex-col items-center gap-6">
                 <div className="w-full text-center border-b-2 border-black dark:border-white pb-3">
@@ -263,7 +268,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-gray-100 dark:bg-elevation-dark border-b-2 border-black dark:border-white px-4 py-8">
+      <section className="w-full bg-gray-100 dark:bg-elevation-dark border-b-2 border-black dark:border-white px-4 py-8">
         <div className="mx-auto flex flex-col gap-12">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-black dark:text-white">
             How it works
@@ -354,7 +359,7 @@ export default function LandingPage() {
             Start tracking your habits today, completely free
           </p>
 
-          {/* Pricings */}
+
           <div className="flex flex-col-reverse md:flex-row gap-15 items-center justify-center w-full">
             <div className="bg-white dark:bg-elevation-dark border-2 border-black dark:border-white p-8 md:p-10 shadow-sharp-xl mb-8">
               <div className="text-center border-b-2 border-black dark:border-white pb-6 mb-8">
@@ -460,38 +465,64 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="bg-gray-100 dark:bg-elevation-dark border-t-2 border-black dark:border-white px-4 py-8">
+      <footer className="w-full bg-gray-100 dark:bg-elevation-dark border-t-2 border-black dark:border-white px-4 py-8">
         <div className="md:w-5/12 w-full mx-auto">
           <div className="flex gap-4 mb-4 justify-between items-center text-wrap">
             <Link
               to="/"
               className="text-sm font-medium text-black dark:text-white hover:text-primary transitionors"
             >
-              Home
+
+              <span className="block md:hidden">
+                <LuHouse size={20} />
+              </span>
+              <span className="hidden md:block">
+                Home
+              </span>
             </Link>
             <Link
               to="/about"
               className="text-sm font-medium text-black dark:text-white hover:text-primary transitionors"
             >
-              About
+              <span className="block md:hidden">
+                <LuInfo size={20} />
+              </span>
+              <span className="hidden md:block">
+                About
+              </span>
             </Link>
             <Link
               to="/contact"
               className="text-sm font-medium text-black dark:text-white hover:text-primary transitionors"
             >
-              Contact Us
+              <span className="block md:hidden">
+                <LuContact size={20} />
+              </span>
+              <span className="hidden md:block">
+                Contact Us
+              </span>
             </Link>
             <Link
               to="/privacy"
               className="text-sm font-medium text-black dark:text-white hover:text-primary transitionors"
             >
-              Privacy
+              <span className="block md:hidden">
+                <LuLock size={20} />
+              </span>
+              <span className="hidden md:block">
+                Privacy
+              </span>
             </Link>
             <Link
               to="/terms"
               className="text-sm font-medium text-black dark:text-white hover:text-primary transitionors"
             >
-              Terms
+              <span className="block md:hidden">
+                ToS
+              </span>
+              <span className="hidden md:block">
+                Terms
+              </span>
             </Link>
           </div>
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
