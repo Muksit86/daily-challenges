@@ -160,14 +160,14 @@ if (typeof window !== 'undefined') {
 
         // Only prompt if permission hasn't been granted or denied yet
         if (permission === 'default') {
-          // Small delay so user sees the app first
+          // Very brief delay to ensure DOM is ready
           setTimeout(async () => {
             const granted = await notificationService.requestPermission();
             if (granted) {
               // Subscribe the user
               await notificationService.subscribeUser();
             }
-          }, 2000); // Wait 2 seconds after page load
+          }, 500); // Wait 500ms after page load to ensure app is ready
         } else if (permission === 'granted') {
           // Already granted, ensure user is subscribed
           const isSubscribed = await notificationService.isSubscribed();

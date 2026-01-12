@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   LuLogOut,
   LuUser,
@@ -6,7 +6,6 @@ import {
   LuUserX,
   LuSun,
   LuMoon,
-  LuChevronDown,
   LuLock,
 } from "react-icons/lu";
 import { useNavigate, Link } from "react-router";
@@ -24,25 +23,6 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showQuickActions, setShowQuickActions] = useState(false);
-  const dropdownRef = useRef(null);
-
-  // Click outside to close dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowQuickActions(false);
-      }
-    };
-
-    if (showQuickActions) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showQuickActions]);
 
   const handleDeleteAllChallenges = () => {
     if (
@@ -78,22 +58,16 @@ export default function Profile() {
     setShowDeleteModal(false);
   };
 
-  const handleChangePassword = () => {
-    setShowQuickActions(false);
-    navigate("/reset-password");
-  };
-
   return (
     <>
-      <main className="flex-1 flex flex-col justify-center items-center py-5 md:px-5 bg-background dark:bg-background-dark animate-fade-in overflow-y-scroll">
-        <div className="flex-1 flex flex-col justify-center items-center w-full">
-          <section className="flex flex-col justify-center gap-5 shadow-sharp-lg border border-gray-900 dark:bg-elevation-dark p-3 md:p-8 md:w-5/12 w-11/12 animate-slide-up">
-
-            {/* User Info - Read Only */}
-            <div className="flex flex-col gap-4">
-              <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
+      <main className="flex-1 flex flex-col justify-center items-center py-5 px-3 md:px-5 bg-background dark:bg-background-dark animate-fade-in overflow-y-scroll">
+        <div className="w-full max-w-7xl mt-90 md:mt-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-5">
+            {/* Section 1: Account Information */}
+            <section className="min-w-0 flex flex-col gap-4 shadow-sharp-lg border border-gray-900 dark:bg-elevation-dark p-3 md:p-8 animate-slide-up">
+              <h2 className="font-bold text-slate-900 dark:text-white text-xl md:text-2xl mb-2">
                 Account Information
-              </h3>
+              </h2>
 
               {/* Username Display */}
               {user?.username && (
@@ -121,10 +95,10 @@ export default function Profile() {
 
               {/* Trial Status - Show for all users with trial */}
               {(trialStatus.isTrialActive || trialStatus.isExpired) && (
-                <div className="flex flex-col gap-2 mt-4 p-4 border-2 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-bold text-blue-900 dark:text-blue-200">
+                <div className="flex flex-col gap-2 mt-2 p-3 md:p-4 border-2 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="hidden md:block text-sm font-bold text-blue-900 dark:text-blue-200">
                         Free Trial Status
                       </p>
                       {trialStatus.isExpired ? (
@@ -141,7 +115,7 @@ export default function Profile() {
                           <p className="text-blue-700 dark:text-blue-300 text-sm">
                             {trialStatus.daysRemaining} {trialStatus.daysRemaining === 1 ? "day" : "days"} of premium access remaining
                           </p>
-                          <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                          <p className="hidden md:block text-xs text-blue-600 dark:text-blue-400 mt-1">
                             All premium features unlocked
                           </p>
                         </>
@@ -149,91 +123,81 @@ export default function Profile() {
                     </div>
                     <Link
                       to="/upgrade"
-                      className="px-4 py-2 bg-primary text-white text-sm font-semibold hover:scale-105 transition-all"
+                      className="px-4 py-2 bg-primary text-white text-sm font-semibold hover:scale-105 transition-all whitespace-nowrap w-full sm:w-auto text-center"
                     >
                       Upgrade
                     </Link>
                   </div>
                 </div>
               )}
-            </div>
+            </section>
 
-            {/* Divider */}
-            <div className="h-px bg-slate-200 dark:bg-hover-dark my-2"></div>
+            {/* Section 2: Settings & Actions */}
+            <section className="min-w-0 flex flex-col gap-4 shadow-sharp-lg border border-gray-900 dark:bg-elevation-dark p-3 md:p-8 animate-slide-up">
+              <h2 className="font-bold text-slate-900 dark:text-white text-xl md:text-2xl mb-2">
+                Settings
+              </h2>
 
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-full px-4 py-2 text-black dark:text-white text-2xl hover:cursor-pointer flex justify-center items-center gap-4 border-2 border-black dark:border-white/50 transition-all duration-200 hover:bg-hover-light dark:hover:bg-hover-dark hover:scale-101 active:scale-100"
-              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {isDark ? <LuSun size={30} /> : <LuMoon size={30} />}
-              <span>{isDark ? "Light" : "Dark"}</span>
-            </button>
+              {/* Theme Toggle */}
+              <div className="flex flex-col gap-2">
+                <label className="font-medium text-slate-600 dark:text-slate-400 text-sm">
+                  Theme
+                </label>
+                <button
+                  onClick={toggleTheme}
+                  className="w-full px-4 py-3 text-black dark:text-white text-lg hover:cursor-pointer flex justify-between items-center border-2 border-black dark:border-white/50 transition-all duration-200 hover:bg-hover-light dark:hover:bg-hover-dark hover:scale-101 active:scale-100"
+                  title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                >
+                  <span className="font-semibold">{isDark ? "Light Mode" : "Dark Mode"}</span>
+                  {isDark ? <LuSun size={24} /> : <LuMoon size={24} />}
+                </button>
+              </div>
 
-            <div className="h-px bg-slate-200 dark:bg-hover-dark"></div>
+              {/* Change Password */}
+              <div className="flex flex-col gap-2">
+                <label className="font-medium text-slate-600 dark:text-slate-400 text-sm">
+                  Password
+                </label>
+                <button
+                  onClick={() => navigate("/reset-password")}
+                  className="w-full flex items-center justify-between px-4 py-3 text-left border-2 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all"
+                >
+                  <span className="text-slate-900 dark:text-white font-medium">
+                    Change Password
+                  </span>
+                  <LuLock size={20} className="text-slate-600 dark:text-slate-400" />
+                </button>
+              </div>
 
-            {/* Quick Actions Dropdown */}
-            <div className="relative" ref={dropdownRef}>
+              {/* Divider */}
+              <div className="h-px bg-slate-200 dark:bg-hover-dark my-2"></div>
+
+              {/* Logout Button */}
               <button
-                onClick={() => setShowQuickActions(!showQuickActions)}
-                className="w-full flex justify-between items-center px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all font-semibold"
+                onClick={handleLogout}
+                className="w-full flex items-center justify-between px-4 py-3 border-2 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all"
               >
-                <span className="text-base md:text-lg">Quick Actions</span>
-                <LuChevronDown
-                  size={20}
-                  className={`transition-transform ${showQuickActions ? "rotate-180" : ""}`}
+                <span className="text-blue-700 dark:text-blue-300 font-semibold text-lg">
+                  Logout
+                </span>
+                <LuLogOut
+                  size={24}
+                  className="transform -rotate-90 text-blue-700 dark:text-blue-300"
                 />
               </button>
 
-              {/* Dropdown Menu */}
-              {showQuickActions && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 shadow-sharp-lg z-50 animate-slide-up">
-                  {/* Change Password */}
-                  <button
-                    onClick={handleChangePassword}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border-b border-slate-200 dark:border-slate-600"
-                  >
-                    <LuLock size={20} className="text-slate-600 dark:text-slate-400" />
-                    <span className="text-slate-900 dark:text-white font-medium">
-                      Change Password
-                    </span>
-                  </button>
-
-                  {/* Logout */}
-                  <button
-                    onClick={() => {
-                      setShowQuickActions(false);
-                      handleLogout();
-                    }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors border-b border-slate-200 dark:border-slate-600"
-                  >
-                    <LuLogOut
-                      size={20}
-                      className="transform -rotate-90 text-blue-600 dark:text-blue-400"
-                    />
-                    <span className="text-blue-600 dark:text-blue-400 font-medium">
-                      Logout
-                    </span>
-                  </button>
-
-                  {/* Delete Account */}
-                  <button
-                    onClick={() => {
-                      setShowQuickActions(false);
-                      setShowDeleteModal(true);
-                    }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                  >
-                    <LuUserX size={20} className="text-red-600 dark:text-red-400" />
-                    <span className="text-red-600 dark:text-red-400 font-medium">
-                      Delete Account
-                    </span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </section>
+              {/* Delete Account Button */}
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                className="w-full flex items-center justify-between px-4 py-3 border-2 border-red-500 dark:border-red-600 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all"
+              >
+                <span className="text-red-700 dark:text-red-300 font-semibold text-lg">
+                  Delete Account
+                </span>
+                <LuUserX size={24} className="text-red-700 dark:text-red-300" />
+              </button>
+            </section>
+          </div>
         </div>
       </main>
 
