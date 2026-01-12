@@ -43,14 +43,14 @@ export const authenticateUser = async (req, res, next) => {
           res.cookie("sb-access-token", newAccessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: expiresAt * 1000 - Date.now(),
           });
 
           res.cookie("sb-refresh-token", newRefreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
           });
 

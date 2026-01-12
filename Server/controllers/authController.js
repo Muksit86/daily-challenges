@@ -16,7 +16,7 @@ export const signup = async (req, res) => {
     }
 
     // Validate account_type
-    if (!['free_trial', 'paid'].includes(account_type)) {
+    if (!["free_trial", "paid"].includes(account_type)) {
       return res.status(400).json({
         error: "Invalid account type. Must be 'free_trial' or 'paid'",
       });
@@ -77,14 +77,14 @@ export const signup = async (req, res) => {
       res.cookie("sb-access-token", access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: expires_at * 1000 - Date.now(),
       });
 
       res.cookie("sb-refresh-token", refresh_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
       });
 
@@ -95,7 +95,7 @@ export const signup = async (req, res) => {
           email: data.user.email,
           username: data.user.user_metadata?.username,
           created_at: data.user.created_at,
-          account_type: data.user.user_metadata?.account_type || 'free_trial',
+          account_type: data.user.user_metadata?.account_type || "free_trial",
           trial_ends_at: data.user.user_metadata?.trial_ends_at,
           is_premium: data.user.user_metadata?.is_premium || false,
         },
@@ -112,7 +112,6 @@ export const signup = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 /**
  * User Login
@@ -147,14 +146,14 @@ export const login = async (req, res) => {
     res.cookie("sb-access-token", access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: expires_at * 1000 - Date.now(),
     });
 
     res.cookie("sb-refresh-token", refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
     });
 
@@ -165,7 +164,7 @@ export const login = async (req, res) => {
         email: data.user.email,
         username: data.user.user_metadata?.username,
         created_at: data.user.created_at,
-        account_type: data.user.user_metadata?.account_type || 'free_trial',
+        account_type: data.user.user_metadata?.account_type || "free_trial",
         trial_ends_at: data.user.user_metadata?.trial_ends_at,
         is_premium: data.user.user_metadata?.is_premium || false,
       },
@@ -259,7 +258,7 @@ export const getCurrentUser = async (req, res) => {
         username: user.user_metadata?.username,
         created_at: user.created_at,
         updated_at: user.updated_at,
-        account_type: user.user_metadata?.account_type || 'free_trial',
+        account_type: user.user_metadata?.account_type || "free_trial",
         trial_ends_at: user.user_metadata?.trial_ends_at,
         is_premium: user.user_metadata?.is_premium || false,
       },
@@ -303,12 +302,14 @@ export const forgotPassword = async (req, res) => {
       console.error("Forgot password error:", error);
       // Don't reveal if email exists or not for security
       return res.json({
-        message: "If an account with that email exists, a password reset link has been sent.",
+        message:
+          "If an account with that email exists, a password reset link has been sent.",
       });
     }
 
     res.json({
-      message: "If an account with that email exists, a password reset link has been sent.",
+      message:
+        "If an account with that email exists, a password reset link has been sent.",
     });
   } catch (error) {
     console.error("Forgot password error:", error);
@@ -339,10 +340,11 @@ export const resetPassword = async (req, res) => {
     }
 
     // Set the session with the access token from the reset link
-    const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
-      access_token,
-      refresh_token: access_token, // For password reset, access token is enough
-    });
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.setSession({
+        access_token,
+        refresh_token: access_token, // For password reset, access token is enough
+      });
 
     if (sessionError) {
       return res.status(400).json({
@@ -374,14 +376,14 @@ export const resetPassword = async (req, res) => {
         res.cookie("sb-access-token", access_token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
+          sameSite: "none",
           maxAge: expires_at * 1000 - Date.now(),
         });
 
         res.cookie("sb-refresh-token", refresh_token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
+          sameSite: "none",
           maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
         });
       }
@@ -400,4 +402,3 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
