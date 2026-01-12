@@ -1,9 +1,16 @@
 import React from "react";
 import { Link } from "react-router";
+import SEO from "../Component/SEO";
 
 export default function About() {
   return (
     <>
+      <SEO
+        title="About Us - ChallengerDaily"
+        description="Learn about ChallengerDaily - your daily companion for building lasting habits. Simple challenge tracker to help you achieve your goals through consistent daily action."
+        keywords="about, habit tracking, challenge tracker, productivity app, daily habits"
+      />
+
       <div className="bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-start py-10 md:py-20 px-5">
         <div className="max-w-3xl w-full animate-fade-in">
           {/* Header */}

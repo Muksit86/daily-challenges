@@ -20,14 +20,18 @@ import Challenges from "./Pages/Challenges.jsx";
 import NewChallenge from "./Pages/NewChallenge.jsx";
 import About from "./Pages/About.jsx";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
+import TermsOfService from "./Pages/TermsOfService.jsx";
 import NotFound from "./Pages/NotFound.jsx";
 import Contact from "./Pages/Contact.jsx";
+import ResetPassword from "./Pages/ResetPassword.jsx";
+import ChangePassword from "./Pages/ChangePassword.jsx";
 import { PostHogProvider } from "posthog-js/react";
 import "./tempData/loadDummyData";
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import RequestingPage from "./Pages/RequestingPage.jsx";
 import Payment from "./Pages/Payment.jsx";
 import Upgrade from "./Pages/Upgrade.jsx";
+import notificationService from "./services/notificationService.js";
 
 const options = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
@@ -53,12 +57,24 @@ const router = createBrowserRouter([
     element: <PrivacyPolicy />,
   },
   {
+    path: "/terms",
+    element: <TermsOfService />,
+  },
+  {
     path: "/login",
     element: <Login />,
   },
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/change-password",
+    element: <ChangePassword />,
   },
   {
     path: "/payment",
@@ -129,3 +145,39 @@ createRoot(document.getElementById("root")).render(
     </PostHogProvider>
   </StrictMode>
 );
+
+// Initialize OneSignal after DOM is ready
+if (typeof window !== 'undefined') {
+  // Wait for OneSignal SDK to load
+  window.addEventListener('load', () => {
+    // Small delay to ensure everything is loaded
+    setTimeout(async () => {
+      try {
+        await notificationService.initializeOneSignal();
+
+        // Auto-request permission on first load (only if not already decided)
+        const permission = await notificationService.getPermission();
+
+        // Only prompt if permission hasn't been granted or denied yet
+        if (permission === 'default') {
+          // Small delay so user sees the app first
+          setTimeout(async () => {
+            const granted = await notificationService.requestPermission();
+            if (granted) {
+              // Subscribe the user
+              await notificationService.subscribeUser();
+            }
+          }, 2000); // Wait 2 seconds after page load
+        } else if (permission === 'granted') {
+          // Already granted, ensure user is subscribed
+          const isSubscribed = await notificationService.isSubscribed();
+          if (!isSubscribed) {
+            await notificationService.subscribeUser();
+          }
+        }
+      } catch (error) {
+        console.error('Failed to initialize OneSignal:', error);
+      }
+    }, 1000);
+  });
+}

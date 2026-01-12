@@ -203,6 +203,59 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Forgot password - send reset email
+  const forgotPassword = async (email) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send reset email");
+      }
+
+      return { success: true, message: data.message };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Reset password with token
+  const resetPassword = async (password, accessToken) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ password, access_token: accessToken }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to reset password");
+      }
+
+      // Update user state after password reset
+      if (data.user) {
+        setUser(data.user);
+      }
+
+      return { success: true, message: data.message };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -212,6 +265,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     deleteAccount,
+    forgotPassword,
+    resetPassword,
     isAuthenticated: !!user,
   };
 

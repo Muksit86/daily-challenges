@@ -9,6 +9,7 @@ import {
   LuTreePalm,
 } from "react-icons/lu";
 import Button from "../Component/Button";
+import SEO from "../Component/SEO";
 import { useAuth } from "../Healper/AuthContext";
 import { useTheme } from "../Healper/themeContext";
 import { CiCircleQuestion } from "react-icons/ci";
@@ -32,6 +33,7 @@ export default function LandingPage() {
   const quickLinks = [
     { link: "/", text: "Home" },
     { link: "/privacy", text: "Privacy" },
+    { link: "/terms", text: "Terms" },
     { link: "/contact", text: "Contact" },
     { link: "/about", text: "About" },
   ];
@@ -69,10 +71,16 @@ export default function LandingPage() {
 
   return (
     <div className="bg-background dark:bg-background-dark min-h-screen">
+      <SEO
+        title="ChallengerDaily - Build Consistency One Day at a Time"
+        description="Simple challenge tracker to build lasting habits. Get started with a 7-day free trial. Track daily progress, visualize growth, and achieve your goals with unlimited challenges."
+        keywords="habit tracker, challenge tracker, daily habits, goal tracking, productivity, consistency, personal growth, free trial, habit building"
+      />
+
       {/* Navigation Bar */}
       <nav className="w-full bg-white dark:bg-elevation-dark border-black dark:border-white sticky top-0 z-50">
         <div className="flex justify-between items-center md:px-4 md:py-3 p-3 border-black border-b-2">
-          <div className="">
+          <div>
             <span className="text-xl font-bold text-primary cursor-pointer">
               <Link to="/">Challenge Hub</Link>
             </span>
@@ -95,7 +103,9 @@ export default function LandingPage() {
             >
               Pricing
             </button>
+          </div>
 
+          <div className="flex justify-center items-center gap-5">
             <button
               onClick={toggleTheme}
               className="cursor-pointer text-xl p-2 border-2 border-black dark:border-white hover:bg-background-sidebar dark:hover:bg-hover-dark transition-all"
@@ -107,7 +117,16 @@ export default function LandingPage() {
                 <LuSun size={25} color="black" />
               )}
             </button>
+
+            <button
+              onClick={() => navigate('/login')}
+              className="cursor-pointer text-xl p-2 px-4 dark:border-white bg-blue-500 hover:bg-blue-600 text-white transition-all"
+              aria-label="Toggle dark mode"
+            >
+              Log in
+            </button>
           </div>
+
 
           <button
             onClick={handleLinkMenu}
@@ -154,7 +173,7 @@ export default function LandingPage() {
               <div className="flex gap-8 flex-row-reverse">
                 <button
                   onClick={handleFreeTrial}
-                  className="md:px-12 md:py-4 px-4 py-2 text-md font-semibold bg-blue-500 text-white transition-all cursor-pointer hover:scale-101 active:scale-98"
+                  className="md:px-12 md:py-4 px-4 py-2 text-md font-semibold border-2 dark:border-white border-black text-black dark:text-white transition-all cursor-pointer hover:scale-101 active:scale-98"
                 >
                   Free Trial
                 </button>
@@ -163,7 +182,7 @@ export default function LandingPage() {
                   onClick={handlePaidSignup}
                   className="md:px-12 md:py-4 px-4 py-2 text-md font-semibold bg-primary text-white transition-all cursor-pointer shadow-sharp hover:scale-101 active:scale-98"
                 >
-                  Sign Up
+                  Get started
                 </button>
               </div>
 
@@ -463,10 +482,16 @@ export default function LandingPage() {
               Contact Us
             </Link>
             <Link
-              to="/privacy-policy"
+              to="/privacy"
               className="text-sm font-medium text-black dark:text-white hover:text-primary transitionors"
             >
-              Privacy Policy
+              Privacy
+            </Link>
+            <Link
+              to="/terms"
+              className="text-sm font-medium text-black dark:text-white hover:text-primary transitionors"
+            >
+              Terms
             </Link>
           </div>
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">

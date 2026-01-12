@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { LuCalendar, LuTreePalm } from "react-icons/lu";
+import { LuCalendar, LuTreePalm, LuBell, LuClock } from "react-icons/lu";
 import { useNavigate } from "react-router";
 import { useChallenges } from "../Healper/ChallengesContext";
 import { useAuth } from "../Healper/AuthContext";
 import { useTrialProtection } from "../hooks/useTrialProtection";
+import notificationService from "../services/notificationService";
+import { toast } from "react-toastify";
 
 export default function NewChallenge() {
   const navigate = useNavigate();
@@ -15,6 +17,43 @@ export default function NewChallenge() {
   const [days, setDays] = useState("100");
   const [customDays, setCustomDays] = useState("");
   const [error, setError] = useState("");
+
+  // Notification settings
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [reminderTime, setReminderTime] = useState("20:00"); // Default 8 PM
+
+  const handleNotificationToggle = async (enabled) => {
+    setNotificationsEnabled(enabled);
+
+    if (enabled) {
+      // Check if notifications are supported
+      if (!notificationService.isSupported()) {
+        toast.error("Notifications are not supported in this browser");
+        setNotificationsEnabled(false);
+        return;
+      }
+
+      // Check current permission
+      const permission = await notificationService.getPermission();
+
+      if (permission === 'denied') {
+        toast.error("Please enable notifications in your browser settings");
+        setNotificationsEnabled(false);
+        return;
+      }
+
+      if (permission !== 'granted') {
+        // Request permission
+        const granted = await notificationService.requestPermission();
+        if (!granted) {
+          toast.error("Notification permission denied");
+          setNotificationsEnabled(false);
+          return;
+        }
+        toast.success("Notifications enabled!");
+      }
+    }
+  };
 
   const handleSave = async () => {
     // Check trial status first - redirect if expired
@@ -36,6 +75,16 @@ export default function NewChallenge() {
         }
         selectedDays = customDays;
       }
+
+      // TODO: Add notification settings to challenge creation
+      // For now, we'll add the challenge without notification settings
+      // Backend needs to be updated to accept these fields
+      const challengeData = {
+        title,
+        days: selectedDays,
+        notificationsEnabled,
+        reminderTime: notificationsEnabled ? reminderTime : null,
+      };
 
       // Add the challenge
       const result = await addChallenge(title, selectedDays);
@@ -94,6 +143,50 @@ export default function NewChallenge() {
                 value={customDays}
                 onChange={(e) => setCustomDays(e.target.value)}
               />
+            )}
+          </section>
+
+          {/* Notification Settings Section */}
+          <section className="flex flex-col text-black dark:text-white gap-3 border-t dark:border-slate-600 pt-4">
+            <label className="flex items-center gap-2 w-fit text-md md:text-xl font-semibold text-slate-900 dark:text-white">
+              <LuBell size={20} />
+              <span>Daily Reminders</span>
+            </label>
+
+            {/* Enable/Disable Toggle */}
+            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded border dark:border-slate-600">
+              <div className="flex flex-col">
+                <span className="text-sm md:text-base font-medium">Enable Notifications</span>
+                <span className="text-xs md:text-sm text-slate-600 dark:text-slate-400">Get daily reminders to log your progress</span>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={notificationsEnabled}
+                  onChange={(e) => handleNotificationToggle(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            {/* Reminder Time Picker - Show only when enabled */}
+            {notificationsEnabled && (
+              <div className="flex flex-col gap-2 animate-slide-up">
+                <label className="flex items-center gap-2 text-sm md:text-base font-medium text-slate-900 dark:text-white">
+                  <LuClock size={18} />
+                  <span>Reminder Time</span>
+                </label>
+                <input
+                  type="time"
+                  value={reminderTime}
+                  onChange={(e) => setReminderTime(e.target.value)}
+                  className="border dark:border-slate-600 p-3 text-md md:text-lg bg-white dark:bg-slate-700 dark:text-white focus:outline-blue-400 focus:outline-2 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition-all"
+                />
+                <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400">
+                  We'll remind you at {reminderTime} every day to log your progress
+                </p>
+              </div>
             )}
           </section>
 

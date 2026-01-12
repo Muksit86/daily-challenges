@@ -396,7 +396,6 @@ export const LogProvider = ({ children }) => {
       : now.toDateString();
 
     const challengeLog = challengeLogs.find(cl => cl.challengeId === challengeId);
-    console.log(challengeLog);
 
     if (!challengeLog) return false;
 

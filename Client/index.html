@@ -1,24 +1,47 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/assets/header_logo_md.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
-    <title>ChallengerDaily</title>
-    <style>
-      html {
-        background-color: #FFF9ED;
-        color-scheme: light dark;
-      }
-      html.dark {
-        background-color: #1a1a1a;
-      }
-    </style>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./src/assets/header_logo_md.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+
+  <!-- Base SEO Meta Tags -->
+  <meta name="description"
+    content="Simple challenge tracker to build lasting habits. Track your daily progress, visualize growth, and achieve your goals. Start with a 7-day free trial." />
+  <meta name="keywords"
+    content="habit tracker, challenge tracker, daily habits, goal tracking, productivity, consistency, personal growth, free trial" />
+  <meta name="author" content="ChallengerDaily" />
+
+  <!-- Robots & Crawling -->
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
+
+  <!-- Theme & Mobile -->
+  <meta name="theme-color" content="#4F46E5" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+  <title>ChallengerDaily - Build Consistency One Day at a Time</title>
+  <style>
+    html {
+      background-color: #FFF9ED;
+      color-scheme: light dark;
+    }
+
+    html.dark {
+      background-color: #1a1a1a;
+    }
+  </style>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

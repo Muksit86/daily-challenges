@@ -270,3 +270,134 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
+/**
+ * Forgot Password - Send reset email
+ * @route POST /api/auth/forgot-password
+ */
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validate input
+    if (!email) {
+      return res.status(400).json({
+        error: "Email is required",
+      });
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        error: "Invalid email format",
+      });
+    }
+
+    // Send password reset email using Supabase
+    // The redirectTo URL should point to your change password page
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${process.env.CLIENT_URL}/change-password`,
+    });
+
+    if (error) {
+      console.error("Forgot password error:", error);
+      // Don't reveal if email exists or not for security
+      return res.json({
+        message: "If an account with that email exists, a password reset link has been sent.",
+      });
+    }
+
+    res.json({
+      message: "If an account with that email exists, a password reset link has been sent.",
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+/**
+ * Reset Password - Update password with token
+ * @route POST /api/auth/reset-password
+ */
+export const resetPassword = async (req, res) => {
+  try {
+    const { password, access_token } = req.body;
+
+    // Validate input
+    if (!password || !access_token) {
+      return res.status(400).json({
+        error: "Password and access token are required",
+      });
+    }
+
+    // Password validation
+    if (password.length < 6) {
+      return res.status(400).json({
+        error: "Password must be at least 6 characters",
+      });
+    }
+
+    // Set the session with the access token from the reset link
+    const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+      access_token,
+      refresh_token: access_token, // For password reset, access token is enough
+    });
+
+    if (sessionError) {
+      return res.status(400).json({
+        error: "Invalid or expired reset token",
+      });
+    }
+
+    // Update the user's password
+    const { data, error } = await supabase.auth.updateUser({
+      password: password,
+    });
+
+    if (error) {
+      return res.status(400).json({
+        error: error.message || "Failed to update password",
+      });
+    }
+
+    // Set new session cookies
+    if (data?.user) {
+      const { data: newSession } = await supabase.auth.getSession();
+
+      if (newSession?.session) {
+        const access_token = newSession.session.access_token;
+        const refresh_token = newSession.session.refresh_token;
+        const expires_at = newSession.session.expires_at;
+
+        // Set HTTP-only cookies
+        res.cookie("sb-access-token", access_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: expires_at * 1000 - Date.now(),
+        });
+
+        res.cookie("sb-refresh-token", refresh_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
+        });
+      }
+    }
+
+    res.json({
+      message: "Password updated successfully",
+      user: {
+        id: data.user.id,
+        email: data.user.email,
+        username: data.user.user_metadata?.username,
+      },
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+

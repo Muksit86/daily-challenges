@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../Healper/AuthContext";
-import { useNavigate, Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import SEO from "../Component/SEO";
+import Button from "../Component/Button";
 import { toast } from "react-toastify";
 import { LuMail, LuLock, LuLogIn } from "react-icons/lu";
 
@@ -54,6 +56,12 @@ export default function Login() {
 
   return (
     <>
+      <SEO
+        title="Login - ChallengerDaily"
+        description="Log in to your ChallengerDaily account to track your challenges and continue building lasting habits."
+        keywords="login, sign in, challenge tracker, habit tracker"
+      />
+
       <div className="min-h-screen bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-center gap-8 px-3 animate-fade-in">
         <div className="flex flex-col items-center justify-center gap-2 mt-5">
           <div className="text-5xl animate-bounce-in">👋</div>
@@ -98,6 +106,12 @@ export default function Login() {
               className="px-4 py-3 border border-black dark:border-slate-600 bg-background-sidebar dark:bg-slate-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               disabled={loading}
             />
+            <Link
+              to="/reset-password"
+              className="text-xs text-primary hover:underline text-right"
+            >
+              Forgot Password?
+            </Link>
           </div>
 
           <button

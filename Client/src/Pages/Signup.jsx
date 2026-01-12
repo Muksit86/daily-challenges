@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../Healper/AuthContext";
 import { useNavigate, useLocation, Link } from "react-router";
+import SEO from "../Component/SEO";
 import { toast } from "react-toastify";
 import { LuMail, LuLock, LuUser, LuUserPlus } from "react-icons/lu";
 
@@ -71,6 +72,12 @@ export default function Signup() {
 
     return (
         <>
+            <SEO
+                title="Sign Up - ChallengerDaily | 7-Day Free Trial"
+                description="Create your free account and start building lasting habits today. 7-day free trial with all premium features unlocked. No credit card required."
+                keywords="sign up, register, free trial, habit tracker, challenge tracker, create account"
+            />
+
             <div className="min-h-screen bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-center gap-8 px-3 animate-fade-in">
                 <div className="flex flex-col items-center justify-center gap-2 mt-5">
                     <div className="text-5xl animate-bounce-in">🎉</div>

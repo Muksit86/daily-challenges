@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SEO from "../Component/SEO";
 import { LuMail, LuMessageCircle, LuUser } from "react-icons/lu";
 import { toast } from "react-toastify";
 
@@ -35,7 +36,6 @@ export default function Contact() {
     }
 
     // TODO: Send email via backend
-    console.log("Form submitted:", formData);
     toast.success("Message sent! We'll get back to you soon.", {
       position: "top-center",
       autoClose: 3000,
@@ -52,6 +52,12 @@ export default function Contact() {
 
   return (
     <>
+      <SEO
+        title="Contact Us - ChallengerDaily"
+        description="Get in touch with the ChallengerDaily team. We're here to help you with any questions, feedback, or support needs."
+        keywords="contact, support, feedback, help, customer service"
+      />
+
       <div className="bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-start py-10 md:py-20 px-5">
         <div className="max-w-3xl w-full animate-fade-in">
           {/* Header */}

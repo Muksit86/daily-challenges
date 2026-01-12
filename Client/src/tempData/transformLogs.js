@@ -43,9 +43,6 @@ const newData = {
 // Write back to file
 fs.writeFileSync(dataPath, JSON.stringify(newData, null, 2), 'utf8');
 
-console.log('✅ Successfully transformed logs structure!');
-console.log(`Total challenges: ${newData.challenges.length}`);
-console.log(`Total challenge logs: ${newData.challengeLogs.length}`);
 newData.challengeLogs.forEach((cl, idx) => {
     console.log(`  ${idx + 1}. ${cl.challengeName}: ${cl.logs.length} logs`);
 });

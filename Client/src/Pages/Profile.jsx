@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   LuLogOut,
   LuUser,
@@ -6,6 +6,8 @@ import {
   LuUserX,
   LuSun,
   LuMoon,
+  LuChevronDown,
+  LuLock,
 } from "react-icons/lu";
 import { useNavigate, Link } from "react-router";
 import { useChallenges } from "../Healper/ChallengesContext";
@@ -22,6 +24,25 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showQuickActions, setShowQuickActions] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowQuickActions(false);
+      }
+    };
+
+    if (showQuickActions) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showQuickActions]);
 
   const handleDeleteAllChallenges = () => {
     if (
@@ -55,6 +76,11 @@ export default function Profile() {
       );
     }
     setShowDeleteModal(false);
+  };
+
+  const handleChangePassword = () => {
+    setShowQuickActions(false);
+    navigate("/reset-password");
   };
 
   return (
@@ -147,40 +173,65 @@ export default function Profile() {
 
             <div className="h-px bg-slate-200 dark:bg-hover-dark"></div>
 
-            {/* Account Actions */}
-            <div className="flex flex-col gap-3">
-              <h3 className="font-semibold text-slate-900 dark:text-white text-base md:text-lg">
-                Account Actions
-              </h3>
-
-              {/* Logout Button */}
+            {/* Quick Actions Dropdown */}
+            <div className="relative" ref={dropdownRef}>
               <button
-                onClick={handleLogout}
-                className="w-full flex justify-center items-center px-4 py-3 bg-blue-500 text-white dark:bg-blue-900/90 border border-blue-200 dark:border-blue-800 cursor-pointer hover:bg-blue-600 dark:hover:bg-blue-500 transition-all duration-200 hover:scale-102 active:scale-100"
+                onClick={() => setShowQuickActions(!showQuickActions)}
+                className="w-full flex justify-between items-center px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all font-semibold"
               >
-                <div className="flex items-center gap-3">
-                  <LuLogOut
-                    size={20}
-                    className="transform -rotate-90 text-white text-sm"
-                  />
-                  <span className="text-base md:text-lg font-semibold text-white">
-                    Logout
-                  </span>
-                </div>
+                <span className="text-base md:text-lg">Quick Actions</span>
+                <LuChevronDown
+                  size={20}
+                  className={`transition-transform ${showQuickActions ? "rotate-180" : ""}`}
+                />
               </button>
 
-              {/* Delete Account Button */}
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                className="w-full flex justify-center items-center px-4 py-3 bg-red-500 text-white dark:bg-red-900/90 border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-600 dark:hover:bg-red-500 transition-all duration-200 hover:scale-102 active:scale-100"
-              >
-                <div className="flex items-center gap-3">
-                  <LuUserX size={20} className="text-white text-sm" />
-                  <span className="text-base md:text-lg font-semibold text-white">
-                    Delete Account
-                  </span>
+              {/* Dropdown Menu */}
+              {showQuickActions && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 shadow-sharp-lg z-50 animate-slide-up">
+                  {/* Change Password */}
+                  <button
+                    onClick={handleChangePassword}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border-b border-slate-200 dark:border-slate-600"
+                  >
+                    <LuLock size={20} className="text-slate-600 dark:text-slate-400" />
+                    <span className="text-slate-900 dark:text-white font-medium">
+                      Change Password
+                    </span>
+                  </button>
+
+                  {/* Logout */}
+                  <button
+                    onClick={() => {
+                      setShowQuickActions(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors border-b border-slate-200 dark:border-slate-600"
+                  >
+                    <LuLogOut
+                      size={20}
+                      className="transform -rotate-90 text-blue-600 dark:text-blue-400"
+                    />
+                    <span className="text-blue-600 dark:text-blue-400 font-medium">
+                      Logout
+                    </span>
+                  </button>
+
+                  {/* Delete Account */}
+                  <button
+                    onClick={() => {
+                      setShowQuickActions(false);
+                      setShowDeleteModal(true);
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  >
+                    <LuUserX size={20} className="text-red-600 dark:text-red-400" />
+                    <span className="text-red-600 dark:text-red-400 font-medium">
+                      Delete Account
+                    </span>
+                  </button>
                 </div>
-              </button>
+              )}
             </div>
           </section>
         </div>

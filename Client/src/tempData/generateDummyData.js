@@ -75,8 +75,3 @@ const dummyData = {
 // Write to file
 const outputPath = path.join(__dirname, 'dummyData.json');
 fs.writeFileSync(outputPath, JSON.stringify(dummyData, null, 2));
-
-console.log(`✅ Generated dummy data successfully!`);
-console.log(`📊 Total challenges: ${challenges.length}`);
-console.log(`📝 Total logs: ${logs.length}`);
-console.log(`💾 Saved to: ${outputPath}`);

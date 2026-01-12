@@ -1,8 +1,16 @@
 import React from "react";
+import SEO from "../Component/SEO";
 
 export default function PrivacyPolicy() {
   return (
     <>
+      <SEO
+        title="Privacy Policy - ChallengerDaily"
+        description="Learn how ChallengerDaily protects your privacy and handles your data. Information about localStorage, cookies, and data security."
+        keywords="privacy policy, data protection, privacy, data security"
+        ogType="article"
+      />
+
       <div className="bg-background dark:bg-background-dark flex-1 flex flex-col items-center justify-start py-10 md:py-20 px-5">
         <div className="max-w-3xl w-full animate-fade-in">
           {/* Header */}

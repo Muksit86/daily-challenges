@@ -147,8 +147,6 @@ export const handleWebhook = async (req, res) => {
         const event = req.body.event;
         const payload = req.body.payload;
 
-        console.log('Webhook received:', event);
-
         switch (event) {
             case 'payment.captured':
                 await handlePaymentCaptured(payload);
@@ -159,11 +157,9 @@ export const handleWebhook = async (req, res) => {
                 break;
 
             case 'payment.authorized':
-                console.log('Payment authorized:', payload.payment.entity.id);
                 break;
 
             case 'order.paid':
-                console.log('Order paid:', payload.order.entity.id);
                 break;
 
             default:
@@ -190,8 +186,6 @@ async function handlePaymentCaptured(payload) {
             return;
         }
 
-        console.log(`Processing payment.captured for user ${userId}`);
-
         // Get current user data
         const { data: userData, error: fetchError } = await supabase.auth.admin.getUserById(userId);
 
@@ -202,7 +196,6 @@ async function handlePaymentCaptured(payload) {
 
         // Check if already premium (avoid duplicate processing)
         if (userData.user.user_metadata?.is_premium) {
-            console.log('User already premium, skipping update');
             return;
         }
 
