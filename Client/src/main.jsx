@@ -31,7 +31,6 @@ import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import RequestingPage from "./Pages/RequestingPage.jsx";
 import Payment from "./Pages/Payment.jsx";
 import Upgrade from "./Pages/Upgrade.jsx";
-import notificationService from "./services/notificationService.js";
 
 const options = {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
@@ -145,40 +144,3 @@ createRoot(document.getElementById("root")).render(
     </PostHogProvider>
   </StrictMode>
 );
-
-// Initialize OneSignal after DOM is ready
-if (typeof window !== 'undefined') {
-  window.addEventListener('load', () => {
-    // Give time for OneSignal SDK to load
-    setTimeout(async () => {
-      try {
-        // Initialize OneSignal once
-        const initialized = await notificationService.initializeOneSignal();
-
-        if (!initialized) {
-          console.warn('Failed to initialize OneSignal');
-          return;
-        }
-
-        // Check permission status
-        const permission = await notificationService.getPermission();
-
-        if (permission === 'default') {
-          // Permission not yet decided - request it
-          const granted = await notificationService.requestPermission();
-          if (granted) {
-            await notificationService.subscribeUser();
-          }
-        } else if (permission === 'granted') {
-          // Permission already granted - ensure user is subscribed
-          const isSubscribed = await notificationService.isSubscribed();
-          if (!isSubscribed) {
-            await notificationService.subscribeUser();
-          }
-        }
-      } catch (error) {
-        console.error('Failed to initialize OneSignal:', error);
-      }
-    }, 1000); // Wait for SDK to load
-  });
-}
