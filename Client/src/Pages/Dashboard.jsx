@@ -88,7 +88,7 @@ export default function Dashboard() {
             />
 
             {/* Test Mode Toggle */}
-            <button
+            {/* <button
               onClick={toggleTestMode}
               className={`px-3 py-2 rounded-lg font-semibold text-xs md:text-sm transition-all duration-200 ${TEST_MODE
                 ? "bg-yellow-400 text-black hover:bg-yellow-500"
@@ -96,7 +96,7 @@ export default function Dashboard() {
                 }`}
             >
               {TEST_MODE ? "🧪 Minutes Mode" : "📅 Days Mode"}
-            </button>
+            </button> */}
           </header>
         )}
 
