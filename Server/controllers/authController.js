@@ -77,14 +77,14 @@ export const signup = async (req, res) => {
       res.cookie("sb-access-token", access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: expires_at * 1000 - Date.now(),
       });
 
       res.cookie("sb-refresh-token", refresh_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
       });
 
@@ -146,14 +146,14 @@ export const login = async (req, res) => {
     res.cookie("sb-access-token", access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: expires_at * 1000 - Date.now(),
     });
 
     res.cookie("sb-refresh-token", refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
     });
 
@@ -376,14 +376,14 @@ export const resetPassword = async (req, res) => {
         res.cookie("sb-access-token", access_token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "none",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
           maxAge: expires_at * 1000 - Date.now(),
         });
 
         res.cookie("sb-refresh-token", refresh_token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "none",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
           maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days
         });
       }
