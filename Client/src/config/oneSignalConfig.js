@@ -10,9 +10,11 @@ export const ONE_SIGNAL_CONFIG = {
         enable: false, // We'll use custom UI instead
     },
 
-    // Service Worker
-    serviceWorkerParam: { scope: '/' },
-    serviceWorkerPath: '/OneSignalSDKWorker.js',
+    // Service Worker - Updated for SDK v16
+    serviceWorkerParam: {
+        scope: '/',
+        path: '/OneSignalSDKWorker.js'
+    },
 
     // Auto-resubscribe users
     autoResubscribe: true,

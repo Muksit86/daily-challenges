@@ -40,7 +40,7 @@ class NotificationService {
             await window.OneSignal.init({
                 appId: ONE_SIGNAL_CONFIG.appId,
                 allowLocalhostAsSecureOrigin: ONE_SIGNAL_CONFIG.allowLocalhostAsSecureOrigin,
-                serviceWorkerPath: ONE_SIGNAL_CONFIG.serviceWorkerPath,
+                serviceWorkerParam: ONE_SIGNAL_CONFIG.serviceWorkerParam,
                 autoResubscribe: ONE_SIGNAL_CONFIG.autoResubscribe,
             });
 
