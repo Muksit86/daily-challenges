@@ -23,8 +23,8 @@ export const ONE_SIGNAL_CONFIG = {
     // Prompt before subscribing
     autoRegister: false, // We'll manually handle this
 
-    // Allow localhostAsSecureOrigin for development
-    allowLocalhostAsSecureOrigin: true,
+    // Allow localhostAsSecureOrigin for development only
+    allowLocalhostAsSecureOrigin: import.meta.env.DEV,
 };
 
 export default ONE_SIGNAL_CONFIG;

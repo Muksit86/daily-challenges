@@ -3,6 +3,7 @@ import ONE_SIGNAL_CONFIG from '../config/oneSignalConfig';
 class NotificationService {
     constructor() {
         this.initialized = false;
+        this.initializing = false;
         this.playerId = null;
     }
 
@@ -11,13 +12,27 @@ class NotificationService {
      */
     async initializeOneSignal() {
         try {
+            // Prevent multiple concurrent initializations
             if (this.initialized) {
+                console.log('OneSignal already initialized');
                 return true;
             }
+
+            if (this.initializing) {
+                console.log('OneSignal initialization in progress, waiting...');
+                // Wait for initialization to complete
+                while (this.initializing) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                return this.initialized;
+            }
+
+            this.initializing = true;
 
             // Check if OneSignal is loaded
             if (!window.OneSignal) {
                 console.error('OneSignal SDK not loaded');
+                this.initializing = false;
                 return false;
             }
 
@@ -30,13 +45,16 @@ class NotificationService {
             });
 
             this.initialized = true;
+            this.initializing = false;
 
             // Set up event listeners
             this.setupEventListeners();
 
+            console.log('OneSignal initialized successfully');
             return true;
         } catch (error) {
             console.error('Error initializing OneSignal:', error);
+            this.initializing = false;
             return false;
         }
     }
@@ -94,12 +112,9 @@ class NotificationService {
      */
     async requestPermission() {
         try {
-            if (!this.initialized) {
-                await this.initializeOneSignal();
-            }
-
-            if (!window.OneSignal) {
-                throw new Error('OneSignal not initialized');
+            if (!this.initialized || !window.OneSignal) {
+                console.error('OneSignal must be initialized before requesting permission');
+                return false;
             }
 
             // Request permission through OneSignal
@@ -134,8 +149,9 @@ class NotificationService {
      */
     async subscribeUser() {
         try {
-            if (!this.initialized) {
-                await this.initializeOneSignal();
+            if (!this.initialized || !window.OneSignal) {
+                console.error('OneSignal must be initialized before subscribing');
+                return { success: false, error: 'OneSignal not initialized' };
             }
 
             // Request permission first

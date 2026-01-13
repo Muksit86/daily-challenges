@@ -148,28 +148,29 @@ createRoot(document.getElementById("root")).render(
 
 // Initialize OneSignal after DOM is ready
 if (typeof window !== 'undefined') {
-  // Wait for OneSignal SDK to load
   window.addEventListener('load', () => {
-    // Small delay to ensure everything is loaded
+    // Give time for OneSignal SDK to load
     setTimeout(async () => {
       try {
-        await notificationService.initializeOneSignal();
+        // Initialize OneSignal once
+        const initialized = await notificationService.initializeOneSignal();
 
-        // Auto-request permission on first load (only if not already decided)
+        if (!initialized) {
+          console.warn('Failed to initialize OneSignal');
+          return;
+        }
+
+        // Check permission status
         const permission = await notificationService.getPermission();
 
-        // Only prompt if permission hasn't been granted or denied yet
         if (permission === 'default') {
-          // Very brief delay to ensure DOM is ready
-          setTimeout(async () => {
-            const granted = await notificationService.requestPermission();
-            if (granted) {
-              // Subscribe the user
-              await notificationService.subscribeUser();
-            }
-          }, 500); // Wait 500ms after page load to ensure app is ready
+          // Permission not yet decided - request it
+          const granted = await notificationService.requestPermission();
+          if (granted) {
+            await notificationService.subscribeUser();
+          }
         } else if (permission === 'granted') {
-          // Already granted, ensure user is subscribed
+          // Permission already granted - ensure user is subscribed
           const isSubscribed = await notificationService.isSubscribed();
           if (!isSubscribed) {
             await notificationService.subscribeUser();
@@ -178,6 +179,6 @@ if (typeof window !== 'undefined') {
       } catch (error) {
         console.error('Failed to initialize OneSignal:', error);
       }
-    }, 1000);
+    }, 1000); // Wait for SDK to load
   });
 }
